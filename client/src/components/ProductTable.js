@@ -15,9 +15,7 @@ export const ProductTable = props => {
                 <th> </th>
             </tr>
             </thead>
-            <tbody>
-            {products.map((product) => <ProductTableRow key={product._id} product={product}/>)}
-            </tbody>
+            <tbody>{products.map((product) => <ProductTableRow key={product._id} product={product}/>)}</tbody>
         </table>
     )
 }

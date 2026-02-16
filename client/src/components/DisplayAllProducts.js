@@ -20,7 +20,7 @@ export const DisplayAllProducts = () => {
             <div className="table-container">
                 <ProductTable products={products} />
                 <div className="add-new-product">
-                    <Link to={"/AddProduct"}>Add New Product</Link>
+                    <Link className="blue-button" to={"/AddProduct"}>Add New Product</Link>
                 </div>
             </div>
         </div>
