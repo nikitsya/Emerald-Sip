@@ -35,5 +35,8 @@
   "description": "Example using React as the client-side of a Node Express App",
   "main": "index.js",
   "author": "Hanna Bokariuk, Nikita Smiichyk",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "http-errors": "^2.0.1"
+  }
 }
