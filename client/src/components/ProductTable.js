@@ -11,6 +11,11 @@ export const ProductTable = props => {
             <tr>
                 <th>Product Name</th>
                 <th>Price</th>
+                <th>Images</th>
+                <th>Description</th>
+                <th>Capacity (ml)</th>
+                <th>Material</th>
+                <th>Color</th>
                 <th> </th>
             </tr>
             </thead>

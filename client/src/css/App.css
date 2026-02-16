@@ -82,6 +82,10 @@ input [type="button"] {
     border-collapse:collapse;
 }
 
+.table-container {
+    overflow-x: auto;
+}
+
 .table-container thead {
     background-color: #aaa;
     color:#fff;
@@ -104,6 +108,14 @@ input [type="button"] {
 
 .table-container tbody tr:nth-child(even) {
     background-color: #ffa;
+}
+
+.product-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
 .add-new-car {
