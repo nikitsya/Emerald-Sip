@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
+import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
 
 
@@ -39,7 +40,7 @@ export const AddProduct = () => {
                 <label>Price</label>
                 <input type="text" name="price" value={price} onChange={handlePriceChange} />
 
-                <button className="green-button" onClick={handleSubmit}>Add</button>
+                <Button value="Add" className="green-button" onClick={handleSubmit}/>
                 <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>
             </form>
         </div>
