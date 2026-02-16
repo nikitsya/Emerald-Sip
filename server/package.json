@@ -1,7 +1,7 @@
 {
   "name": "react_app",
   "version": "1.0.0",
-  "description": "Example using React as the client-side of a Node Express App",
+  "description": "Backend API for the Sustainable Home Store e-commerce project",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

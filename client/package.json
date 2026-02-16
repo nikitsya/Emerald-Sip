@@ -30,7 +30,7 @@
       "last 1 safari version"
     ]
   },
-  "description": "Example using React as the client-side of a Node Express App",
+  "description": "Client application for the Sustainable Home Store e-commerce project",
   "main": "index.js",
   "author": "Hanna Bokariuk, Nikita Smiichyk",
   "license": "ISC",
