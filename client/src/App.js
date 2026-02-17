@@ -4,8 +4,9 @@ import {DisplayAllProducts} from "./components/DisplayAllProducts"
 import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
 import {DeleteProduct} from "./components/DeleteProduct"
+import {ResetDatabase} from "./components/ResetDatabase";
+import {Register} from "./components/Register";
 import "./css/App.css"
-
 
 // Main app component with all routes
 export const App = () => {
@@ -13,6 +14,8 @@ export const App = () => {
         // BrowserRouter tracks URL changes in the browser
         <BrowserRouter>
             <Switch>
+                <Route exact path="/Register" component={Register} />
+                <Route exact path="/ResetDatabase" component={ResetDatabase} />
                 <Route exact path="/" component={DisplayAllProducts} />
                 <Route exact path="/AddProduct" component={AddProduct} />
                 <Route exact path="/EditProduct/:id" component={EditProduct} />
