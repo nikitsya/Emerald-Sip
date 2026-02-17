@@ -290,7 +290,16 @@ form input[readonly] {
     border: 1px solid #d7decb;
     border-radius: 10px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
+}
+
+.top-nav-left,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .top-nav-link {
@@ -303,4 +312,12 @@ form input[readonly] {
 
 .top-nav-link:hover {
     background-color: #eaf1df;
+}
+
+.top-nav-link-danger {
+    color: #8d3f22;
+}
+
+.top-nav-link-danger:hover {
+    background-color: #f5e2d8;
 }
