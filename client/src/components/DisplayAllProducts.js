@@ -17,6 +17,13 @@ export const DisplayAllProducts = () => {
 
     return (
         <div className="form-container">
+
+            <div>
+                <Link className="green-button" to={"/Login"}>Login</Link>
+                <Link className="blue-button" to={"/Register"}>Register</Link>
+                <Link className="red-button" to={"/ResetDatabase"}>Reset Database</Link> <br/><br/><br/>
+            </div>
+
             <div className="table-container">
                 <ProductTable products={products} />
                 <div className="add-new-product">
