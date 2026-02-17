@@ -5,6 +5,7 @@ import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
 import {DeleteProduct} from "./components/DeleteProduct"
 import "./css/App.css"
+import {Navigation} from "./components/Navigation";
 
 
 // Main app component with all routes
@@ -12,6 +13,7 @@ export const App = () => {
     return (
         // BrowserRouter tracks URL changes in the browser
         <BrowserRouter>
+            <Navigation />
             <Switch>
                 <Route exact path="/" component={DisplayAllProducts} />
                 <Route exact path="/AddProduct" component={AddProduct} />
