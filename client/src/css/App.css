@@ -293,73 +293,103 @@ form input[readonly] {
 }
 }
 
+
+/* Mobile Card Layout (≤ 599px) */
+
 @media (max-width: 599px) {
-    .container { padding: 10px; }
 
-    .form-container,
-    .table-container {
-        border-radius: 10px;
-    }
-
-    .form-container { padding: 14px; }
-    .table-container { padding: 8px; }
-
-    .table-container table,
-    .table-container thead,
-    .table-container tbody,
-    .table-container tr,
-    .table-container td {
-        display: block;
-        width: 100%;
-        min-width: 0; /* Prevent horizontal table width on mobile */
-    }
-
-    .table-container thead {
-        display: none; /* Hide header, card labels will be shown in cells */
-    }
-
-    .table-container tbody tr {
-        background: #fff;
-        border: 1px solid #dde5d1;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        padding: 10px;
-    }
-
-    .table-container tbody td {
-        border: 0;
-        position: relative;
-        padding: 8px 0 8px 88px; /* Reserve space for left label */
-        min-height: 32px;
-    }
-
-    .table-container tbody td::before {
-        position: absolute;
-        left: 0;
-        top: 8px;
-        width: 80px;
-        font-weight: 700;
-        color: #44513d;
-    }
-
-    /* Show only Name, Price, Image on mobile */
-    .table-container tbody td:nth-child(4),
-    .table-container tbody td:nth-child(5),
-    .table-container tbody td:nth-child(6),
-    .table-container tbody td:nth-child(7) {
-        display: none;
-    }
-
-    .table-container tbody td:nth-child(1)::before { content: "Name:"; }
-    .table-container tbody td:nth-child(2)::before { content: "Price:"; }
-    .table-container tbody td:nth-child(3)::before { content: "Image:"; }
-
-    .product-thumb {
-        width: 56px;
-        height: 56px;
-    }
+.table-container tbody tr:nth-child(odd) {
+    background-color: #ecfac6;
 }
+.table-container tbody tr:nth-child(even) {
+    background-color: #f8faf2; 
+}
+  /* Remove horizontal scroll caused by table min-width */
+  .table-container {
+    overflow-x: hidden;
+  }
 
+  /* Reset desktop table width restriction */
+  .table-container table {
+    min-width: 0;
+  }
+
+  /* Hide table header on mobile */
+  .table-container thead {
+    display: none;
+  }
+
+  /* Convert table structure into block layout */
+  .table-container table,
+  .table-container tbody,
+  .table-container tr,
+  .table-container td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Card container */
+  .table-container tbody tr {
+    background: #cffa78;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(72, 86, 58, 0.08);
+    border: 1px solid #596844;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* horizontal center */
+    text-align: center;    /* center text */
+  }
+
+  /* Remove default table cell styling */
+  .table-container tbody td {
+
+    padding: 6px 0;
+    border: 0;
+  }
+
+  /* Hide unnecessary columns on mobile */
+  .table-container tbody td:nth-child(4),
+  .table-container tbody td:nth-child(5),
+  .table-container tbody td:nth-child(6),
+  .table-container tbody td:nth-child(7) {
+    display: none;
+  }
+
+  /* Product name styling */
+  .table-container tbody td:nth-child(1) {
+    font-size: 25px;
+    font-weight: 750;
+    margin-bottom: 8px;
+  }
+
+  /* Price styling */
+  .table-container tbody td:nth-child(2) {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2f7a4f;
+    margin-bottom: 12px;
+  }
+
+  /* Image container spacing */
+  .table-container tbody td:nth-child(3) {
+    background: #eef3e6;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  /* Product image styling */
+.product-thumb {
+  display: block;
+  width: 100%;
+  height: auto;        
+  max-height: 220px;   
+  object-fit: contain; 
+  border-radius: 12px;
+  background: #f3f5ee; 
+}
+}
 
 .top-nav {
     max-width: 1000px;
