@@ -299,10 +299,10 @@ form input[readonly] {
 @media (max-width: 599px) {
 
 .table-container tbody tr:nth-child(odd) {
-    background-color: #ecfac6;
+    background-color: #f8faf2;
 }
 .table-container tbody tr:nth-child(even) {
-    background-color: #f8faf2; 
+    background-color: #ecfac6; 
 }
   /* Remove horizontal scroll caused by table min-width */
   .table-container {
@@ -487,4 +487,65 @@ form input[readonly] {
     padding: 0 10px;
     border: 1px solid #c6cfb9;
     border-radius: 8px;
+}
+
+.hamburger-btn {
+    display: none; /* Hidden on desktop/tablet */
+    height: 38px;
+    min-width: 42px;
+    border: 1px solid #c6cfb9;
+    border-radius: 8px;
+    background: #edf2e3;
+    color: #2f3d2c;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 599px) {
+    .top-nav {
+        position: relative; /* Anchor dropdown sections */
+        flex-wrap: wrap;
+        background-color: #6F8F34;
+    }
+
+    .hamburger-btn {
+        display: inline-flex; /* Show hamburger only on mobile */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .top-nav-left,
+    .top-nav-center,
+    .top-nav-right {
+        display: none; /* Hide nav sections by default on mobile */
+        width: 100%;
+    }
+
+    .top-nav-left.menu-open,
+    .top-nav-center.menu-open,
+    .top-nav-right.menu-open {
+        display: flex; /* Show sections when menu is open */
+    }
+
+    .top-nav-left.menu-open,
+    .top-nav-right.menu-open {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .top-nav-center.menu-open {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .top-nav-auth-row {
+        flex-direction: column; /* Stack Login/Register on mobile */
+    }
+
+    .top-nav-search {
+        max-width: 100%; /* Full width input on mobile */
+    }
 }
