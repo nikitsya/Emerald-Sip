@@ -3,7 +3,7 @@ import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
 import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
-import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
+
 
 
 export const Login = props => {
@@ -29,7 +29,7 @@ export const Login = props => {
         <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
             <h2>Login</h2>
 
-            {isLoggedIn ? <Redirect to="/DisplayAllProduct"/> : null}
+            {isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null}
 
             <input type = "email" name = "email" placeholder = "Email" autoComplete="email" autoFocus value={email}
                 onChange={handleEmailChange}
