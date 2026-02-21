@@ -40,7 +40,7 @@ export const Register = () => {
     return (
         <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
     
-        {isRegistered ? <Redirect to="/DisplayAllCars"/> : null} 
+        {isRegistered ? <Redirect to="/DisplayAllProduct"/> : null} 
     
         <h2>New User Registration</h2>
     
@@ -62,7 +62,7 @@ export const Register = () => {
         /><br/><br/>
     
         <Button value="Register New User" className="green-button" onClick={handleSubmit} />
-        <Link className="red-button" to={"/DisplayAllCars"}>Cancel</Link>   
+        <Link className="red-button" to={"/DisplayAllProduct"}>Cancel</Link>   
     </form>
     )
 }

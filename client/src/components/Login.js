@@ -27,7 +27,7 @@ export const Login = props => {
         <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
             <h2>Login</h2>
 
-            {isLoggedIn ? <Redirect to="/DisplayAllCars"/> : null}
+            {isLoggedIn ? <Redirect to="/DisplayAllProduct"/> : null}
 
             <input type = "email" name = "email" placeholder = "Email" autoComplete="email" autoFocus value={email}
                 onChange={handleEmailChange}
@@ -38,7 +38,7 @@ export const Login = props => {
             /><br/><br/>
 
             <Button value="Login" className="green-button" onClick={handleSubmit}/>
-            <Link className="red-button" to={"/DisplayAllCars"}>Cancel</Link>
+            <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>
         </form>
     )
 }
