@@ -15,7 +15,7 @@ import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
 // Main app component with all routes
 export const App = () => {
     const [searchName, setSearchName] = useState("");
-    
+
      if (typeof sessionStorage.accessLevel === "undefined") {
         sessionStorage.name = "GUEST"
         sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
@@ -33,9 +33,10 @@ export const App = () => {
                 <Route exact path="/" render={() => <DisplayAllProducts searchName={searchName} />} />
                 <Route exact path="/DisplayAllProducts" render={() => <DisplayAllProducts searchName={searchName} />} />
 
-                <Route exact path="/AddProduct" component={AddProduct} />
-                <Route exact path="/EditProduct/:id" component={EditProduct} />
-                <Route exact path="/DeleteProduct/:id" component={DeleteProduct} />
+                <LoggedInRoute exact path="/Logout" component={Logout} />
+                <LoggedInRoute exact path="/AddProduct" component={AddProduct} />
+                <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct} />
+                <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct} />
 
                 <Route render={() => <DisplayAllProducts searchName={searchName} />} />
              </Switch>
