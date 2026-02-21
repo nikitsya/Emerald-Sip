@@ -1,0 +1,40 @@
+import React, {useState} from "react"
+import {Redirect} from "react-router-dom"
+import axios from "axios"
+import {Button} from "./Button"
+import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../config/global_constants"
+
+
+export const Logout = props =>
+{
+    const [isLoggedIn, setIsLoggedIn] = useState(true)
+
+
+    const handleSubmit = e =>
+    {
+        e.preventDefault()
+
+        axios.defaults.withCredentials = true // needed for sessions to work
+        axios.post(`${SERVER_HOST}/users/logout`)
+        .then(res =>
+        {
+            sessionStorage.clear()
+
+            sessionStorage.name = "GUEST"
+            sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+            setIsLoggedIn(false)
+
+        })
+        .catch(err => console.log(`${err.response.data}\n${err}`))
+    }
+
+
+    return (
+    <div>   
+    
+        {!isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null} 
+    
+        <Button value="Log out" className="red-button" onClick={handleSubmit}/> 
+    </div>
+    )
+}
