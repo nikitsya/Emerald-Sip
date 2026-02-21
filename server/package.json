@@ -9,6 +9,7 @@
   "author": "Hanna Bokariuk, Nikita Smiichyk",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "body-parser": "2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
