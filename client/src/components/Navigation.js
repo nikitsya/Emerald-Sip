@@ -1,5 +1,7 @@
 import React, {useState} from "react"; // useState controls mobile menu open/close
 import {Link} from "react-router-dom";
+import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
+
 
 export const Navigation = ({ searchName, setSearchName }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state

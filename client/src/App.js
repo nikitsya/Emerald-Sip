@@ -9,10 +9,17 @@ import {Register} from "./components/Register"
 import "./css/App.css"
 import {Navigation} from "./components/Navigation"
 import {Login} from "./components/Login"
+import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
+
 
 // Main app component with all routes
 export const App = () => {
     const [searchName, setSearchName] = useState("");
+    
+     if (typeof sessionStorage.accessLevel === "undefined") {
+        sessionStorage.name = "GUEST"
+        sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+    }
 
     return (
         // BrowserRouter tracks URL changes in the browser
