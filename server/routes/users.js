@@ -10,6 +10,9 @@ router.post(`/users/reset_user_collection`, (req, res, next) => {
         const adminPassword = `123-qwe_QWE`
 
         bcrypt.hash(adminPassword, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (error, hash) => {
+             if (error) {
+                    return next(error)
+                }
             usersModel.create({name: "Administrator", email: "admin@admin.com", password: hash, accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)})
             .then(createData => res.json(createData))
             .catch(() => next(createError(500, `Failed to create Admin user for testing purposes`)))
@@ -26,6 +29,10 @@ router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
             next(createError(403, `User already exists`))
         } else {
             bcrypt.hash(req.params.password, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (error, hash) => {
+                if (error) {
+                    return next(error)
+                }
+
                 usersModel.create({name: req.params.name, email: req.params.email, password: hash, accessLevel: parseInt(process.env.ACCESS_LEVEL_CUSTOMER)})
                 .then(data => 
                 {
@@ -39,13 +46,19 @@ router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.post(`/users/login/:email/:password`, (req, res) => {
-    usersModel.findOne({email: req.params.email}, (error, data) => 
-    {
-        if(data)
-        {
+router.post(`/users/login/:email/:password`, (req, res, next) => {
+    usersModel.findOne({email: req.params.email})
+        .then((data) => {
+            if (!data) {
+                return res.json({errorMessage: `User is not logged in`})
+            }
+    
             bcrypt.compare(req.params.password, data.password, (err, result) =>
             {
+                 if (err) {
+                    return next(err)
+                }
+
                 if(result) 
                 {
                     req.session.user = {email: data.email, accessLevel:data.accessLevel}
@@ -55,13 +68,8 @@ router.post(`/users/login/:email/:password`, (req, res) => {
                 res.json({errorMessage: `User is not logged in`})
                 }
             })
-        }
-        else
-        {
-            console.log("not found in db")
-            res.json({errorMessage:`User is not logged in`})
-        }
-    })
+        })
+        .catch((err) => next(err))
 })
 
 router.post(`/users/logout`, (req, res) => {
