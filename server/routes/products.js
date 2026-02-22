@@ -309,39 +309,85 @@ router.get(`/products`, (req, res, next) => {
 })
 
 // Read one record
-router.get(`/products/:id`, (req, res, next) => {
-    productsModel.findById(req.params.id)
+router.get(`/products/:id`, (req, res, next) => 
+{
+    if(typeof req.session.user === `undefined`)
+    {
+        next(createError(403, `User is not logged in`))
+    }
+    else
+    {
+        productsModel.findById(req.params.id)
         .then(data => {
             res.json(data)
         })
         .catch((err) => next(err))
+    }
 })
 
 // Add new record
-router.post(`/products`, (req, res, next) => {
-    productsModel.create(req.body)
-        .then(data => {
+router.post(`/products`, (req, res, next) => 
+{
+     if(typeof req.session.user === `undefined`)
+    {
+        next(createError(403, `User is not logged in`))
+    }
+    else
+    {
+        if(req.session.user.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
+        {
+            productsModel.create(req.body)
+            .then(data => {
             res.json(data)
-        })
-        .catch((err) => next(err))
+            })
+            .catch((err) => next(err))
+            }
+        else
+        {
+            next(createError(403, `User is not an administrator, so they cannot delete records`))
+        }
+    }
 })
 
 // Update one record
-router.put(`/products/:id`, (req, res, next) => {
-    productsModel.findByIdAndUpdate(req.params.id, {$set: req.body})
-        .then(data => {
+router.put(`/products/:id`, (req, res, next) => 
+{
+      if(typeof req.session.user === `undefined`)
+    {
+        next(createError(403, `User is not logged in`))
+    }
+    else
+    {
+        productsModel.findByIdAndUpdate(req.params.id, {$set: req.body})
+            .then(data => {
             res.json(data)
-        })
-        .catch((err) => next(err))
+            })
+            .catch((err) => next(err))
+        }
 })
 
 // Delete one record
-router.delete(`/products/:id`, (req, res, next) => {
-    productsModel.findByIdAndDelete(req.params.id)
-        .then(data => {
+router.delete(`/products/:id`, (req, res, next) => 
+{
+     if(typeof req.session.user === `undefined`)
+    {
+        next(createError(403, `User is not logged in`))
+    }
+    else
+    {
+        if(req.session.user.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
+        {
+            productsModel.findByIdAndDelete(req.params.id)
+            .then(data => {
             res.json(data)
-        })
-        .catch((err) => next(err))
+            })
+            .catch((err) => next(err))
+            }
+        else
+        {
+            next(createError(403, `User is not an administrator, so they cannot delete records`))
+        }        
+    }
 })
 
 module.exports = router
