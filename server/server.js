@@ -8,6 +8,13 @@ require('./config/db')
 // Create an Express app
 const express = require(`express`)
 const app = express()
+app.use(require(`express-session`)({
+    secret: process.env.SESSION_PRIVATE_KEY,
+    resave: false,
+    cookie: {secure: false, maxAge: 60000}, 
+    saveUninitialized: true
+}))
+
 
 // Parse JSON data sent from client (available in req.body)
 app.use(require(`body-parser`).json())

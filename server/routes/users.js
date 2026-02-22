@@ -27,7 +27,11 @@ router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
         } else {
             bcrypt.hash(req.params.password, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (error, hash) => {
                 usersModel.create({name: req.params.name, email: req.params.email, password: hash})
-                .then(data => res.json({name: data.name}))
+                .then(data => 
+                {
+                    req.session.user = {email: data.email, accessLevel:data.accessLevel}
+                    res.json({name: data.name, accessLevel:data.accessLevel})
+                })
                 .catch(() => next(createError(409, `User was not registered`)))
             })
         }
@@ -44,6 +48,7 @@ router.post(`/users/login/:email/:password`, (req, res) => {
             {
                 if(result) 
                 {
+                    req.session.user = {email: data.email, accessLevel:data.accessLevel}
                     res.json({name: data.name, accessLevel:data.accessLevel})
                 } else 
                 {
@@ -60,6 +65,7 @@ router.post(`/users/login/:email/:password`, (req, res) => {
 })
 
 router.post(`/users/logout`, (req, res) => {
+    req.session.destroy()
     res.json({})
 })
 
