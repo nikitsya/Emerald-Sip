@@ -56,6 +56,7 @@ export const AddProduct = () => {
             color: color.trim()
         }
 
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/products`, productObject)
             .then(() => {setRedirectToDisplayAllProducts(true)})
             .catch(err => console.log(`${err.response.data}\n${err}`))

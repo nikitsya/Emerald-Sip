@@ -15,6 +15,7 @@ export const EditProduct = props => {
     const [redirectToDisplayAllProducts, setRedirectToDisplayAllProducts] = useState(false)
 
     useEffect(() => {
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.get(`${SERVER_HOST}/products/${props.match.params.id}`)
             .then((res) => {
                 setName(res.data.name || res.data.product || "")
@@ -69,6 +70,7 @@ export const EditProduct = props => {
             color: color.trim()
         }
 
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.put(`${SERVER_HOST}/products/${props.match.params.id}`, productObject)
             .then(() => {setRedirectToDisplayAllProducts(true)})
             .catch(err => console.log(`${err.response.data}\n${err}`))

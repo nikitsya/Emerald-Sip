@@ -10,6 +10,7 @@ export const DisplayAllProducts = ({ searchName = "" }) => {
     const [products, setProducts] = useState([])
 
     useEffect(() => {
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.get(`${SERVER_HOST}/products`)
             .then(res => {setProducts(Array.isArray(res.data) ? res.data : [])})
             .catch(() => {setProducts([])})

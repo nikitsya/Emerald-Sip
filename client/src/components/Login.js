@@ -20,6 +20,7 @@ export const Login = props => {
     }
 
     const handleSubmit = e => {
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/login/${email}/${password}`)
         .then(res => {
             sessionStorage.name = res.data.name

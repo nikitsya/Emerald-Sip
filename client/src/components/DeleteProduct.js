@@ -8,6 +8,7 @@ export const DeleteProduct = props => {
     const [redirectToDisplayAllProducts, setRedirectToDisplayAllProducts] = useState(false)
 
     useEffect(() => {
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.delete(`${SERVER_HOST}/products/${props.match.params.id}`)
             .then(() => {
                 setRedirectToDisplayAllProducts(true)

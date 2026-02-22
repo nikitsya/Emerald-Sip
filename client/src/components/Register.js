@@ -30,6 +30,7 @@ export const Register = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
+        axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/register/${name}/${email}/${password}`)
         .then(() => {
             setIsRegistered(true)
