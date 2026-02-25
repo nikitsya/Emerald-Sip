@@ -28,6 +28,10 @@ export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClea
 
             <div className="cart-list">
                 {items.map((item) => {
+                    const price = Number(item.price)
+                    const quantity = Number(item.quantity) || 1
+                    const subtotal = price * quantity
+
                     return (
                         <div className="cart-item" key={item._id}>
                             <h3>{item.name}</h3>
