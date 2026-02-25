@@ -15,6 +15,7 @@ export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClea
             <div className="form-container">
                 <h2>Shopping Cart</h2>
                 <p>Your cart is empty.</p>
+                <Link className="green-button" to="/DisplayAllProducts">Continue Shopping</Link>
             </div>
         )
     }
