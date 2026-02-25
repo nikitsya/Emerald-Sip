@@ -1,6 +1,8 @@
 import React from "react"
 import {Link} from "react-router-dom";
 
+const formatPrice = (value) => Number(value).toFixed(2)
+
 export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClearCart }) => {
     const items = Array.isArray(cartItems) ? cartItems : []
 
@@ -24,9 +26,23 @@ export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClea
         <div className="form-container">
             <h2>Shopping Cart</h2>
 
-            <div className="cart-list"></div>
+            <div className="cart-list">
+                {items.map((item) => {
+                    return (
+                        <div className="cart-item" key={item._id}>
+                            <h3>{item.name}</h3>
+                        </div>
+                    )
+                })}
+            </div>
 
-            <div className="cart-summary"></div>
+            <div className="cart-summary">
+                <p><strong>Total:</strong> ${formatPrice(total)}</p>
+                <div className="cart-summary-actions">
+                    <button type="button" className="red-button" onClick={onClearCart}>Clear Cart</button>
+                    <Link className="green-button" to="/DisplayAllProducts">Continue Shopping</Link>
+                </div>
+            </div>
 
         </div>
     )
