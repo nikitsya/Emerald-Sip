@@ -4,3 +4,4 @@ server/node_modules/
 *.DS_Store
 client/build/
 server/.env.local
+deploy

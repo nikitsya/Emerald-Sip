@@ -5,36 +5,33 @@ import {Button} from "./Button"
 import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../config/global_constants"
 
 
-export const Logout = props =>
-{
+export const Logout = props => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
 
 
-    const handleSubmit = e =>
-    {
+    const handleSubmit = e => {
         e.preventDefault()
 
         axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/logout`)
-        .then(res =>
-        {
-            sessionStorage.clear()
+            .then(res => {
+                sessionStorage.clear()
 
-            sessionStorage.name = "GUEST"
-            sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
-            setIsLoggedIn(false)
+                sessionStorage.name = "GUEST"
+                sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+                setIsLoggedIn(false)
 
-        })
-        .catch(err => console.log(`${err.response.data}\n${err}`))
+            })
+            .catch(err => console.log(`${err.response.data}\n${err}`))
     }
 
 
     return (
-    <div>   
-    
-        {!isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null} 
-    
-        <Button value="Log out" className="red-button" onClick={handleSubmit}/> 
-    </div>
+        <div>
+
+            {!isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null}
+
+            <Button value="Log out" className="red-button" onClick={handleSubmit}/>
+        </div>
     )
 }

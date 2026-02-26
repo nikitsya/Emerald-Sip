@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react"
-import {Redirect, Link} from "react-router-dom"
+import React, {useEffect, useState} from "react"
+import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
@@ -72,7 +72,9 @@ export const EditProduct = props => {
 
         axios.defaults.withCredentials = true // needed for sessions to work
         axios.put(`${SERVER_HOST}/products/${props.match.params.id}`, productObject)
-            .then(() => {setRedirectToDisplayAllProducts(true)})
+            .then(() => {
+                setRedirectToDisplayAllProducts(true)
+            })
             .catch(err => console.log(`${err.response.data}\n${err}`))
     }
 
@@ -80,25 +82,25 @@ export const EditProduct = props => {
         <div className="form-container">{redirectToDisplayAllProducts ? <Redirect to="/DisplayAllProducts"/> : null}
             <form>
                 <label>Name</label>
-                <input autoFocus type="text" name="name" value={name} onChange={handleNameChange} />
+                <input autoFocus type="text" name="name" value={name} onChange={handleNameChange}/>
 
                 <label>Price</label>
-                <input type="text" name="price" value={price} onChange={handlePriceChange} />
+                <input type="text" name="price" value={price} onChange={handlePriceChange}/>
 
                 <label>Images (comma separated)</label>
-                <input type="text" name="images" value={images} onChange={handleImagesChange} />
+                <input type="text" name="images" value={images} onChange={handleImagesChange}/>
 
                 <label>Description</label>
-                <input type="text" name="description" value={description} onChange={handleDescriptionChange} />
+                <input type="text" name="description" value={description} onChange={handleDescriptionChange}/>
 
                 <label>Capacity (ml)</label>
-                <input type="number" name="capacityMl" value={capacityMl} onChange={handleCapacityMlChange} />
+                <input type="number" name="capacityMl" value={capacityMl} onChange={handleCapacityMlChange}/>
 
                 <label>Material</label>
-                <input type="text" name="material" value={material} onChange={handleMaterialChange} />
+                <input type="text" name="material" value={material} onChange={handleMaterialChange}/>
 
                 <label>Color</label>
-                <input type="text" name="color" value={color} onChange={handleColorChange} />
+                <input type="text" name="color" value={color} onChange={handleColorChange}/>
 
                 <Button value="Update" className="green-button" onClick={handleSubmit}/>
                 <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>

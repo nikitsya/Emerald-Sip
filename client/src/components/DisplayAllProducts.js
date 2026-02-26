@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import axios from "axios"
 import {ProductTable} from "./ProductTable"
-import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
-import {Logout} from "./Logout"
+import {SERVER_HOST} from "../config/global_constants"
 
 
 export const DisplayAllProducts = ({searchName = "", onAddToCart}) => {

@@ -1,10 +1,10 @@
 import React, {useState} from "react"; // useState controls mobile menu open/close
 import {Link, withRouter} from "react-router-dom";
-import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN } from "../config/global_constants"
-import { Logout } from "./Logout"
+import {ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST} from "../config/global_constants"
+import {Logout} from "./Logout"
 
 
-const NavigationComponent = ({ searchName, setSearchName, cartItemsCount = 0 }) => {
+const NavigationComponent = ({searchName, setSearchName, cartItemsCount = 0}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
 
     const closeMenu = () => setIsMenuOpen(false); // Close menu after link click
@@ -14,7 +14,7 @@ const NavigationComponent = ({ searchName, setSearchName, cartItemsCount = 0 }) 
 
     return (
         <nav className="top-nav">
-             <button
+            <button
                 className="hamburger-btn"
                 type="button"
                 aria-label="Toggle navigation menu"
@@ -25,8 +25,8 @@ const NavigationComponent = ({ searchName, setSearchName, cartItemsCount = 0 }) 
             </button>
             <div className={"top-nav-left " + (isMenuOpen ? "menu-open" : "")}>
                 <Link to="/" className="top-nav-link" onClick={closeMenu}>Home</Link>
-                {isAdmin ? 
-                <Link to="/AddProduct" className="top-nav-link" onClick={closeMenu}>Add</Link> : null}
+                {isAdmin ?
+                    <Link to="/AddProduct" className="top-nav-link" onClick={closeMenu}>Add</Link> : null}
                 <Link to="/DisplayAllProducts" className="top-nav-link" onClick={closeMenu}>All Products</Link>
                 <Link to="/Cart" className="top-nav-link" onClick={closeMenu}>Cart ({cartItemsCount})</Link>
             </div>
@@ -40,22 +40,24 @@ const NavigationComponent = ({ searchName, setSearchName, cartItemsCount = 0 }) 
                     onChange={(e) => setSearchName(e.target.value)}
                 />
                 <button className="green-button" type="button" onClick={() => setSearchName("")}>
-        Clear
-    </button>
+                    Clear
+                </button>
             </div>
 
             <div className={"top-nav-right " + (isMenuOpen ? "menu-open" : "")}>
                 <div className="top-nav-auth-row">
-                         {isLoggedIn ? (
-                    <Logout />
-                ) : (
-                    <>
-                    <Link to="/Login" className="top-nav-link" onClick={closeMenu}>Login</Link>
-                    <Link to="/Register" className="top-nav-link top-nav-action" onClick={closeMenu}>Register</Link>
-                </>
-                )}
-            </div>
-                <Link to="/ResetDatabase" className="top-nav-link top-nav-danger" onClick={closeMenu}>Reset Database</Link>
+                    {isLoggedIn ? (
+                        <Logout/>
+                    ) : (
+                        <>
+                            <Link to="/Login" className="top-nav-link" onClick={closeMenu}>Login</Link>
+                            <Link to="/Register" className="top-nav-link top-nav-action"
+                                  onClick={closeMenu}>Register</Link>
+                        </>
+                    )}
+                </div>
+                <Link to="/ResetDatabase" className="top-nav-link top-nav-danger" onClick={closeMenu}>Reset
+                    Database</Link>
             </div>
         </nav>
     );

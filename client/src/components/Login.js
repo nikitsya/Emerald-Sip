@@ -1,9 +1,8 @@
 import React, {useState} from "react"
-import {Redirect, Link} from "react-router-dom"
+import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "./Button"
-import { SERVER_HOST, ACCESS_LEVEL_GUEST } from "../config/global_constants"
-
+import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../config/global_constants"
 
 
 export const Login = props => {
@@ -48,25 +47,25 @@ export const Login = props => {
 
         axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/login/${email}/${password}`)
-        .then(res => {
-            if (res.data.errorMessage) {
-                throw new Error(res.data.errorMessage)
-            }
+            .then(res => {
+                if (res.data.errorMessage) {
+                    throw new Error(res.data.errorMessage)
+                }
 
-            sessionStorage.name = res.data.name
-            sessionStorage.accessLevel = res.data.accessLevel
-            setIsLoggedIn(true)
-        })
-        .catch(err => {
-            // default if not logged in
-            sessionStorage.name = "GUEST"
-            sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
-            setServerError(err?.response?.data || err.message || "Login failed")
-        })
+                sessionStorage.name = res.data.name
+                sessionStorage.accessLevel = res.data.accessLevel
+                setIsLoggedIn(true)
+            })
+            .catch(err => {
+                // default if not logged in
+                sessionStorage.name = "GUEST"
+                sessionStorage.accessLevel = ACCESS_LEVEL_GUEST
+                setServerError(err?.response?.data || err.message || "Login failed")
+            })
     }
 
     return (
-        <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
+        <form className="form-container" noValidate={true} id="loginOrRegistrationForm">
             <h2>Login</h2>
 
             {serverError ? <div className="error-text">{serverError}</div> : null}
@@ -75,9 +74,9 @@ export const Login = props => {
 
             <input
                 className={errors.email ? "field-error" : ""}
-                type = "email"
-                name = "email"
-                placeholder = "Email"
+                type="email"
+                name="email"
+                placeholder="Email"
                 autoComplete="email"
                 autoFocus
                 value={email}
@@ -88,9 +87,9 @@ export const Login = props => {
 
             <input
                 className={errors.password ? "field-error" : ""}
-                type = "password"
-                name = "password"
-                placeholder = "Password"
+                type="password"
+                name="password"
+                placeholder="Password"
                 autoComplete="password"
                 value={password}
                 onChange={handlePasswordChange}

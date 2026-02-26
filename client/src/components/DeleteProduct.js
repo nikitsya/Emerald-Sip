@@ -23,14 +23,14 @@ export const DeleteProduct = props => {
                 setError(err?.response?.data || "Failed to delete product")
                 setIsDeleting(false)
             })
-        }
-    
+    }
+
     const handleCancel = () => {
         setRedirectToDisplayAllProducts(true)
     }
 
     if (redirectToDisplayAllProducts) {
-        return <Redirect to="/DisplayAllProducts" />
+        return <Redirect to="/DisplayAllProducts"/>
     }
 
     return (
