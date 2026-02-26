@@ -44,6 +44,9 @@ export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClea
                             <div className="cart-item-info">
                                 <h3>{item.name}</h3>
                                 <p><strong>Price:</strong> ${formatPrice(price)}</p>
+
+                                <span className="cart-quantity-value">x {quantity}</span>
+                                <p><strong>Subtotal:</strong> ${formatPrice(subtotal)}</p>
                             </div>
                         </div>
                     )
