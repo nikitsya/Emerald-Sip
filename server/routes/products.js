@@ -2,6 +2,12 @@ const router = require(`express`).Router()
 const createError = require('http-errors')
 const productsModel = require(`../models/products`)
 
+const fs = require('fs')
+const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
+
+const jwt = require('jsonwebtoken')
+
+
 const migrateLegacyProductField = async () => {
     await productsModel.collection.updateMany(
         {product: {$exists: true}, name: {$exists: false}},
@@ -312,12 +318,14 @@ router.get(`/products`, (req, res, next) => {
 // Read one record
 router.get(`/products/:id`, (req, res, next) => 
 {
-    if(typeof req.session.user === `undefined`)
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithm: "HS256"}, (err, decodedToken) => 
     {
-        next(createError(403, `User is not logged in`))
-    }
-    else
-    {
+     if (err) 
+        { 
+            next(createError(403, `User is not logged in`))
+        }
+        else
+        {
         productsModel.findById(req.params.id)
         .then(data => {
             res.json(data)
@@ -325,58 +333,67 @@ router.get(`/products/:id`, (req, res, next) =>
         .catch((err) => next(err))
     }
 })
+})
 
 // Add new record
 router.post(`/products`, (req, res, next) => 
 {
-     if(typeof req.session.user === `undefined`)
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithm: "HS256"}, (err, decodedToken) => 
     {
-        next(createError(403, `User is not logged in`))
-    }
-    else
-    {
-        if(req.session.user.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
-        {
-            productsModel.create(req.body)
-            .then(data => {
-            res.json(data)
-            })
-            .catch((err) => next(err))
-            }
+        if (err) 
+        { 
+            next(createError(403, `User is not logged in`))
+        }
         else
         {
-            next(createError(403, `User is not an administrator, so they cannot delete records`))
+            if(decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
+            {   
+                productsModel.create(req.body)
+                .then(data => {
+                res.json(data)
+                })
+                .catch((err) => next(err))
+                }
+            else
+            {
+                next(createError(403, `User is not an administrator, so they cannot delete records`))
+            }
         }
-    }
+    })
 })
 
 // Update one record
 router.put(`/products/:id`, (req, res, next) => 
 {
-      if(typeof req.session.user === `undefined`)
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithm: "HS256"}, (err, decodedToken) => 
     {
-        next(createError(403, `User is not logged in`))
-    }
-    else
-    {
+        if (err) 
+        { 
+            next(createError(403, `User is not logged in`))
+        }
+        else
+        {
         productsModel.findByIdAndUpdate(req.params.id, {$set: req.body})
             .then(data => {
             res.json(data)
             })
             .catch((err) => next(err))
         }
+    })
 })
 
 // Delete one record
 router.delete(`/products/:id`, (req, res, next) => 
 {
-     if(typeof req.session.user === `undefined`)
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithm: "HS256"}, (err, decodedToken) => 
     {
-        next(createError(403, `User is not logged in`))
-    }
-    else
-    {
-        if(req.session.user.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
+    if (err) 
+        { 
+            next(createError(403, `User is not logged in`))
+        }
+        else
+        {
+            if(decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
         {
             productsModel.findByIdAndDelete(req.params.id)
             .then(data => {
@@ -389,6 +406,7 @@ router.delete(`/products/:id`, (req, res, next) =>
             next(createError(403, `User is not an administrator, so they cannot delete records`))
         }        
     }
+})
 })
 
 module.exports = router
