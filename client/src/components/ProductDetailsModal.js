@@ -1,12 +1,15 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
 
 export const ProductDetailsModal = ({product, onClose, onAddToCart}) => {
     if (!product) return null;
 
     const images = Array.isArray(product.images) ? product.images : [];
+    const isAdmin = Number(sessionStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const canAddToCart = typeof onAddToCart === "function"
     const handleAddToCart = () => {
-        if (typeof onAddToCart === "function") {
+        if (canAddToCart) {
             onAddToCart(product);
         }
     }
@@ -32,9 +35,9 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart}) => {
                 </div>
 
                 <div className="modal-actions">
-                    <button type="button" className="blue-button" onClick={handleAddToCart}>Add to Cart</button>
-                    <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link>
-                    <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link>
+                    {canAddToCart ? <button type="button" className="blue-button" onClick={handleAddToCart}>Add to Cart</button> : null}
+                    {isAdmin ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
+                    {isAdmin ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}
                 </div>
             </div>
         </div>
