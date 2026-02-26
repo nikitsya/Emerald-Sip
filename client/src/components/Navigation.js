@@ -28,7 +28,7 @@ const NavigationComponent = ({searchName, setSearchName, cartItemsCount = 0}) =>
                 {isAdmin ?
                     <Link to="/AddProduct" className="top-nav-link" onClick={closeMenu}>Add</Link> : null}
                 <Link to="/DisplayAllProducts" className="top-nav-link" onClick={closeMenu}>All Products</Link>
-                <Link to="/Cart" className="top-nav-link" onClick={closeMenu}>Cart ({cartItemsCount})</Link>
+                {!isAdmin ? <Link to="/Cart" className="top-nav-link" onClick={closeMenu}>Cart ({cartItemsCount})</Link> : null}
             </div>
 
             <div className={"top-nav-center " + (isMenuOpen ? "menu-open" : "")}>
