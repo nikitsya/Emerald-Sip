@@ -35,7 +35,17 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart}) => {
                 </div>
 
                 <div className="modal-actions">
-                    {canAddToCart ? <button type="button" className="blue-button" onClick={handleAddToCart}>Add to Cart</button> : null}
+                    {canAddToCart ? (
+                        <button
+                            type="button"
+                            className="icon-button add-to-cart-icon-button"
+                            onClick={handleAddToCart}
+                            aria-label="Add to Cart"
+                            title="Add to Cart"
+                        >
+                            <img className="add-to-cart-icon" src="/images/buttons/add-to-cart.png" alt="Add to Cart"/>
+                        </button>
+                    ) : null}
                     {isAdmin ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
                     {isAdmin ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}
                 </div>
