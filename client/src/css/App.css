@@ -169,6 +169,16 @@ form input[readonly] {
     font-weight: 700;
 }
 
+.table-sort-btn {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .table-container tbody td {
     padding: 10px 8px;
     border-bottom: 1px solid #dde5d1;
