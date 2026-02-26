@@ -1,19 +1,22 @@
 import React, {useState, useEffect} from "react"
-import {Link} from "react-router-dom"
 import axios from "axios"
 import {ProductTable} from "./ProductTable"
 import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
-import { Logout } from "./Logout"
+import {Logout} from "./Logout"
 
 
-export const DisplayAllProducts = ({ searchName = "" }) => {
+export const DisplayAllProducts = ({searchName = "", onAddToCart}) => {
     const [products, setProducts] = useState([])
 
     useEffect(() => {
         axios.defaults.withCredentials = true // needed for sessions to work
         axios.get(`${SERVER_HOST}/products`)
-            .then(res => {setProducts(Array.isArray(res.data) ? res.data : [])})
-            .catch(() => {setProducts([])})
+            .then(res => {
+                setProducts(Array.isArray(res.data) ? res.data : [])
+            })
+            .catch(() => {
+                setProducts([])
+            })
             .catch(err => console.log(`${err.response.data}\n${err}`))
     }, [])
 
@@ -24,12 +27,12 @@ export const DisplayAllProducts = ({ searchName = "" }) => {
     );
 
     return (
-        <div className="form-container">           
-             <div className="table-container">
+        <div className="form-container">
+            <div className="table-container">
                 {filteredProducts.length === 0 ? (
                     <p>No products found</p>
                 ) : (
-                    <ProductTable products={filteredProducts} />
+                    <ProductTable products={filteredProducts} onAddToCart={onAddToCart}/>
                 )}
             </div>
         </div>
