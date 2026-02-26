@@ -5,9 +5,11 @@ import {ProductDetailsModal} from "./ProductDetailsModal";
 
 export const ProductTable = props => {
     const products = Array.isArray(props.products) ? props.products : []
+    const cartItems = Array.isArray(props.cartItems) ? props.cartItems : []
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
     const onAddToCart = props.onAddToCart
+    const cartProductIdSet = new Set(cartItems.map((item) => item._id))
 
     const handleSort = (column) => {
         setSortConfig((previousConfig) => {
@@ -87,10 +89,12 @@ export const ProductTable = props => {
 
                 <tbody>{sortedProducts.map((product) => <ProductTableRow key={product._id} product={product}
                                                                          onOpenDetails={setSelectedProduct}
+                                                                         isInCart={cartProductIdSet.has(product._id)}
                                                                          onAddToCart={onAddToCart}/>)}</tbody>
             </table>
 
             <ProductDetailsModal product={selectedProduct} onClose={() => setSelectedProduct(null)}
+                                 isInCart={selectedProduct ? cartProductIdSet.has(selectedProduct._id) : false}
                                  onAddToCart={onAddToCart}
             />
         </>
