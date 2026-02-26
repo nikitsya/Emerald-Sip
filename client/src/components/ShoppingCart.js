@@ -45,7 +45,20 @@ export const ShoppingCart = ({ cartItems, onUpdateQuantity, onRemoveItem, onClea
                                 <h3>{item.name}</h3>
                                 <p><strong>Price:</strong> ${formatPrice(price)}</p>
 
-                                <span className="cart-quantity-value">x {quantity}</span>
+                                <div className="cart-quantity-row">
+                                    <button
+                                        type="button"
+                                        className="blue-button"
+                                        onClick={() => onUpdateQuantity(item._id, quantity - 1)}
+                                    >-</button>
+                                    <span className="cart-quantity-value">{quantity}</span>
+                                    <button
+                                        type="button"
+                                        className="blue-button"
+                                        onClick={() => onUpdateQuantity(item._id, quantity + 1)}
+                                    >+</button>
+                                </div>
+
                                 <p><strong>Subtotal:</strong> ${formatPrice(subtotal)}</p>
                             </div>
                         </div>
