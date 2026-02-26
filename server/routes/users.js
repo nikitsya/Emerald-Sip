@@ -3,6 +3,11 @@ const createError = require('http-errors')
 const usersModel = require(`../models/users`)
 const bcrypt = require('bcryptjs')  // needed for password encryption
 
+const fs = require('fs')
+const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
+
+const jwt = require('jsonwebtoken')
+
 // The code below is for development testing purposes only 
 router.post(`/users/reset_user_collection`, (req, res, next) => {
     usersModel.deleteMany({})
@@ -36,8 +41,8 @@ router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
                 usersModel.create({name: req.params.name, email: req.params.email, password: hash, accessLevel: parseInt(process.env.ACCESS_LEVEL_CUSTOMER)})
                 .then(data => 
                 {
-                    req.session.user = {email: data.email, accessLevel:data.accessLevel}
-                    res.json({name: data.name, accessLevel:data.accessLevel})
+                    const token = jwt.sign({email: data.email, accessLevel: data.accessLevel}, JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn: process.env.JWT_EXPIRY})
+                    res.json({name: data.name, accessLevel:data.accessLevel, token: token})
                 })
                 .catch(() => next(createError(409, `User was not registered`)))
             })
@@ -55,14 +60,14 @@ router.post(`/users/login/:email/:password`, (req, res, next) => {
     
             bcrypt.compare(req.params.password, data.password, (err, result) =>
             {
-                 if (err) {
+                if (err) {
                     return next(err)
                 }
 
                 if(result) 
                 {
-                    req.session.user = {email: data.email, accessLevel:data.accessLevel}
-                    res.json({name: data.name, accessLevel:data.accessLevel})
+                     const token = jwt.sign({email: data.email, accessLevel: data.accessLevel}, JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn: process.env.JWT_EXPIRY})
+                    res.json({name: data.name, accessLevel:data.accessLevel, token: token})
                 } else 
                 {
                 res.json({errorMessage: `User is not logged in`})
@@ -72,11 +77,10 @@ router.post(`/users/login/:email/:password`, (req, res, next) => {
         .catch((err) => next(err))
 })
 
-router.post(`/users/logout`, (req, res) => {
-    req.session.destroy()
+router.post(`/users/logout`, (req, res, next) => {
+   
     res.json({})
 })
 
 module.exports = router
 
-//переписать этот файл по middlware
