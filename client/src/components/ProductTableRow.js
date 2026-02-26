@@ -3,15 +3,21 @@ import {Link} from "react-router-dom"
 import { ACCESS_LEVEL_ADMIN } from "../config/global_constants"
 
 
-
 export const ProductTableRow = props => {
     const { product, onOpenDetails } = props;
+    const onAddToCart = props.onAddToCart
     const images = Array.isArray(props.product.images) ? props.product.images : []
     const firstImage = images.length > 0 ? images[0] : ""
 
     const handleRowClick = () => onOpenDetails(product)
 
     const stopRowClick = (e) => e.stopPropagation()
+    const handleAddToCartClick = (e) => {
+        e.stopPropagation()
+        if (onAddToCart) {
+            onAddToCart(product)
+        }
+    }
 
 
     return (
@@ -24,6 +30,7 @@ export const ProductTableRow = props => {
             <td data-label="Material">{props.product.material || "-"}</td>
             <td data-label="Color">{props.product.color || "-"}</td>
             <td data-label="Actions" onClick={stopRowClick}>
+            <button type="button" className="blue-button" onClick={handleAddToCartClick}>Add to Cart</button>
 
             {/* Edit and Delete only for ADMIN */}
             {sessionStorage.accessLevel >= ACCESS_LEVEL_ADMIN ? 
