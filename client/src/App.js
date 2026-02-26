@@ -51,12 +51,24 @@ export const App = () => {
                 <Route
                     exact
                     path="/"
-                    render={() => <DisplayAllProducts searchName={searchName} onAddToCart={isAdmin ? undefined : addToCart}/>}
+                    render={() => (
+                        <DisplayAllProducts
+                            searchName={searchName}
+                            cartItems={cartItems}
+                            onAddToCart={isAdmin ? undefined : addToCart}
+                        />
+                    )}
                 />
                 <Route
                     exact
                     path="/DisplayAllProducts"
-                    render={() => <DisplayAllProducts searchName={searchName} onAddToCart={isAdmin ? undefined : addToCart}/>}
+                    render={() => (
+                        <DisplayAllProducts
+                            searchName={searchName}
+                            cartItems={cartItems}
+                            onAddToCart={isAdmin ? undefined : addToCart}
+                        />
+                    )}
                 />
                 <Route
                     exact
@@ -77,7 +89,15 @@ export const App = () => {
                 <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct}/>
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
 
-                <Route render={() => <DisplayAllProducts searchName={searchName} onAddToCart={isAdmin ? undefined : addToCart}/>}/>
+                <Route
+                    render={() => (
+                        <DisplayAllProducts
+                            searchName={searchName}
+                            cartItems={cartItems}
+                            onAddToCart={isAdmin ? undefined : addToCart}
+                        />
+                    )}
+                />
             </Switch>
         </BrowserRouter>
     )
