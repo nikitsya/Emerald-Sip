@@ -62,6 +62,14 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                                 </div>
 
                                 <p><strong>Subtotal:</strong> ${formatPrice(subtotal)}</p>
+
+                                <button
+                                    type="button"
+                                    className="red-button"
+                                    onClick={() => onRemoveItem(item._id)}
+                                >
+                                    Remove
+                                </button>
                             </div>
                         </div>
                     )
