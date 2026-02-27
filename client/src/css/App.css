@@ -491,12 +491,12 @@ form input[readonly] {
 }
 
 .top-nav-shell {
-    max-width: 1140px;
-    margin: 12px auto;
-    border: 1px solid #d7decb;
-    border-radius: 10px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
     background-color: #fcfdf8;
-    overflow: hidden;
 }
 
 .top-nav {
