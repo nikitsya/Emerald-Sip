@@ -14,7 +14,7 @@ How to use:
 - Leave the cell empty for `Partial` and `To do` items.
 - Update status as you complete work.
 
-Last reviewed: 2026-02-26
+Last reviewed: 2026-02-27
 
 | Done | Status  | Requirement                                                                                                       | Max |
 |------|---------|-------------------------------------------------------------------------------------------------------------------|----:|
@@ -22,7 +22,7 @@ Last reviewed: 2026-02-26
 |      | Partial | Provide the user with an excellent user experience                                                                |   5 |
 | ✅    |         | Include any number of product images for each product; images display appropriately on mobile/tablet/desktop      | 2.5 |
 | ✅    |         | Include a shopping cart                                                                                           | 2.5 |
-|      | *       | Include payments                                                                                                  | 2.5 |
+|      | ?       | Include payments                                                                                                  | 2.5 |
 | ✅    |         | Hamburger menu on mobile and horizontal menu on tablet/computer                                                   | 2.5 |
 | ✅    |         | Use cards on mobile and tables on tablet/computer                                                                 | 2.5 |
 |      | Partial | Show less data on a tablet row compared to a computer                                                             | 2.5 |
@@ -35,7 +35,7 @@ Last reviewed: 2026-02-26
 | ✅    | ?       | Implement middleware error handling                                                                               | 2.5 |
 | ✅    |         | Store data in MongoDB (localhost)                                                                                 | 2.5 |
 | ✅    |         | Encrypt administrator and customer passwords                                                                      | 2.5 |
-|      | *       | Filter (with search and sort)                                                                                     | 2.5 |
+| ✅    |         | Filter (with search and sort)                                                                                     | 2.5 |
 | ✅    |         | Search (with filter and sort)                                                                                     | 2.5 |
 | ✅    |         | Sort (with filter and search)                                                                                     | 2.5 |
 |      | Partial | Admin create product, including error handling UI                                                                 | 2.5 |
