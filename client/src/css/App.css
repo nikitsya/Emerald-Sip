@@ -794,6 +794,12 @@ form input[readonly] {
 
 .top-nav-cart-link {
     margin-left: auto;
+    background-color: transparent;
+}
+
+.top-nav-link.top-nav-cart-link:hover,
+.top-nav-link.top-nav-cart-link:focus {
+    background-color: transparent;
 }
 
 
