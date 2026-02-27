@@ -489,6 +489,66 @@ form input[readonly] {
     box-shadow: 0 0 0 3px rgba(111, 138, 85, 0.2);
 }
 
+.catalog-multiselect-toggle {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid #c6cfb9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #2c342b;
+    font-size: 14px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.catalog-multiselect-toggle:focus {
+    outline: none;
+    border-color: #6f8a55;
+    box-shadow: 0 0 0 3px rgba(111, 138, 85, 0.2);
+}
+
+.catalog-multiselect-toggle:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.catalog-checkbox-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid #c6cfb9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.catalog-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.catalog-checkbox-item input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: #6f8a55;
+}
+
+.catalog-checkbox-empty {
+    margin: 0;
+    font-size: 13px;
+    color: #5d6c52;
+}
+
 .catalog-reset-button {
     margin-top: 4px;
 }
