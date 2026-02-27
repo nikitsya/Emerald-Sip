@@ -234,7 +234,6 @@ form input[readonly] {
     width: 64px;
     height: 64px;
     object-fit: cover;
-    border-radius: 8px;
     border: 1px solid #cdd5c2;
 }
 
@@ -428,7 +427,7 @@ form input[readonly] {
   height: auto;        
   max-height: 220px;   
   object-fit: contain; 
-  border-radius: 12px;
+  border-radius: 0;
   background: #f3f5ee; 
 }
 }
