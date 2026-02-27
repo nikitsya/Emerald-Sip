@@ -298,7 +298,6 @@ form input[readonly] {
     width: 176px;
     height: 176px;
     object-fit: cover;
-    border: 1px solid #cdd5c2;
 }
 
 .add-new-product {
