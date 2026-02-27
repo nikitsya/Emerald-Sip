@@ -490,13 +490,22 @@ form input[readonly] {
     }
 }
 
-.top-nav {
+.top-nav-shell {
     max-width: 1000px;
     margin: 12px auto;
-    padding: 10px 14px;
-    background-color: #fcfdf8;
     border: 1px solid #d7decb;
     border-radius: 10px;
+    background-color: #fcfdf8;
+    overflow: hidden;
+}
+
+.top-nav {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px 14px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -504,12 +513,12 @@ form input[readonly] {
 }
 
 .market-topbar {
-    max-width: 1000px;
-    margin: 12px auto 0;
+    max-width: 100%;
+    margin: 0;
     padding: 8px 12px;
     text-align: center;
-    border-radius: 10px;
-    border: 1px solid #d7decb;
+    border-radius: 0;
+    border-bottom: 1px solid #d7decb;
     background-color: #edf2e3;
     color: #32462f;
     font-size: 13px;

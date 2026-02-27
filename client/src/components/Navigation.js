@@ -13,7 +13,7 @@ const NavigationComponent = ({searchName, setSearchName, cartItemsCount = 0}) =>
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
 
     return (
-        <>
+        <header className="top-nav-shell">
             <div className="market-topbar">Based in Ireland | EU-wide shipping | Prices in EUR (€)</div>
             <nav className="top-nav">
                 <button
@@ -63,7 +63,7 @@ const NavigationComponent = ({searchName, setSearchName, cartItemsCount = 0}) =>
                         Database</Link>
                 </div>
             </nav>
-        </>
+        </header>
     );
 };
 export const Navigation = withRouter(NavigationComponent)
