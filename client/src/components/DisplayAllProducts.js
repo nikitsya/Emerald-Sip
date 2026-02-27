@@ -8,9 +8,10 @@ import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 const PRICE_RANGES = [
     {value: "any", label: "Any price"},
     {value: "0-24.99", label: "Under €25"},
-    {value: "25-49.99", label: "€25 - €49.99"},
-    {value: "50-99.99", label: "€50 - €99.99"},
-    {value: "100-999999", label: "€100 and above"}
+    {value: "25-29.99", label: "€25 - €29"},
+    {value: "30-34.99", label: "€30 - €34"},
+    {value: "35-39.99", label: "€35 - €39"},
+    {value: "40-999", label: "€40 +"}
 ]
 
 const CAPACITY_RANGES = [
