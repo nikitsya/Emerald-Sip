@@ -20,7 +20,7 @@ Last reviewed: 2026-02-26
 | | Partial | Provide the user with an excellent user experience | 5 |
 | ✅ |  | Include any number of product images for each product; images display appropriately on mobile/tablet/desktop | 2.5 |
 | ✅ |  | Include a shopping cart | 2.5 |
-| | To do | Include payments | 2.5 |
+| |  *   | Include payments | 2.5 |
 | ✅ |  | Hamburger menu on mobile and horizontal menu on tablet/computer | 2.5 |
 | ✅ |  | Use cards on mobile and tables on tablet/computer | 2.5 |
 | | Partial | Show less data on a tablet row compared to a computer | 2.5 |
@@ -29,8 +29,8 @@ Last reviewed: 2026-02-26
 | | Partial | User-friendly client-side validation | 5 |
 | ✅ |  | Router validation | 2.5 |
 | ✅ |  | MongoDB model validation | 2.5 |
-| ✅ |  | Implement middleware | 2.5 |
-| ✅ |  | Implement middleware error handling | 2.5 |
+| ✅ | ? | Implement middleware | 2.5 |
+| ✅ | ? | Implement middleware error handling | 2.5 |
 | ✅ |  | Store data in MongoDB (localhost) | 2.5 |
 | ✅ |  | Encrypt administrator and customer passwords | 2.5 |
 | | *    | Filter (with search and sort) | 2.5 |
