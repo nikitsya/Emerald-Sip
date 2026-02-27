@@ -139,7 +139,7 @@ const seedProductsIfEmpty = async () => {
             description: `Premium stainless steel reusable bottle with matte dark finish. Keeps drinks cold for up to 24 hours and hot for up to 12 hours.`,
             capacityMl: 750,
             material: `Steel`,
-            color: `Black`
+            color: `Silver`
         },
         {
             name: `Classic Steel Loop Bottle`,
@@ -148,7 +148,7 @@ const seedProductsIfEmpty = async () => {
             description: `Durable stainless steel bottle with practical silicone loop lid. Lightweight and leak-proof for everyday use.`,
             capacityMl: 600,
             material: `Steel`,
-            color: `Silver`
+            color: `Black`
         },
         {
             name: `Eco Steel Bottle – Green Loop`,
@@ -165,7 +165,7 @@ const seedProductsIfEmpty = async () => {
             images: [`/images/products/bluewater-sweden-KaYO8M107_Q-unsplash.jpg`],
             description: `Sleek reusable bottle with soft white finish and double-wall insulation for long temperature retention.`,
             capacityMl: 500,
-            material: `Steel`,
+            material: `Plastic`,
             color: `White`
         },
         {
@@ -193,7 +193,7 @@ const seedProductsIfEmpty = async () => {
             description: `Premium double-wall stainless steel bottle inspired by coastal landscapes.`,
             capacityMl: 750,
             material: `Steel`,
-            color: `Silver`
+            color: `Transparent`
         },
         {
             name: `Glass Tea Infuser Bottle`,
@@ -220,7 +220,7 @@ const seedProductsIfEmpty = async () => {
             description: `Clear double-wall glass bottle with stainless steel lid. Designed for eco-friendly daily use.`,
             capacityMl: 550,
             material: `Glass`,
-            color: `Clear`
+            color: `White`
         },
         {
             name: `Deep Navy Bottle`,
@@ -237,7 +237,7 @@ const seedProductsIfEmpty = async () => {
             images: [`/images/products/bluewater-sweden-znGHaNGztB0-unsplash.jpg`],
             description: `Lightweight reusable bottle with soft-touch blue sleeve. Perfect for commuting.`,
             capacityMl: 500,
-            material: `Glass`,
+            material: `Steel`,
             color: `Blue`
         },
         {
@@ -246,7 +246,7 @@ const seedProductsIfEmpty = async () => {
             images: [`/images/products/sky-sport.jpg`],
             description: `Minimalist reusable bottle with protective silicone sleeve and sport-style cap. Lightweight and easy to carry.`,
             capacityMl: 600,
-            material: `Glass + Silicone`,
+            material: `Plastic + Silicone`,
             color: `Blue`
         },
         {
@@ -273,7 +273,7 @@ const seedProductsIfEmpty = async () => {
             images: [`/images/products/ocean-stone.jpg`],
             description: `Premium reusable bottle with unique ocean-inspired stone texture design. Durable and eye-catching.`,
             capacityMl: 650,
-            material: `Glass`,
+            material: `Plastic`,
             color: `Blue`
         }
     ])
