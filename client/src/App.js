@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {BrowserRouter, Route, Switch} from "react-router-dom"
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom"
 import {DisplayAllProducts} from "./components/DisplayAllProducts"
 import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
