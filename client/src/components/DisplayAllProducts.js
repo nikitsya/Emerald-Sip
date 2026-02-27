@@ -14,14 +14,13 @@ const PRICE_RANGES = [
     {value: "40-999", label: "€40 +"}
 ]
 
-const CAPACITY_RANGES = [
-    {value: "any", label: "Any capacity"},
-    {value: "500-500", label: "500 ml"},
-    {value: "550-550", label: "550 ml"},
-    {value: "600-600", label: "600 ml"},
-    {value: "650-650", label: "650 ml"},
-    {value: "700-700", label: "700 ml"},
-    {value: "750-750", label: "750 ml"}
+const CAPACITY_OPTIONS = [
+    {value: "500", label: "500 ml"},
+    {value: "550", label: "550 ml"},
+    {value: "600", label: "600 ml"},
+    {value: "650", label: "650 ml"},
+    {value: "700", label: "700 ml"},
+    {value: "750", label: "750 ml"}
 ]
 
 const parseRange = (rangeValue) => {
@@ -60,7 +59,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
     const [colorFilters, setColorFilters] = useState([])
     const [isColorFilterOpen, setIsColorFilterOpen] = useState(false)
     const [priceFilter, setPriceFilter] = useState("any")
-    const [capacityFilter, setCapacityFilter] = useState("any")
+    const [capacityFilters, setCapacityFilters] = useState([])
+    const [isCapacityFilterOpen, setIsCapacityFilterOpen] = useState(false)
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
 
     useEffect(() => {
@@ -122,7 +122,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
             return false
         }
 
-        if (!matchesRange(product.capacityMl, capacityFilter)) {
+        const productCapacity = normalizeText(product.capacityMl)
+        if (capacityFilters.length > 0 && !capacityFilters.includes(productCapacity)) {
             return false
         }
 
@@ -135,7 +136,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
         setColorFilters([])
         setIsColorFilterOpen(false)
         setPriceFilter("any")
-        setCapacityFilter("any")
+        setCapacityFilters([])
+        setIsCapacityFilterOpen(false)
     }
 
     const toggleColorFilter = (color) => {
@@ -148,8 +150,19 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
         })
     }
 
+    const toggleCapacityFilter = (capacity) => {
+        setCapacityFilters((currentFilters) => {
+            if (currentFilters.includes(capacity)) {
+                return currentFilters.filter((value) => value !== capacity)
+            }
+
+            return [...currentFilters, capacity]
+        })
+    }
+
     const activeFilterChips = []
     const colorFilterLabel = colorFilters.length === 0 ? "Any color" : `${colorFilters.length} selected`
+    const capacityFilterLabel = capacityFilters.length === 0 ? "Any capacity" : `${capacityFilters.length} selected`
 
     // Chips mirror active filters and provide one-click reset per filter.
     if (normalizedSearch) {
@@ -183,12 +196,13 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
             clear: () => setPriceFilter("any")
         })
     }
-    if (capacityFilter !== "any") {
-        const selectedCapacityLabel = CAPACITY_RANGES.find((range) => range.value === capacityFilter)?.label || capacityFilter
-        activeFilterChips.push({
-            key: "capacity",
-            label: `Capacity: ${selectedCapacityLabel}`,
-            clear: () => setCapacityFilter("any")
+    if (capacityFilters.length > 0) {
+        capacityFilters.forEach((capacity) => {
+            activeFilterChips.push({
+                key: `capacity-${capacity}`,
+                label: `Capacity: ${capacity} ml`,
+                clear: () => setCapacityFilters((currentFilters) => currentFilters.filter((value) => value !== capacity))
+            })
         })
     }
 
@@ -279,16 +293,35 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
                     </div>
 
                     <div className="catalog-filter-group">
-                        <label htmlFor="capacityFilter">Capacity</label>
-                        <select
-                            id="capacityFilter"
-                            value={capacityFilter}
-                            onChange={(event) => setCapacityFilter(event.target.value)}
+                        <label>Capacity</label>
+                        <button
+                            id="capacityFilterToggle"
+                            type="button"
+                            className={`catalog-multiselect-toggle${isCapacityFilterOpen ? " is-open" : ""}`}
+                            onClick={() => setIsCapacityFilterOpen((currentState) => !currentState)}
+                            aria-haspopup="true"
+                            aria-expanded={isCapacityFilterOpen}
+                            aria-controls="capacityFilterOptions"
+                            disabled={CAPACITY_OPTIONS.length === 0}
                         >
-                            {CAPACITY_RANGES.map((range) => (
-                                <option key={range.value} value={range.value}>{range.label}</option>
-                            ))}
-                        </select>
+                            <span>{CAPACITY_OPTIONS.length === 0 ? "No capacities available" : capacityFilterLabel}</span>
+                        </button>
+
+                        {isCapacityFilterOpen ? (
+                            <div id="capacityFilterOptions" className="catalog-checkbox-list" role="group"
+                                 aria-label="Capacity filter">
+                                {CAPACITY_OPTIONS.map((capacity) => (
+                                    <label key={capacity.value} className="catalog-checkbox-item">
+                                        <input
+                                            type="checkbox"
+                                            checked={capacityFilters.includes(capacity.value)}
+                                            onChange={() => toggleCapacityFilter(capacity.value)}
+                                        />
+                                        <span>{capacity.label}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        ) : null}
                     </div>
 
                     <button type="button" className="red-button catalog-reset-button" onClick={clearAllFilters}>
