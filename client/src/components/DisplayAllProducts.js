@@ -1,7 +1,8 @@
 import React, {useEffect, useMemo, useState} from "react"
+import {Link} from "react-router-dom"
 import axios from "axios"
 import {ProductTable} from "./ProductTable"
-import {SERVER_HOST} from "../config/global_constants"
+import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
 const PRICE_RANGES = [
@@ -96,6 +97,7 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
     }, [colorOptions])
 
     const normalizedSearch = searchName.trim().toLowerCase()
+    const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
 
     const filteredProducts = products.filter((product) => {
         const name = normalizeText(product.name).toLowerCase()
@@ -294,6 +296,7 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
                 <section className="catalog-results">
                     <div className="catalog-results-head">
                         <h2>{filteredProducts.length} products found</h2>
+                        {isAdmin ? <Link className="green-button catalog-add-product-button" to="/AddProduct">Add Product</Link> : null}
                     </div>
 
                     <div className="table-container catalog-table-wrap">

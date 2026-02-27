@@ -594,6 +594,10 @@ form input[readonly] {
 }
 
 .catalog-results-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 10px;
 }
 
@@ -602,6 +606,10 @@ form input[readonly] {
     font-size: 32px;
     font-weight: 750;
     color: #2f3d2c;
+}
+
+.catalog-add-product-button {
+    margin: 0;
 }
 
 .catalog-table-wrap {
@@ -681,6 +689,15 @@ form input[readonly] {
 
     .catalog-results-head h2 {
         font-size: 26px;
+    }
+
+    .catalog-results-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .catalog-add-product-button {
+        width: 100%;
     }
 
     /* Remove horizontal scroll caused by table min-width */
