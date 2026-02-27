@@ -750,10 +750,12 @@ form input[readonly] {
         padding: 18px;
         box-shadow: none;
         border: 1px solid #d4dfbf;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* horizontal center */
-        text-align: center; /* center text */
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 12px;
+        row-gap: 6px;
+        align-items: center;
+        text-align: left;
     }
 
     /* Remove default table cell styling */
@@ -769,6 +771,17 @@ form input[readonly] {
         padding-right: 0;
     }
 
+    /* Reset desktop column widths on mobile */
+    .table-container tbody td:nth-child(1),
+    .table-container tbody td:nth-child(2),
+    .table-container tbody td:nth-child(3),
+    .table-container tbody td:nth-child(4),
+    .table-container tbody td:nth-child(5),
+    .table-container tbody td:nth-child(6),
+    .table-container tbody td:nth-child(7) {
+        width: 100%;
+    }
+
     /* Hide unnecessary columns on mobile */
     .table-container tbody td:nth-child(4),
     .table-container tbody td:nth-child(5),
@@ -777,37 +790,44 @@ form input[readonly] {
         display: none;
     }
 
-    /* Product name styling */
+    /* Image column */
     .table-container tbody td:nth-child(1) {
-        font-size: 25px;
-        font-weight: 750;
-        margin-bottom: 8px;
+        grid-column: 1 / -1;
+        margin-bottom: 12px;
+        padding: 0;
+    }
+
+    /* Product name styling */
+    .table-container tbody td:nth-child(2) {
+        grid-column: 1;
+        width: auto;
+        font-size: 21px;
+        font-weight: 700;
+        color: #2f3d2c;
+        margin-bottom: 0;
     }
 
     /* Price styling */
-    .table-container tbody td:nth-child(2) {
-        font-size: 20px;
+    .table-container tbody td:nth-child(3) {
+        grid-column: 2;
+        width: auto;
+        justify-self: end;
+        white-space: nowrap;
+        font-size: 19px;
         font-weight: 700;
         color: #2f7a4f;
-        margin-bottom: 12px;
+        margin-bottom: 0;
     }
 
-    /* Image container spacing */
-    .table-container tbody td:nth-child(3) {
-        background: #eef3e6;
-        padding: 14px;
-        border-radius: 14px;
-    }
-
-    /* Product image styling */
+    /* Product image styling: large, clean, rounded */
     .product-thumb {
         display: block;
         width: 100%;
+        aspect-ratio: 16 / 10;
         height: auto;
-        max-height: 220px;
-        object-fit: contain;
-        border-radius: 6px;
-        background: #f3f5ee;
+        object-fit: cover;
+        border-radius: 12px;
+        background: transparent;
     }
 }
 
