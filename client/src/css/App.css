@@ -500,9 +500,10 @@ form input[readonly] {
 }
 
 .top-nav {
-    max-width: 100%;
-    margin: 0;
-    padding: 10px 14px;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 10px 24px;
     background-color: transparent;
     border: 0;
     border-radius: 0;
