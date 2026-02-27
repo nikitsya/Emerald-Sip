@@ -4,8 +4,10 @@ import { ACCESS_LEVEL_ADMIN } from "../config/global_constants"
 
 
 export const ProductTableRow = props => {
-    const { product, onOpenDetails } = props;
+    const { product, onOpenDetails, isInCart = false } = props;
     const onAddToCart = props.onAddToCart
+    const canAddToCart = typeof onAddToCart === "function"
+    const isAdmin = Number(sessionStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
     const images = Array.isArray(props.product.images) ? props.product.images : []
     const firstImage = images.length > 0 ? images[0] : ""
 
@@ -30,7 +32,21 @@ export const ProductTableRow = props => {
             <td data-label="Material">{props.product.material || "-"}</td>
             <td data-label="Color">{props.product.color || "-"}</td>
             <td data-label="Actions" onClick={stopRowClick}>
-            <button type="button" className="blue-button" onClick={handleAddToCartClick}>Add to Cart</button>
+            {canAddToCart ? (
+                <button
+                    type="button"
+                    className="icon-button add-to-cart-icon-button"
+                    onClick={handleAddToCartClick}
+                    aria-label={isInCart ? "Added to Cart" : "Add to Cart"}
+                    title={isInCart ? "Added to Cart" : "Add to Cart"}
+                >
+                    <img
+                        className="add-to-cart-icon"
+                        src={isInCart ? "/images/buttons/added_to_cart.png" : "/images/buttons/add-to-cart.png"}
+                        alt={isInCart ? "Added to Cart" : "Add to Cart"}
+                    />
+                </button>
+            ) : null}
 
             {/* Edit and Delete only for ADMIN */}
             {Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN ? 

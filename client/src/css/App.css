@@ -107,6 +107,32 @@ button.blue-button {
     text-decoration: none;
 }
 
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-right: 8px;
+    margin-top: 4px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    line-height: 0;
+}
+
+.icon-button:focus-visible {
+    outline: 2px solid #6f8a55;
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+.add-to-cart-icon {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    display: block;
+}
+
 /* Forms */
 form {
     width: 100%;
@@ -167,6 +193,16 @@ form input[readonly] {
     padding: 10px 8px;
     font-size: 14px;
     font-weight: 700;
+}
+
+.table-sort-btn {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .table-container tbody td {
@@ -404,6 +440,19 @@ form input[readonly] {
     gap: 10px;
 }
 
+.market-topbar {
+    max-width: 1000px;
+    margin: 12px auto 0;
+    padding: 8px 12px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #d7decb;
+    background-color: #edf2e3;
+    color: #32462f;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .top-nav-left {
     display: flex;
     align-items: center;
@@ -501,6 +550,18 @@ form input[readonly] {
     cursor: pointer;
 }
 
+.site-footer {
+    max-width: 1000px;
+    margin: 12px auto 20px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #d7decb;
+    background-color: #fcfdf8;
+    color: #3f4f39;
+    text-align: center;
+    font-size: 13px;
+}
+
 @media (max-width: 599px) {
     .top-nav {
         position: relative; /* Anchor dropdown sections */
@@ -550,5 +611,10 @@ form input[readonly] {
 
     .top-nav-search {
         max-width: 100%; /* Full width input on mobile */
+    }
+
+    .market-topbar {
+        font-size: 12px;
+        text-align: left;
     }
 }
