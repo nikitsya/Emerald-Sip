@@ -792,7 +792,7 @@ form input[readonly] {
     gap: 8px;
 }
 
-.top-nav-cart-link {
+.top-nav-link.top-nav-cart-link {
     margin-left: auto;
     background-color: transparent;
 }
