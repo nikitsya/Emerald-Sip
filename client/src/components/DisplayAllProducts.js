@@ -53,7 +53,7 @@ const normalizeText = (value) => (value || "").toString().trim()
 export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, cartItems = [], onAddToCart}) => {
     const [products, setProducts] = useState([])
     const [materialFilter, setMaterialFilter] = useState("any")
-    const [colorFilter, setColorFilter] = useState("any")
+    const [colorFilters, setColorFilters] = useState([])
     const [priceFilter, setPriceFilter] = useState("any")
     const [capacityFilter, setCapacityFilter] = useState("any")
 
@@ -83,6 +83,10 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
         ).sort((first, second) => first.localeCompare(second))
     }, [products])
 
+    useEffect(() => {
+        setColorFilters((currentFilters) => currentFilters.filter((color) => colorOptions.includes(color)))
+    }, [colorOptions])
+
     const normalizedSearch = searchName.trim().toLowerCase()
 
     const filteredProducts = products.filter((product) => {
@@ -97,7 +101,7 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
             return false
         }
 
-        if (colorFilter !== "any" && normalizeText(product.color) !== colorFilter) {
+        if (colorFilters.length > 0 && !colorFilters.includes(normalizeText(product.color))) {
             return false
         }
 
@@ -115,9 +119,19 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
     const clearAllFilters = () => {
         setSearchName("")
         setMaterialFilter("any")
-        setColorFilter("any")
+        setColorFilters([])
         setPriceFilter("any")
         setCapacityFilter("any")
+    }
+
+    const toggleColorFilter = (color) => {
+        setColorFilters((currentFilters) => {
+            if (currentFilters.includes(color)) {
+                return currentFilters.filter((value) => value !== color)
+            }
+
+            return [...currentFilters, color]
+        })
     }
 
     const activeFilterChips = []
@@ -136,11 +150,13 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
             clear: () => setMaterialFilter("any")
         })
     }
-    if (colorFilter !== "any") {
-        activeFilterChips.push({
-            key: "color",
-            label: `Color: ${colorFilter}`,
-            clear: () => setColorFilter("any")
+    if (colorFilters.length > 0) {
+        colorFilters.forEach((color) => {
+            activeFilterChips.push({
+                key: `color-${color}`,
+                label: `Color: ${color}`,
+                clear: () => setColorFilters((currentFilters) => currentFilters.filter((value) => value !== color))
+            })
         })
     }
     if (priceFilter !== "any") {
@@ -207,13 +223,22 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
                     </div>
 
                     <div className="catalog-filter-group">
-                        <label htmlFor="colorFilter">Color</label>
-                        <select id="colorFilter" value={colorFilter} onChange={(event) => setColorFilter(event.target.value)}>
-                            <option value="any">Any color</option>
+                        <label>Color</label>
+                        <div className="catalog-checkbox-list" role="group" aria-label="Color filter">
                             {colorOptions.map((color) => (
-                                <option key={color} value={color}>{color}</option>
+                                <label key={color} className="catalog-checkbox-item">
+                                    <input
+                                        type="checkbox"
+                                        checked={colorFilters.includes(color)}
+                                        onChange={() => toggleColorFilter(color)}
+                                    />
+                                    <span>{color}</span>
+                                </label>
                             ))}
-                        </select>
+                            {colorOptions.length === 0 ? (
+                                <p className="catalog-checkbox-empty">No colors available</p>
+                            ) : null}
+                        </div>
                     </div>
 
                     <div className="catalog-filter-group">
