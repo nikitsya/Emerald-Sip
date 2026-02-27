@@ -138,6 +138,24 @@ button.blue-button {
     display: block;
 }
 
+.product-actions-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.product-actions-wrap .icon-button {
+    margin: 0;
+}
+
+.admin-action-icon {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    display: block;
+}
+
 /* Forms */
 form {
     width: 100%;

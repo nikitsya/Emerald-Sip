@@ -7,8 +7,8 @@ const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 export const ProductTableRow = props => {
     const {product, onOpenDetails, isInCart = false} = props;
     const onAddToCart = props.onAddToCart
-    const canAddToCart = typeof onAddToCart === "function"
-    const isAdmin = Number(sessionStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const canAddToCart = !isAdmin && typeof onAddToCart === "function"
     const images = Array.isArray(props.product.images) ? props.product.images : []
     const firstImage = images.length > 0 ? images[0] : ""
 
@@ -34,27 +34,45 @@ export const ProductTableRow = props => {
             <td data-label="Material">{props.product.material || "-"}</td>
             <td data-label="Color">{props.product.color || "-"}</td>
             <td data-label="Actions" onClick={stopRowClick}>
-                {canAddToCart ? (
-                    <button
-                        type="button"
-                        className="icon-button add-to-cart-icon-button"
-                        onClick={handleAddToCartClick}
-                        aria-label={isInCart ? "Added to Cart" : "Add to Cart"}
-                        title={isInCart ? "Added to Cart" : "Add to Cart"}
-                    >
-                        <img
-                            className="add-to-cart-icon"
-                            src={isInCart ? "/images/buttons/added_to_cart.png" : "/images/buttons/add-to-cart.png"}
-                            alt={isInCart ? "Added to Cart" : "Add to Cart"}
-                        />
-                    </button>
-                ) : null}
+                <div className="product-actions-wrap">
+                    {canAddToCart ? (
+                        <button
+                            type="button"
+                            className="icon-button add-to-cart-icon-button"
+                            onClick={handleAddToCartClick}
+                            aria-label={isInCart ? "Added to Cart" : "Add to Cart"}
+                            title={isInCart ? "Added to Cart" : "Add to Cart"}
+                        >
+                            <img
+                                className="add-to-cart-icon"
+                                src={isInCart ? "/images/buttons/added_to_cart.png" : "/images/buttons/add-to-cart.png"}
+                                alt={isInCart ? "Added to Cart" : "Add to Cart"}
+                            />
+                        </button>
+                    ) : null}
 
-                {/* Edit and Delete only for ADMIN */}
-                {Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN ?
-                    <Link className="green-button" to={"/EditProduct/" + props.product._id}>Edit</Link> : null}
-                {Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN ?
-                    <Link className="red-button" to={"/DeleteProduct/" + props.product._id}>Delete</Link> : null}
+                    {isAdmin ? (
+                        <Link
+                            className="icon-button admin-action-link"
+                            to={"/EditProduct/" + props.product._id}
+                            aria-label="Edit product"
+                            title="Edit product"
+                        >
+                            <img className="admin-action-icon" src="/images/buttons/admin/edit.png" alt="Edit"/>
+                        </Link>
+                    ) : null}
+
+                    {isAdmin ? (
+                        <Link
+                            className="icon-button admin-action-link"
+                            to={"/DeleteProduct/" + props.product._id}
+                            aria-label="Delete product"
+                            title="Delete product"
+                        >
+                            <img className="admin-action-icon" src="/images/buttons/admin/delete.png" alt="Delete"/>
+                        </Link>
+                    ) : null}
+                </div>
             </td>
         </tr>
     )
