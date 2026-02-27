@@ -2,6 +2,8 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
 
+const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
+
 export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = false}) => {
     if (!product) return null;
 
@@ -22,7 +24,7 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = f
                     <button className="blue-button" onClick={onClose}>Close</button>
                 </div>
 
-                <p><strong>Price:</strong> {product.price}</p>
+                <p><strong>Price:</strong> {formatPrice(product.price)}</p>
                 <p><strong>Description:</strong> {product.description || "-"}</p>
                 <p><strong>Capacity (ml):</strong> {product.capacityMl ?? "-"}</p>
                 <p><strong>Material:</strong> {product.material || "-"}</p>

@@ -1,7 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
 
-const formatPrice = (value) => Number(value).toFixed(2)
+const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 
 export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClearCart}) => {
     const items = Array.isArray(cartItems) ? cartItems : []
@@ -43,7 +43,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
 
                             <div className="cart-item-info">
                                 <h3>{item.name}</h3>
-                                <p><strong>Price:</strong> ${formatPrice(price)}</p>
+                                <p><strong>Price:</strong> {formatPrice(price)}</p>
 
                                 <div className="cart-quantity-row">
                                     <button
@@ -63,7 +63,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                                     </button>
                                 </div>
 
-                                <p><strong>Subtotal:</strong> ${formatPrice(subtotal)}</p>
+                                <p><strong>Subtotal:</strong> {formatPrice(subtotal)}</p>
 
                                 <button
                                     type="button"
@@ -79,7 +79,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
             </div>
 
             <div className="cart-summary">
-                <p><strong>Total:</strong> ${formatPrice(total)}</p>
+                <p><strong>Total:</strong> {formatPrice(total)}</p>
                 <div className="cart-summary-actions">
                     <button type="button" className="red-button" onClick={onClearCart}>Clear Cart</button>
                     <Link className="green-button" to="/DisplayAllProducts">Continue Shopping</Link>

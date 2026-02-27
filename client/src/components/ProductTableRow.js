@@ -2,6 +2,7 @@ import React from "react"
 import {Link} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
 
+const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 
 export const ProductTableRow = props => {
     const {product, onOpenDetails, isInCart = false} = props;
@@ -27,7 +28,7 @@ export const ProductTableRow = props => {
             <td data-label="Images">{firstImage ?
                 <img className="product-thumb" src={firstImage} alt={props.product.name}/> : "-"}</td>
             <td data-label="Product Name">{props.product.name}</td>
-            <td data-label="Price">{props.product.price}</td>
+            <td data-label="Price">{formatPrice(props.product.price)}</td>
 
             <td data-label="Capacity (ml)">{props.product.capacityMl ?? "-"}</td>
             <td data-label="Material">{props.product.material || "-"}</td>
