@@ -12,11 +12,8 @@ body {
     margin: 0;
     padding: 0;
     color: #283028;
-    background-color: #d5e8bc;
-    background-image: linear-gradient(140deg, #f6faef 0%, #dcedcb 45%, #bdd99a 100%);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: #d6e2bc;
+    background-image: none;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.45;
 }
@@ -46,6 +43,8 @@ body {
 .table-container {
     padding: 0;
     background-color: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .logout {
@@ -202,9 +201,19 @@ form input[readonly] {
     font-weight: 700;
 }
 
+.table-container thead th:first-child {
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
+}
+
+.table-container thead th:last-child {
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+}
+
 .table-container thead th:nth-child(1),
 .table-container tbody td:nth-child(1) {
-    width: 22%;
+    width: 21%;
 }
 
 .table-container thead th:nth-child(2),
@@ -219,12 +228,12 @@ form input[readonly] {
 
 .table-container thead th:nth-child(4),
 .table-container tbody td:nth-child(4) {
-    width: 12%;
+    width: 14%;
 }
 
 .table-container thead th:nth-child(5),
 .table-container tbody td:nth-child(5) {
-    width: 13%;
+    width: 12%;
 }
 
 .table-container thead th:nth-child(6),
@@ -246,12 +255,16 @@ form input[readonly] {
 }
 
 .table-sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     border: 0;
     padding: 0;
     background: transparent;
     color: inherit;
     font: inherit;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -260,21 +273,25 @@ form input[readonly] {
     border: 0;
     vertical-align: middle;
     font-size: 14px;
-    background-color: #f4f7ed;
+    background-color: #fefffc;
+    border-top: 1px solid #d4dfbf;
+    border-bottom: 1px solid #d4dfbf;
 }
 
 .table-container tbody tr:hover td {
-    background-color: #ebf2df;
+    background-color: #f7fbf0;
 }
 
 .table-container tbody td:first-child {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    border-left: 1px solid #d4dfbf;
 }
 
 .table-container tbody td:last-child {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    border-right: 1px solid #d4dfbf;
 }
 
 .product-thumb {
@@ -411,12 +428,12 @@ form input[readonly] {
 
   /* Card container */
   .table-container tbody tr {
-    background: #f4f7ed;
+    background: #fefffc;
     border-radius: 16px;
     margin-bottom: 18px;
     padding: 18px;
-    box-shadow: 0 6px 18px rgba(72, 86, 58, 0.08);
-    border: 1px solid #d7decb;
+    box-shadow: none;
+    border: 1px solid #d4dfbf;
     display: flex;
     flex-direction: column;
     align-items: center;   /* horizontal center */
