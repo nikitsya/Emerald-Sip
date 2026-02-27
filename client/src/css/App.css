@@ -850,22 +850,6 @@ form input[readonly] {
     color: #fff;
 }
 
-.top-nav-danger {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 8px 10px;
-    box-sizing: border-box;
-    color: #8d3f22;
-    border: 1px solid #d9b5a3;
-    background-color: #fff7f3;
-}
-
-.top-nav-danger:hover {
-    background-color: #7e4a2c;
-    color: #fff;
-}
-
 .top-nav-center {
 
     display: flex;

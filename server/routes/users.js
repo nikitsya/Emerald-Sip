@@ -7,29 +7,6 @@ const fs = require('fs')
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
 const jwt = require('jsonwebtoken')
 
-// The code below is for development testing purposes only 
-router.post(`/users/reset_user_collection`, (req, res, next) => {
-    usersModel.deleteMany({})
-        .then(() => {
-            const adminPassword = `123-qwe_QWE`
-
-            bcrypt.hash(adminPassword, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (error, hash) => {
-                if (error) {
-                    return next(error)
-                }
-                usersModel.create({
-                    name: "Administrator",
-                    email: "admin@admin.com",
-                    password: hash,
-                    accessLevel: parseInt(process.env.ACCESS_LEVEL_ADMIN)
-                })
-                    .then(createData => res.json(createData))
-                    .catch(() => next(createError(500, `Failed to create Admin user for testing purposes`)))
-            })
-        })
-        .catch(err => next(err))
-})
-
 // If a user with this email does not already exist, then create new user
 router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
     usersModel.findOne({email: req.params.email})
@@ -94,4 +71,3 @@ router.post(`/users/logout`, (req, res, next) => {
 })
 
 module.exports = router
-
