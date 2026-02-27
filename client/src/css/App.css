@@ -440,6 +440,19 @@ form input[readonly] {
     gap: 10px;
 }
 
+.market-topbar {
+    max-width: 1000px;
+    margin: 12px auto 0;
+    padding: 8px 12px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #d7decb;
+    background-color: #edf2e3;
+    color: #32462f;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .top-nav-left {
     display: flex;
     align-items: center;
@@ -537,6 +550,18 @@ form input[readonly] {
     cursor: pointer;
 }
 
+.site-footer {
+    max-width: 1000px;
+    margin: 12px auto 20px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #d7decb;
+    background-color: #fcfdf8;
+    color: #3f4f39;
+    text-align: center;
+    font-size: 13px;
+}
+
 @media (max-width: 599px) {
     .top-nav {
         position: relative; /* Anchor dropdown sections */
@@ -586,5 +611,10 @@ form input[readonly] {
 
     .top-nav-search {
         max-width: 100%; /* Full width input on mobile */
+    }
+
+    .market-topbar {
+        font-size: 12px;
+        text-align: left;
     }
 }
