@@ -26,6 +26,9 @@ const parseTotal = (totalParam) => {
     return total
 }
 
+const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ``).trim())
+const isPhoneValid = (phone) => /^\d{7,15}$/.test(String(phone || ``).trim())
+
 // Logged-in customer purchase (JWT required)
 router.post(`/sales/:orderID/:total`, (req, res, next) => {
     jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: [`HS256`]}, (err, decodedToken) => {
