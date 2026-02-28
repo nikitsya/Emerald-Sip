@@ -12,6 +12,8 @@ import {ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST} from "./config/global_constants"
 import {LoggedInRoute} from "./components/LoggedInRoute"
 import {ShoppingCart} from "./components/ShoppingCart"
 import {useShoppingCart} from "./hooks/useShoppingCart"
+import {BuyProduct} from "./components/BuyProduct"
+import {PayPalMessage} from "./components/PayPalMessage"
 
 
 // Main app component with all routes
