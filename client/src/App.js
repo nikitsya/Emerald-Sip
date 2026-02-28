@@ -4,6 +4,7 @@ import {DisplayAllProducts} from "./components/DisplayAllProducts"
 import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
 import {DeleteProduct} from "./components/DeleteProduct"
+import {ResetDatabase} from "./components/ResetDatabase"
 import {Register} from "./components/Register"
 import "./css/App.css"
 import {Navigation} from "./components/Navigation"
@@ -41,6 +42,7 @@ export const App = () => {
             <Switch>
                 <Route exact path="/Register" component={Register}/>
                 <Route exact path="/Login" component={Login}/>
+                <Route exact path="/ResetDatabase" component={ResetDatabase}/>
 
                 <Route
                     exact
