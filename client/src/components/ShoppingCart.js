@@ -158,7 +158,12 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
     </div>
 ) : null}
 
-                <BuyProduct price={total} items={items} guestDetails={guestDetails}/>
+                {canPayAsGuest ? (
+                    <BuyProduct price={total} items={items} guestDetails={guestDetails}/>
+                ) : (
+                    <div className="error-text">Please fill in all guest checkout fields correctly before payment.</div>
+                )}
+
 
                 <div className="cart-summary-actions">
                     <button type="button" className="red-button" onClick={onClearCart}>Clear Cart</button>
