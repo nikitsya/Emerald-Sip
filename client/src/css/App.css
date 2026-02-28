@@ -1279,3 +1279,19 @@ form input[readonly] {
     padding: 12px;
 }
 
+/* Mobile/tablet: stack in one column */
+@media (max-width: 992px) {
+    .cart-page {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-list,
+    .cart-summary {
+        grid-column: 1;
+    }
+
+    .cart-summary {
+        position: static;
+    }
+}
+
