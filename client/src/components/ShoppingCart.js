@@ -156,7 +156,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
 ) : null}
 
 
-                <BuyProduct price={total} items={items} />
+                <BuyProduct price={total} items={items} guestDetails={guestDetails}/>
 
                 <div className="cart-summary-actions">
                     <button type="button" className="red-button" onClick={onClearCart}>Clear Cart</button>
