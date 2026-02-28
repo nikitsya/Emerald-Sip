@@ -113,6 +113,49 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
             <div className="cart-summary">
                 <p><strong>Total:</strong> {formatPrice(total)}</p>
 
+                {!isLoggedIn ? (
+                    <div className="form-container">
+                        <h3>Guest Checkout Details</h3>
+
+                        <input
+                            className={guestErrors.customerName ? "field-error" : ""}
+                            type="text"
+                            placeholder="Name"
+                            value={guestDetails.customerName}
+                            onChange={(e) => handleGuestFieldChange("customerName", e.target.value)}
+                        />
+                        {guestErrors.customerName ? <div className="error-text">{guestErrors.customerName}</div> : null}
+
+                        <input
+                            className={guestErrors.customerEmail ? "field-error" : ""}
+                            type="email"
+                            placeholder="Email"
+                            value={guestDetails.customerEmail}
+                            onChange={(e) => handleGuestFieldChange("customerEmail", e.target.value)}
+                        />
+                        {guestErrors.customerEmail ? <div className="error-text">{guestErrors.customerEmail}</div> : null}
+
+                        <input
+                            className={guestErrors.customerAddress ? "field-error" : ""}
+                            type="text"
+                            placeholder="Address"
+                            value={guestDetails.customerAddress}
+                            onChange={(e) => handleGuestFieldChange("customerAddress", e.target.value)}
+                        />
+                        {guestErrors.customerAddress ? <div className="error-text">{guestErrors.customerAddress}</div> : null}
+
+                        <input
+                            className={guestErrors.customerPhone ? "field-error" : ""}
+                            type="text"
+                            placeholder="Phone"
+                            value={guestDetails.customerPhone}
+                            onChange={(e) => handleGuestFieldChange("customerPhone", e.target.value)}
+                        />
+        {guestErrors.customerPhone ? <div className="error-text">{guestErrors.customerPhone}</div> : null}
+    </div>
+) : null}
+
+
                 <BuyProduct price={total} items={items} />
 
                 <div className="cart-summary-actions">
