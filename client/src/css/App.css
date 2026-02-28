@@ -1242,3 +1242,40 @@ form input[readonly] {
         max-width: 200px;
     }
 }
+/* Cart: 2-column desktop layout */
+.cart-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.cart-page > h2 {
+    grid-column: 1 / -1;
+    margin: 0 0 4px 0;
+}
+
+.cart-list {
+    grid-column: 1;
+}
+
+.cart-summary {
+    grid-column: 2;
+    position: sticky;
+    top: 12px;
+    align-self: start;
+    border: 1px solid #d7decb;
+    border-radius: 12px;
+    background: #fcfdf8;
+    padding: 14px;
+}
+
+/* Guest form inside right column */
+.cart-summary .form-container {
+    max-width: none;
+    margin: 10px 0 0;
+    box-shadow: none;
+    border: 1px solid #d7decb;
+    padding: 12px;
+}
+
