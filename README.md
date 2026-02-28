@@ -36,7 +36,7 @@ Last reviewed: 2026-02-27
 |      | Partial | Provide the user with an excellent user experience                                                                |   5 |
 | ✅    |         | Include any number of product images for each product; images display appropriately on mobile/tablet/desktop      | 2.5 |
 | ✅    |         | Include a shopping cart                                                                                           | 2.5 |
-|      | ?       | Include payments                                                                                                  | 2.5 |
+| ✅    |         | Include payments                                                                                                  | 2.5 |
 | ✅    |         | Hamburger menu on mobile and horizontal menu on tablet/computer                                                   | 2.5 |
 | ✅    |         | Use cards on mobile and tables on tablet/computer                                                                 | 2.5 |
 |      | Partial | Show less data on a tablet row compared to a computer                                                             | 2.5 |
