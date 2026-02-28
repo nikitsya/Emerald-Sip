@@ -54,6 +54,9 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
         )
     }
 
+    const guestValidationErrors = !isLoggedIn ? validateGuestDetails() : {}
+    const canPayAsGuest = isLoggedIn || Object.keys(guestValidationErrors).length === 0
+    
     return (
         <div className="form-container">
             <h2>Shopping Cart</h2>
@@ -154,9 +157,6 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
         {guestErrors.customerPhone ? <div className="error-text">{guestErrors.customerPhone}</div> : null}
     </div>
 ) : null}
-
-    const guestValidationErrors = !isLoggedIn ? validateGuestDetails() : {}
-    const canPayAsGuest = isLoggedIn || Object.keys(guestValidationErrors).length === 0
 
                 <BuyProduct price={total} items={items} guestDetails={guestDetails}/>
 
