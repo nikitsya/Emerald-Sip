@@ -1,5 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
+import {BuyProduct} from "./BuyProduct"
+
 
 const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 
