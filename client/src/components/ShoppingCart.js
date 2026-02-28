@@ -43,6 +43,8 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
     return next
     }
 
+    const guestValidationErrors = !isLoggedIn ? validateGuestDetails() : {}
+    const canPayAsGuest = isLoggedIn || Object.keys(guestValidationErrors).length === 0
 
     if (items.length === 0) {
         return (
@@ -54,8 +56,6 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
         )
     }
 
-    const guestValidationErrors = !isLoggedIn ? validateGuestDetails() : {}
-    const canPayAsGuest = isLoggedIn || Object.keys(guestValidationErrors).length === 0
     
     return (
         <div className="form-container">
