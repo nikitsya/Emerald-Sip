@@ -3,22 +3,54 @@ import {Link} from "react-router-dom"
 import {Button} from "./Button"
 
 // Shared product form fields used by both Add and Edit pages.
-export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSubmit}) => (
+export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSubmit, errors = {}, serverError = ""}) => (
     <form>
+        {/* API-level error shown once above field-level validation messages */}
+        {serverError ? <div className="error-text">{serverError}</div> : null}
+
         <label>Name</label>
-        <input autoFocus type="text" name="name" value={formValues.name} onChange={onFieldChange(`name`)}/>
+        <input
+            autoFocus
+            type="text"
+            name="name"
+            value={formValues.name}
+            className={errors.name ? "field-error" : ""}
+            onChange={onFieldChange(`name`)}
+        />
+        {errors.name ? <div className="error-text">{errors.name}</div> : null}
 
         <label>Price</label>
-        <input type="text" name="price" value={formValues.price} onChange={onFieldChange(`price`)}/>
+        <input
+            type="text"
+            name="price"
+            value={formValues.price}
+            className={errors.price ? "field-error" : ""}
+            onChange={onFieldChange(`price`)}
+        />
+        {errors.price ? <div className="error-text">{errors.price}</div> : null}
 
         <label>Images (comma separated)</label>
-        <input type="text" name="images" value={formValues.images} onChange={onFieldChange(`images`)}/>
+        <input
+            type="text"
+            name="images"
+            value={formValues.images}
+            className={errors.images ? "field-error" : ""}
+            onChange={onFieldChange(`images`)}
+        />
+        {errors.images ? <div className="error-text">{errors.images}</div> : null}
 
         <label>Description</label>
         <input type="text" name="description" value={formValues.description} onChange={onFieldChange(`description`)}/>
 
         <label>Capacity (ml)</label>
-        <input type="number" name="capacityMl" value={formValues.capacityMl} onChange={onFieldChange(`capacityMl`)}/>
+        <input
+            type="number"
+            name="capacityMl"
+            value={formValues.capacityMl}
+            className={errors.capacityMl ? "field-error" : ""}
+            onChange={onFieldChange(`capacityMl`)}
+        />
+        {errors.capacityMl ? <div className="error-text">{errors.capacityMl}</div> : null}
 
         <label>Material</label>
         <input type="text" name="material" value={formValues.material} onChange={onFieldChange(`material`)}/>
