@@ -5,6 +5,7 @@ import {ProductTable} from "./ProductTable"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 
+// Fixed price buckets shown in filter dropdown.
 const PRICE_RANGES = [
     {value: "any", label: "Any price"},
     {value: "0-24.99", label: "Under €25"},
@@ -14,6 +15,7 @@ const PRICE_RANGES = [
     {value: "40-999", label: "€40 +"}
 ]
 
+// Capacity presets available in multiselect filter.
 const CAPACITY_OPTIONS = [
     {value: "500", label: "500 ml"},
     {value: "550", label: "550 ml"},
@@ -25,38 +27,27 @@ const CAPACITY_OPTIONS = [
 
 const parseRange = (rangeValue) => {
     const [minValue, maxValue] = rangeValue.split("-")
-    return {
-        min: Number(minValue),
-        max: Number(maxValue)
-    }
+    return { min: Number(minValue), max: Number(maxValue) }
 }
 
 const matchesRange = (value, rangeValue) => {
     // "any" keeps the filter inactive for this field.
-    if (rangeValue === "any") {
-        return true
-    }
+    if (rangeValue === "any") return true
 
     // Empty or non-numeric product values should not pass numeric range filters.
-    if (value === null || typeof value === "undefined" || value === "") {
-        return false
-    }
+    if (value === null || typeof value === "undefined" || value === "") return false
 
     const {min, max} = parseRange(rangeValue)
     const numericValue = Number(value)
-    if (Number.isNaN(numericValue)) {
-        return false
-    }
+    if (Number.isNaN(numericValue)) return false
 
     return numericValue >= min && numericValue <= max
 }
 
 const normalizeText = (value) => (value || "").toString().trim()
 
-export const DisplayAllProducts = ({
-                                       searchName = "", setSearchName = () => {
-    }, cartItems = [], onAddToCart
-                                   }) => {
+export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, cartItems = [], onAddToCart}) => {
+    // Source dataset returned from backend `/products`.
     const [products, setProducts] = useState([])
     const [materialFilter, setMaterialFilter] = useState("any")
     const [colorFilters, setColorFilters] = useState([])
@@ -67,15 +58,16 @@ export const DisplayAllProducts = ({
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
 
     useEffect(() => {
-        //axios.defaults.withCredentials = true // needed for sessions to work
+        // Public products endpoint returns full catalog for client-side filtering/sorting.
         axios.get(`${SERVER_HOST}/products`, {headers: {"authorization": localStorage.token}})
             .then(res => {
                 setProducts(Array.isArray(res.data) ? res.data : [])
             })
-            .catch(() => {
+            .catch((err) => {
+                // Keep UI stable even if request fails.
                 setProducts([])
+                console.log(`${err?.response?.data || ""}\n${err}`)
             })
-            .catch(err => console.log(`${err.response.data}\n${err}`))
     }, [])
 
     // Build selectable options from actual dataset values to avoid hardcoding.
@@ -97,9 +89,7 @@ export const DisplayAllProducts = ({
     }, [colorOptions])
 
     useEffect(() => {
-        if (colorOptions.length === 0) {
-            setIsColorFilterOpen(false)
-        }
+        if (colorOptions.length === 0) setIsColorFilterOpen(false)
     }, [colorOptions])
 
     const normalizedSearch = searchName.trim().toLowerCase()
@@ -109,30 +99,16 @@ export const DisplayAllProducts = ({
         const name = normalizeText(product.name).toLowerCase()
         const description = normalizeText(product.description).toLowerCase()
 
-        if (normalizedSearch && !name.includes(normalizedSearch) && !description.includes(normalizedSearch)) {
-            return false
-        }
-
-        if (materialFilter !== "any" && normalizeText(product.material) !== materialFilter) {
-            return false
-        }
-
-        if (colorFilters.length > 0 && !colorFilters.includes(normalizeText(product.color))) {
-            return false
-        }
-
-        if (!matchesRange(product.price, priceFilter)) {
-            return false
-        }
+        if (normalizedSearch && !name.includes(normalizedSearch) && !description.includes(normalizedSearch)) return false
+        if (materialFilter !== "any" && normalizeText(product.material) !== materialFilter) return false
+        if (colorFilters.length > 0 && !colorFilters.includes(normalizeText(product.color))) return false
+        if (!matchesRange(product.price, priceFilter)) return false
 
         const productCapacity = normalizeText(product.capacityMl)
-        if (capacityFilters.length > 0 && !capacityFilters.includes(productCapacity)) {
-            return false
-        }
-
-        return true
+        return !(capacityFilters.length > 0 && !capacityFilters.includes(productCapacity))
     })
 
+    // Resets all filter controls and search text to defaults.
     const clearAllFilters = () => {
         setSearchName("")
         setMaterialFilter("any")
@@ -145,20 +121,14 @@ export const DisplayAllProducts = ({
 
     const toggleColorFilter = (color) => {
         setColorFilters((currentFilters) => {
-            if (currentFilters.includes(color)) {
-                return currentFilters.filter((value) => value !== color)
-            }
-
+            if (currentFilters.includes(color)) return currentFilters.filter((value) => value !== color)
             return [...currentFilters, color]
         })
     }
 
     const toggleCapacityFilter = (capacity) => {
         setCapacityFilters((currentFilters) => {
-            if (currentFilters.includes(capacity)) {
-                return currentFilters.filter((value) => value !== capacity)
-            }
-
+            if (currentFilters.includes(capacity)) return currentFilters.filter((value) => value !== capacity)
             return [...currentFilters, capacity]
         })
     }
@@ -218,6 +188,7 @@ export const DisplayAllProducts = ({
                         type="text"
                         placeholder="Search products by name or description..."
                         value={searchName}
+                        // Keep controlled search value in sync with user typing.
                         onChange={(event) => setSearchName(event.target.value)}
                     />
                     <button className="blue-button" type="button" onClick={() => setSearchName("")}>Clear</button>
