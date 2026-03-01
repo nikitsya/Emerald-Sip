@@ -62,13 +62,13 @@ export const BuyProduct = props => {
     }
 
 
-    const onError = err => {
+    const onError = () => {
         setPayPalMessageType("ERROR")
         setRedirectToPayPalMessage(true)
     }
 
 
-    const onCancel = cancelData => {
+    const onCancel = () => {
         // The user pressed the Paypal checkout popup window cancel button or closed the Paypal checkout popup window
         setPayPalMessageType("CANCEL")
         setRedirectToPayPalMessage(true)

@@ -4,7 +4,8 @@ import axios from "axios"
 import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
 
-export const ResetDatabase = props => {
+
+export const ResetDatabase = () => {
     const [isReset, setIsReset] = useState(false)
 
     const resetUsersModel = () => {

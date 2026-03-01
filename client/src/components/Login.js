@@ -5,7 +5,7 @@ import {Button} from "./Button"
 import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../config/global_constants"
 
 
-export const Login = props => {
+export const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isLoggedIn, setIsLoggedIn] = useState(false)

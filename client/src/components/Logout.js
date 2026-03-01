@@ -5,7 +5,7 @@ import {Button} from "./Button"
 import {SERVER_HOST} from "../config/global_constants"
 
 
-export const Logout = props => {
+export const Logout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
 
 
@@ -14,7 +14,7 @@ export const Logout = props => {
 
         //axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/logout`)
-            .then(res => {
+            .then(() => {
                 localStorage.clear()
 
                 //  localStorage.name = "GUEST"
