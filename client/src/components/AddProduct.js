@@ -13,6 +13,26 @@ export const AddProduct = () => {
     const [redirectToDisplayAllProducts, setRedirectToDisplayAllProducts] = useState(localStorage.accessLevel < ACCESS_LEVEL_ADMIN)
     const [errors, setErrors] = useState({})
     const [serverError, setServerError] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // Maps backend/network failures to user-friendly messages for create flow.
+    const getAddProductErrorMessage = (error) => {
+        if (!error?.response) {
+            return "Network error: please check your connection and try again."
+        }
+
+        const {status, data} = error.response
+        const backendMessage = typeof data === "string" && data.trim() ? data.trim() : ""
+
+        if (status === 400 || status === 409 || status === 422) {
+            return backendMessage || "Product data is invalid. Please review the highlighted fields."
+        }
+        if (status === 401 || status === 403) {
+            return "You do not have permission to add products."
+        }
+
+        return backendMessage || "Unable to add product right now. Please try again."
+    }
 
     // Reuse base field updater and clear stale errors for edited field.
     const handleFieldChange = (fieldName) => (event) => {
@@ -23,6 +43,8 @@ export const AddProduct = () => {
 
     const handleSubmit = e => {
         e.preventDefault()
+        if (isSubmitting) return
+
         setServerError("")
 
         // Block submit until local validation passes.
@@ -31,14 +53,17 @@ export const AddProduct = () => {
             setErrors(nextErrors)
             return
         }
+        setErrors({})
 
         // Build normalized API payload from UI form values.
         const productObject = buildProductPayload(formValues)
+        setIsSubmitting(true)
 
         //axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/products`, productObject, {headers: {"authorization": localStorage.token}})
             .then(() => setRedirectToDisplayAllProducts(true))
-            .catch(err => setServerError(err?.response?.data || "Unable to add product"))
+            .catch(err => setServerError(getAddProductErrorMessage(err)))
+            .finally(() => setIsSubmitting(false))
     }
 
     return (
@@ -46,7 +71,7 @@ export const AddProduct = () => {
             <ProductFormFields
                 formValues={formValues}
                 onFieldChange={handleFieldChange}
-                submitLabel="Add"
+                submitLabel={isSubmitting ? "Adding..." : "Add"}
                 onSubmit={handleSubmit}
                 errors={errors}
                 serverError={serverError}
