@@ -8,7 +8,6 @@ import {SERVER_HOST} from "../config/global_constants"
 export const Logout = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
 
-
     const handleSubmit = e => {
         e.preventDefault()
 
@@ -20,17 +19,13 @@ export const Logout = () => {
                 //  localStorage.name = "GUEST"
                 //  localStorage.accessLevel = ACCESS_LEVEL_GUEST
                 setIsLoggedIn(false)
-
             })
             .catch(err => console.log(`${err.response.data}\n${err}`))
     }
 
-
     return (
         <div>
-
             {!isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null}
-
             <Button value="Log out" className="red-button" onClick={handleSubmit}/>
         </div>
     )
