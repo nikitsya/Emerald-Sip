@@ -4,8 +4,13 @@ const usersModel = require(`../models/users`)
 const bcrypt = require('bcryptjs')  // Password hashing/checking for stored credentials.
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
-
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
+
+const multer = require('multer')
+const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
+
+const emptyFolder = require('empty-folder')
+
 
 // Development-only endpoint: clears users and recreates a known admin account.
 router.post(`/users/reset_user_collection`, (req, res, next) => {
