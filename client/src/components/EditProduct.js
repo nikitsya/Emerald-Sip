@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
 import {ACCESS_LEVEL_CUSTOMER, SERVER_HOST} from "../config/global_constants"
-import {buildProductPayload, mapProductToFormValues, useProductForm} from "../hooks/useProductForm"
+import {buildProductPayload, mapProductToFormValues, useProductForm, validateProductForm} from "../hooks/useProductForm"
 import {ProductFormFields} from "./ProductFormFields"
 
 export const EditProduct = props => {
@@ -10,6 +10,15 @@ export const EditProduct = props => {
     const {formValues, updateField, replaceFormValues} = useProductForm()
     // Preserve existing route guard behavior for unauthorized users.
     const [redirectToDisplayAllProducts, setRedirectToDisplayAllProducts] = useState(localStorage.accessLevel < ACCESS_LEVEL_CUSTOMER)
+    const [errors, setErrors] = useState({})
+    const [serverError, setServerError] = useState("")
+
+    // Reuse base field updater and clear stale errors for edited field.
+    const handleFieldChange = (fieldName) => (event) => {
+        updateField(fieldName)(event)
+        setErrors((previousErrors) => ({...previousErrors, [fieldName]: ""}))
+        setServerError("")
+    }
 
     useEffect(() => {
         //axios.defaults.withCredentials = true // needed for sessions to work
@@ -18,11 +27,19 @@ export const EditProduct = props => {
                 // Map API product shape to editable text field values.
                 replaceFormValues(mapProductToFormValues(res.data))
             })
-            .catch(err => console.log(`${err.response.data}\n${err}`))
+            .catch(err => setServerError(err?.response?.data || "Unable to load product"))
     }, [props.match.params.id, replaceFormValues])
 
     const handleSubmit = e => {
         e.preventDefault()
+        setServerError("")
+
+        // Block submit until local validation passes.
+        const nextErrors = validateProductForm(formValues)
+        if (Object.keys(nextErrors).length > 0) {
+            setErrors(nextErrors)
+            return
+        }
 
         // Normalize and sanitize data before sending update request.
         const productObject = buildProductPayload(formValues)
@@ -32,16 +49,18 @@ export const EditProduct = props => {
             .then(() => {
                 setRedirectToDisplayAllProducts(true)
             })
-            .catch(err => console.log(`${err.response.data}\n${err}`))
+            .catch(err => setServerError(err?.response?.data || "Unable to update product"))
     }
 
     return (
         <div className="form-container">{redirectToDisplayAllProducts ? <Redirect to="/DisplayAllProducts"/> : null}
             <ProductFormFields
                 formValues={formValues}
-                onFieldChange={updateField}
+                onFieldChange={handleFieldChange}
                 submitLabel="Update"
                 onSubmit={handleSubmit}
+                errors={errors}
+                serverError={serverError}
             />
         </div>
     )
