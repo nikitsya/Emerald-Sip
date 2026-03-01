@@ -1239,76 +1239,581 @@ form input[readonly] {
     }
 }
 
-/* Cart: 2-column desktop layout */
+/* Cart page */
 .cart-page {
+    --cart-ink: #253128;
+    --cart-border: #cfdcc2;
+    --cart-card: #ffffff;
+    --cart-soft: #ecf3df;
+    --cart-accent: #5e7d33;
+    --cart-shadow: 0 18px 34px rgba(56, 76, 42, 0.12);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 20px;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 22px;
     align-items: start;
+    padding: 24px;
+    background: linear-gradient(160deg, #f8fbf1 0%, #f2f7e8 58%, #ecf3df 100%);
 }
 
-.cart-page > h2 {
+.cart-title-row {
     grid-column: 1 / -1;
-    margin: 0 0 4px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.cart-title-row h2 {
+    margin: 0;
+    color: var(--cart-ink);
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
 }
 
 .cart-list {
-    grid-column: 1;
+    display: grid;
+    gap: 14px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    padding: 14px;
+    border: 1px solid var(--cart-border);
+    border-radius: 16px;
+    background: var(--cart-card);
+    box-shadow: 0 7px 18px rgba(56, 76, 42, 0.08);
+}
+
+.cart-item-image-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #edf3e2;
+}
+
+.cart-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cart-item-no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #4b5e42;
+    font-weight: 700;
+}
+
+.cart-item-info {
+    min-width: 0;
+}
+
+.cart-item-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 2px;
+}
+
+.cart-item-head h3 {
+    margin: 0;
+    color: var(--cart-ink);
+    font-size: 23px;
+    line-height: 1.15;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.cart-item-unit-price {
+    margin: 2px 0 0;
+    color: #2a7a4e;
+    font-size: 22px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.cart-item-unit-label {
+    margin: 0 0 12px;
+    color: #576853;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cart-quantity-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px;
+    border: 1px solid var(--cart-border);
+    border-radius: 999px;
+    background: #f4f8eb;
+}
+
+.cart-qty-button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #7c9462;
+    border-radius: 999px;
+    background: #6f8f34;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.cart-qty-button:hover,
+.cart-qty-button:focus {
+    background: #55712f;
+}
+
+.cart-quantity-value {
+    min-width: 22px;
+    text-align: center;
+    color: var(--cart-ink);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.cart-item-subtotal {
+    margin: 12px 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: #40523c;
+    font-size: 14px;
+}
+
+.cart-item-subtotal strong {
+    color: #243626;
+    font-size: 19px;
+}
+
+.cart-item-remove {
+    margin-top: 12px;
 }
 
 .cart-summary {
-    grid-column: 2;
     position: sticky;
     top: 12px;
     align-self: start;
-    border: 1px solid #d7decb;
-    border-radius: 12px;
-    background: #fcfdf8;
+    border: 1px solid var(--cart-border);
+    border-radius: 16px;
+    background: #f9fcf4;
+    padding: 16px;
+    box-shadow: var(--cart-shadow);
+}
+
+.cart-summary-head {
+    margin-bottom: 12px;
+}
+
+.cart-summary-head h3 {
+    margin: 0;
+    color: var(--cart-ink);
+    font-size: 29px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.cart-summary-head p {
+    margin: 6px 0 0;
+    color: #53654e;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.cart-summary-line,
+.cart-summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.cart-summary-line {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #31402f;
+}
+
+.cart-summary-line strong {
+    font-weight: 800;
+}
+
+.cart-summary-muted {
+    color: #5f7059;
+    font-size: 13px;
+    text-align: right;
+}
+
+.cart-summary-total {
+    margin-top: 6px;
+    padding: 10px 0 14px;
+    border-top: 1px dashed #becdae;
+    border-bottom: 1px dashed #becdae;
+    color: #1f2d22;
+    font-size: 16px;
+}
+
+.cart-summary-total strong {
+    color: #2a7a4e;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+}
+
+.cart-checkout-button {
+    width: 100%;
+    margin: 12px 0 0;
+}
+
+.cart-checkout-note {
+    margin: 8px 0 0;
+    color: #566952;
+    font-size: 13px;
+}
+
+.cart-checkout-panel {
+    margin-top: 12px;
+    animation: cart-checkout-fade 180ms ease-out;
+}
+
+@keyframes cart-checkout-fade {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cart-guest-card {
+    margin-top: 14px;
     padding: 14px;
+    border: 1px solid var(--cart-border);
+    border-radius: 12px;
+    background: #ffffff;
 }
 
-/* Guest form inside right column */
-.cart-summary .form-container {
-    max-width: none;
-    margin: 10px 0 0;
-    box-shadow: none;
-    border: 1px solid #d7decb;
-    padding: 12px;
-    font-size: 24px;
+.cart-guest-card h4 {
+    margin: 0;
+    color: var(--cart-ink);
+    font-size: 25px;
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
 }
 
-.cart-summary .form-container input {
+.cart-guest-card p {
+    margin: 8px 0 12px;
+    color: #52624c;
+    font-size: 13px;
+}
+
+.cart-guest-card input {
     display: block;
     width: 100%;
-    margin-bottom: 14px;
-    height: 26px;
+    margin-bottom: 10px;
     border: 1px solid #c6cfb9;
-    border-radius: 8px;
+    border-radius: 9px;
     padding: 10px 12px;
     font-size: 15px;
     color: #2c342b;
     background-color: #ffffff;
 }
 
-.cart-summary .form-container input:focus {
+.cart-guest-card input:focus {
     outline: none;
     border-color: #6f8a55;
     box-shadow: 0 0 0 3px rgba(111, 138, 85, 0.2);
 }
 
-/* Mobile/tablet: stack in one column */
-@media (max-width: 992px) {
+.cart-guest-card .error-text {
+    margin-top: -4px;
+    margin-bottom: 10px;
+}
+
+.cart-payment-wrap {
+    margin-top: 14px;
+}
+
+.cart-summary-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.cart-summary-actions .green-button,
+.cart-summary-actions .red-button {
+    width: 100%;
+    margin: 0;
+}
+
+.cart-empty {
+    max-width: 620px;
+    text-align: center;
+    padding: 32px 22px;
+    background: linear-gradient(160deg, #f9fcf4 0%, #eef5e4 100%);
+}
+
+.cart-empty h2 {
+    margin: 0 0 10px;
+    font-size: clamp(30px, 4.8vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: #253128;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.cart-empty p {
+    margin: 0;
+    color: #4f6248;
+    font-size: 16px;
+}
+
+.cart-empty-link {
+    margin-top: 14px;
+}
+
+@media (max-width: 1060px) {
     .cart-page {
         grid-template-columns: 1fr;
-    }
-
-    .cart-list,
-    .cart-summary {
-        grid-column: 1;
+        padding: 20px;
     }
 
     .cart-summary {
         position: static;
+    }
+}
+
+@media (max-width: 680px) {
+    .cart-page {
+        padding: 14px;
+        gap: 16px;
+    }
+
+    .cart-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .cart-item-image-wrap {
+        aspect-ratio: 16 / 10;
+    }
+
+    .cart-item-head {
+        flex-wrap: wrap;
+    }
+
+    .cart-item-head h3 {
+        font-size: 19px;
+    }
+
+    .cart-item-unit-price {
+        font-size: 20px;
+    }
+
+    .cart-summary-head h3 {
+        font-size: 26px;
+    }
+
+    .cart-summary-total strong {
+        font-size: 25px;
+    }
+
+    .cart-summary-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-guest-card h4 {
+        font-size: 22px;
+    }
+}
+
+/* PayPal status page */
+.paypal-status-page {
+    max-width: 760px;
+    margin: 24px auto 0;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid #c9d7ba;
+    background: linear-gradient(160deg, #f9fcf4 0%, #eef5e4 100%);
+    box-shadow: 0 16px 34px rgba(58, 76, 45, 0.14);
+}
+
+.paypal-status-badge {
+    margin: 0 0 10px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.paypal-status-badge.paypal-tone-success {
+    color: #205734;
+    border: 1px solid #7bb591;
+    background: #e7f5eb;
+}
+
+.paypal-status-badge.paypal-tone-cancel {
+    color: #7a4b22;
+    border: 1px solid #d5b78c;
+    background: #fff3e2;
+}
+
+.paypal-status-badge.paypal-tone-error {
+    color: #7f2f1d;
+    border: 1px solid #d3a495;
+    background: #fff0eb;
+}
+
+.paypal-status-badge.paypal-tone-default {
+    color: #495646;
+    border: 1px solid #bdccb0;
+    background: #eff5e6;
+}
+
+.paypal-status-page.paypal-tone-cancel {
+    border-color: #d8a7a0;
+    background: linear-gradient(160deg, #fff8f7 0%, #ffecea 100%);
+    box-shadow: 0 16px 34px rgba(131, 54, 43, 0.17);
+}
+
+.paypal-status-page.paypal-tone-error {
+    border-color: #d39588;
+    background: linear-gradient(160deg, #fff5f3 0%, #ffe8e5 100%);
+    box-shadow: 0 16px 34px rgba(138, 43, 31, 0.2);
+}
+
+.paypal-status-page.paypal-tone-cancel h2,
+.paypal-status-page.paypal-tone-error h2 {
+    color: #7a2218;
+}
+
+.paypal-status-page.paypal-tone-cancel .paypal-status-message,
+.paypal-status-page.paypal-tone-error .paypal-status-message {
+    color: #5b2b25;
+}
+
+.paypal-status-page h2 {
+    margin: 0;
+    color: #213123;
+    font-size: clamp(34px, 4.6vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.paypal-status-subtitle {
+    margin: 8px 0 0;
+    color: #50634a;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.paypal-status-message {
+    margin: 14px 0 0;
+    color: #30412f;
+    font-size: 18px;
+    line-height: 1.42;
+    max-width: 60ch;
+}
+
+.paypal-status-id-wrap {
+    margin-top: 16px;
+    border: 1px dashed #c0cfb1;
+    border-radius: 12px;
+    background: #fbfef6;
+    padding: 12px;
+}
+
+.paypal-status-id-wrap span {
+    display: block;
+    color: #53674d;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.paypal-status-id-wrap code {
+    margin-top: 8px;
+    display: block;
+    color: #2a382b;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.paypal-status-actions {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.paypal-status-button {
+    margin: 0;
+}
+
+@media (max-width: 680px) {
+    .paypal-status-page {
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .paypal-status-page h2 {
+        font-size: clamp(30px, 9vw, 44px);
+    }
+
+    .paypal-status-subtitle {
+        font-size: 12px;
+    }
+
+    .paypal-status-message {
+        font-size: 16px;
+    }
+
+    .paypal-status-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .paypal-status-button {
+        width: 100%;
     }
 }
 
