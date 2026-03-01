@@ -99,7 +99,9 @@ export const Register = () => {
             formData.append("profilePhoto", selectedFile)
         }
 
-        axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`)
+        axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`, formData,
+         {headers: {"Content-type": "multipart/form-data"}}    
+        )
             .then((res) => {
                 // Save authenticated session values returned by backend.
                 localStorage.name = res.data.name
