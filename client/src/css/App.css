@@ -1236,7 +1236,6 @@ form input[readonly] {
     display: block;
     width: 100%;
     margin-bottom: 14px;
-    font-size: 18px;
     height: 26px;
     border: 1px solid #c6cfb9;
     border-radius: 8px;
