@@ -53,7 +53,10 @@ const matchesRange = (value, rangeValue) => {
 
 const normalizeText = (value) => (value || "").toString().trim()
 
-export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, cartItems = [], onAddToCart}) => {
+export const DisplayAllProducts = ({
+                                       searchName = "", setSearchName = () => {
+    }, cartItems = [], onAddToCart
+                                   }) => {
     const [products, setProducts] = useState([])
     const [materialFilter, setMaterialFilter] = useState("any")
     const [colorFilters, setColorFilters] = useState([])
@@ -268,7 +271,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
                         </button>
 
                         {isColorFilterOpen ? (
-                            <div id="colorFilterOptions" className="catalog-checkbox-list" role="group" aria-label="Color filter">
+                            <div id="colorFilterOptions" className="catalog-checkbox-list" role="group"
+                                 aria-label="Color filter">
                                 {colorOptions.map((color) => (
                                     <label key={color} className="catalog-checkbox-item">
                                         <input
@@ -285,7 +289,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
 
                     <div className="catalog-filter-group">
                         <label htmlFor="priceFilter">Price</label>
-                        <select id="priceFilter" value={priceFilter} onChange={(event) => setPriceFilter(event.target.value)}>
+                        <select id="priceFilter" value={priceFilter}
+                                onChange={(event) => setPriceFilter(event.target.value)}>
                             {PRICE_RANGES.map((range) => (
                                 <option key={range.value} value={range.value}>{range.label}</option>
                             ))}
@@ -339,7 +344,8 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = () => {}, c
                                 aria-label="Add Product"
                                 title="Add Product"
                             >
-                                <img className="catalog-add-product-icon" src="/images/buttons/admin/add_product.png" alt="Add Product"/>
+                                <img className="catalog-add-product-icon" src="/images/buttons/admin/add_product.png"
+                                     alt="Add Product"/>
                             </Link>
                         ) : null}
                     </div>

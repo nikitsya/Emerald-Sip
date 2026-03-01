@@ -38,7 +38,8 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = f
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-card" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={product.name}>
+            <div className="modal-card" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true"
+                 aria-label={product.name}>
                 <div className="modal-hero">
                     {primaryImage ? (
                         <img className="modal-hero-image" src={primaryImage} alt={product.name}/>
@@ -87,7 +88,8 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = f
                             </button>
                         ) : null}
                         {isAdmin ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
-                        {isAdmin ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}
+                        {isAdmin ?
+                            <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}
                     </div>
                 </div>
             </div>

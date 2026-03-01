@@ -1280,6 +1280,7 @@ form input[readonly] {
     padding: 12px;
     font-size: 24px;
 }
+
 .cart-summary .form-container input {
     display: block;
     width: 100%;
@@ -1293,6 +1294,7 @@ form input[readonly] {
     color: #2c342b;
     background-color: #ffffff;
 }
+
 .cart-summary .form-container input:focus {
     outline: none;
     border-color: #6f8a55;

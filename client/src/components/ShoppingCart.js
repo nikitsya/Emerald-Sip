@@ -1,4 +1,4 @@
-import React, {useState}  from "react"
+import React, {useState} from "react"
 import {Link} from "react-router-dom"
 import {BuyProduct} from "./BuyProduct"
 
@@ -26,21 +26,21 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
     const [guestErrors, setGuestErrors] = useState({})
 
     const handleGuestFieldChange = (field, value) => {
-    setGuestDetails((prev) => ({...prev, [field]: value}))
-    setGuestErrors((prev) => ({...prev, [field]: ""}))
+        setGuestDetails((prev) => ({...prev, [field]: value}))
+        setGuestErrors((prev) => ({...prev, [field]: ""}))
     }
 
     const validateGuestDetails = () => {
-    const next = {}
+        const next = {}
 
-    if (!guestDetails.customerName.trim()) next.customerName = "Name is required"
-    if (!guestDetails.customerEmail.trim()) next.customerEmail = "Email is required"
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestDetails.customerEmail)) next.customerEmail = "Invalid email format"
+        if (!guestDetails.customerName.trim()) next.customerName = "Name is required"
+        if (!guestDetails.customerEmail.trim()) next.customerEmail = "Email is required"
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestDetails.customerEmail)) next.customerEmail = "Invalid email format"
 
-    if (!guestDetails.customerAddress.trim()) next.customerAddress = "Address is required"
-    if (!/^\d{7,15}$/.test(guestDetails.customerPhone.trim())) next.customerPhone = "Phone must be 7-15 digits"
+        if (!guestDetails.customerAddress.trim()) next.customerAddress = "Address is required"
+        if (!/^\d{7,15}$/.test(guestDetails.customerPhone.trim())) next.customerPhone = "Phone must be 7-15 digits"
 
-    return next
+        return next
     }
 
     const guestValidationErrors = !isLoggedIn ? validateGuestDetails() : {}
@@ -56,7 +56,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
         )
     }
 
-    
+
     return (
         <div className="form-container cart-page">
             <h2>Shopping Cart</h2>
@@ -136,7 +136,8 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                             value={guestDetails.customerEmail}
                             onChange={(e) => handleGuestFieldChange("customerEmail", e.target.value)}
                         />
-                        {guestErrors.customerEmail ? <div className="error-text">{guestErrors.customerEmail}</div> : null}
+                        {guestErrors.customerEmail ?
+                            <div className="error-text">{guestErrors.customerEmail}</div> : null}
 
                         <input
                             className={guestErrors.customerAddress ? "field-error" : ""}
@@ -145,7 +146,8 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                             value={guestDetails.customerAddress}
                             onChange={(e) => handleGuestFieldChange("customerAddress", e.target.value)}
                         />
-                        {guestErrors.customerAddress ? <div className="error-text">{guestErrors.customerAddress}</div> : null}
+                        {guestErrors.customerAddress ?
+                            <div className="error-text">{guestErrors.customerAddress}</div> : null}
 
                         <input
                             className={guestErrors.customerPhone ? "field-error" : ""}
@@ -154,9 +156,10 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                             value={guestDetails.customerPhone}
                             onChange={(e) => handleGuestFieldChange("customerPhone", e.target.value)}
                         />
-        {guestErrors.customerPhone ? <div className="error-text">{guestErrors.customerPhone}</div> : null}
-    </div>
-) : null}
+                        {guestErrors.customerPhone ?
+                            <div className="error-text">{guestErrors.customerPhone}</div> : null}
+                    </div>
+                ) : null}
 
                 {canPayAsGuest ? (
                     <BuyProduct price={total} items={items} guestDetails={guestDetails}/>
