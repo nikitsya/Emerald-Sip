@@ -48,10 +48,6 @@ body {
     box-shadow: none;
 }
 
-.logout {
-    margin-bottom: 20px;
-}
-
 /* Buttons */
 .green-button,
 .red-button,
@@ -379,10 +375,6 @@ form input[readonly] {
         width: 152px;
         height: 152px;
     }
-}
-
-.add-new-product {
-    margin-top: 14px;
 }
 
 /* Error UI for forms */
@@ -782,12 +774,6 @@ form input[readonly] {
     color: #3f4f39;
 }
 
-.catalog-checkbox-empty {
-    margin: 0;
-    font-size: 13px;
-    color: #5d6c52;
-}
-
 .catalog-reset-button {
     margin-top: 4px;
 }
@@ -1132,28 +1118,6 @@ form input[readonly] {
     color: #fff;
 }
 
-.top-nav-center {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.top-nav-center .green-button {
-    height: 36px;
-    min-width: 90px;
-    margin: 0;
-    padding: 0 12px;
-}
-
-.top-nav-search {
-    width: 100%;
-    max-width: 320px;
-    height: 36px;
-    padding: 0 10px;
-    border: 1px solid #c6cfb9;
-    border-radius: 8px;
-}
-
 .hamburger-btn {
     display: none; /* Hidden on desktop/tablet */
     height: 38px;
@@ -1192,14 +1156,12 @@ form input[readonly] {
     }
 
     .top-nav-left,
-    .top-nav-center,
     .top-nav-right {
         display: none; /* Hide nav sections by default on mobile */
         width: 100%;
     }
 
     .top-nav-left.menu-open,
-    .top-nav-center.menu-open,
     .top-nav-right.menu-open {
         display: flex; /* Show sections when menu is open */
 
@@ -1213,23 +1175,12 @@ form input[readonly] {
 
     }
 
-    .top-nav-center.menu-open {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        margin-top: 10px;
-    }
-
     .top-nav-auth-row {
         flex-direction: column; /* Stack Login/Register on mobile */
     }
 
     .top-nav-cart-link {
         margin-left: 0;
-    }
-
-    .top-nav-search {
-        max-width: 100%; /* Full width input on mobile */
     }
 
     .market-topbar {
@@ -1316,4 +1267,3 @@ form input[readonly] {
         position: static;
     }
 }
-
