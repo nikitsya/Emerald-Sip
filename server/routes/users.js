@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken')
 
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
 
-
 // Development-only endpoint: clears users and recreates a known admin account.
 router.post(`/users/reset_user_collection`, (req, res, next) => {
     // Remove all users first to guarantee deterministic reset behavior.

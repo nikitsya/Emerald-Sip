@@ -5,9 +5,6 @@ const filesToCache = [
     'index.html',
     'offline.html',
     '/css/offline.css',
-    '/icons/icon_small.png',
-    '/icons/icon_medium.png',
-    '/icons/icon_large.png'
 ]
 
 // Install the service worker and cache the files in the array filesToCache[]
