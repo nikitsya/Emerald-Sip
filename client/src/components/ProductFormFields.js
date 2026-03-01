@@ -15,8 +15,7 @@ export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSub
         <input type="text" name="images" value={formValues.images} onChange={onFieldChange(`images`)}/>
 
         <label>Description</label>
-        <input type="text" name="description" value={formValues.description}
-               onChange={onFieldChange(`description`)}/>
+        <input type="text" name="description" value={formValues.description} onChange={onFieldChange(`description`)}/>
 
         <label>Capacity (ml)</label>
         <input type="number" name="capacityMl" value={formValues.capacityMl} onChange={onFieldChange(`capacityMl`)}/>
