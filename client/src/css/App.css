@@ -377,6 +377,41 @@ form input[readonly] {
     }
 }
 
+/* Tablet view: show less row data than desktop by hiding secondary columns */
+@media (min-width: 771px) and (max-width: 992px) {
+    .table-container thead th:nth-child(5),
+    .table-container tbody td:nth-child(5),
+    .table-container thead th:nth-child(6),
+    .table-container tbody td:nth-child(6) {
+        display: none;
+    }
+
+    .table-container thead th:nth-child(1),
+    .table-container tbody td:nth-child(1) {
+        width: 23%;
+    }
+
+    .table-container thead th:nth-child(2),
+    .table-container tbody td:nth-child(2) {
+        width: 31%;
+    }
+
+    .table-container thead th:nth-child(3),
+    .table-container tbody td:nth-child(3) {
+        width: 13%;
+    }
+
+    .table-container thead th:nth-child(4),
+    .table-container tbody td:nth-child(4) {
+        width: 14%;
+    }
+
+    .table-container thead th:nth-child(7),
+    .table-container tbody td:nth-child(7) {
+        width: 19%;
+    }
+}
+
 /* Error UI for forms */
 .field-error {
     border-color: #b85c35 !important;

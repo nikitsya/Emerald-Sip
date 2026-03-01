@@ -39,7 +39,7 @@ Last reviewed: 2026-03-01
 | ✅    |             | Include payments                                                                                                  | 2.5 |
 | ✅    |             | Hamburger menu on mobile and horizontal menu on tablet/computer                                                   | 2.5 |
 | ✅    |             | Use cards on mobile and tables on tablet/computer                                                                 | 2.5 |
-|      | Partial     | Show less data on a tablet row compared to a computer                                                             | 2.5 |
+| ✅    |             | Show less data on a tablet row compared to a computer                                                             | 2.5 |
 | ✅    |             | Clicking a row/card opens modal with all data                                                                     | 2.5 |
 | ✅    |             | Use tokens and a `.PEM` file                                                                                      | 2.5 |
 | ✅    |             | User-friendly client-side validation                                                                              |   5 |
