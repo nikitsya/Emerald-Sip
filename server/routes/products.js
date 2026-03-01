@@ -180,10 +180,7 @@ seedProductsIfEmpty()
 router.post(`/products/seed`, async (req, res, next) => {
     try {
         const result = await seedProductsIfEmpty()
-        if (!result.seeded) {
-            return res.json({message: `Products already exist`, count: result.count})
-        }
-
+        if (!result.seeded) return res.json({message: `Products already exist`, count: result.count})
         res.json(result.data)
     } catch (err) {
         next(err)
