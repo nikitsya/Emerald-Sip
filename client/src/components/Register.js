@@ -45,6 +45,12 @@ export const Register = () => {
         setErrors((previousErrors) => ({...previousErrors, confirmPassword: ""}))
     }
 
+    const handleFileChange = e =>
+    {
+        // Save the selected profile photo file in state.
+        setSelectedFile(e.target.files[0])
+    }
+
     const validate = () => {
         // Build all validation errors first, then render them together.
         const next = {}
