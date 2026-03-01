@@ -104,6 +104,12 @@ export const Register = () => {
          {headers: {"Content-type": "multipart/form-data"}}    
         )
             .then((res) => {
+                
+                if (res.data.errorMessage) {
+                    setServerError(res.data.errorMessage)
+                    return
+                }
+
                 // Save authenticated session values returned by backend.
                 localStorage.name = res.data.name
                 localStorage.accessLevel = res.data.accessLevel
