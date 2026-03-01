@@ -106,6 +106,7 @@ export const Register = () => {
                 // Save authenticated session values returned by backend.
                 localStorage.name = res.data.name
                 localStorage.accessLevel = res.data.accessLevel
+                localStorage.profilePhoto = res.data.profilePhoto
                 localStorage.token = res.data.token
                 setIsRegistered(true)
             })
