@@ -42,7 +42,7 @@ router.post(`/users/reset_user_collection`, (req, res, next) => {
 })
 
 // Registers a customer account if email is not already present.
-router.post(`/users/register/:name/:email/:password`, (req, res, next) => {
+router.post(`/users/register/:name/:email/:password`, upload.single("profilePhoto"), (req, res, next) => {
     // Enforce unique email identity at application level.
     usersModel.findOne({email: req.params.email})
         .then(uniqueData => {
