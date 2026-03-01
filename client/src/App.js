@@ -18,7 +18,9 @@ import {PayPalMessage} from "./components/PayPalMessage"
 
 // Main app component with all routes
 export const App = () => {
+    // Shared search query for both catalog routes.
     const [searchName, setSearchName] = useState("");
+    // Centralized cart state/actions used across product and cart pages.
     const {
         cartItems,
         cartItemsCount,
@@ -28,51 +30,42 @@ export const App = () => {
         clearCart
     } = useShoppingCart()
 
+    // Initialize guest session defaults when app is opened for the first time.
     if (typeof localStorage.accessLevel === "undefined") {
         localStorage.name = "GUEST"
         localStorage.accessLevel = ACCESS_LEVEL_GUEST
         localStorage.token = null
     }
 
+    // Admin users can manage products, customers can buy products.
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const renderCatalogPage = () => (
+        <DisplayAllProducts
+            searchName={searchName}
+            setSearchName={setSearchName}
+            cartItems={cartItems}
+            onAddToCart={isAdmin ? undefined : addToCart}
+        />
+    )
 
     return (
-        // BrowserRouter tracks URL changes in the browser
+        // BrowserRouter handles client-side navigation without full page reload.
         <BrowserRouter>
             <Navigation cartItemsCount={cartItemsCount}/>
             <Switch>
+                {/* Public auth/support pages */}
                 <Route exact path="/Register" component={Register}/>
                 <Route exact path="/Login" component={Login}/>
                 <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
                 <Route exact path="/ResetDatabase" component={ResetDatabase}/>
 
-                <Route
-                    exact
-                    path="/"
-                    render={() => (
-                        <DisplayAllProducts
-                            searchName={searchName}
-                            setSearchName={setSearchName}
-                            cartItems={cartItems}
-                            onAddToCart={isAdmin ? undefined : addToCart}
-                        />
-                    )}
-                />
-                <Route
-                    exact
-                    path="/DisplayAllProducts"
-                    render={() => (
-                        <DisplayAllProducts
-                            searchName={searchName}
-                            setSearchName={setSearchName}
-                            cartItems={cartItems}
-                            onAddToCart={isAdmin ? undefined : addToCart}
-                        />
-                    )}
-                />
+                {/* Catalog routes share the same renderer to avoid duplicated props logic */}
+                <Route exact path="/" render={renderCatalogPage}/>
+                <Route exact path="/DisplayAllProducts" render={renderCatalogPage}/>
                 <Route
                     exact
                     path="/Cart"
+                    // Admin accounts are redirected because checkout flow is customer-only.
                     render={() => (isAdmin ? (
                         <Redirect to="/DisplayAllProducts"/>
                     ) : (
@@ -85,20 +78,13 @@ export const App = () => {
                     ))}
                 />
 
+                {/* Product management routes require logged-in status */}
                 <LoggedInRoute exact path="/AddProduct" component={AddProduct}/>
                 <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct}/>
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
 
-                <Route
-                    render={() => (
-                        <DisplayAllProducts
-                            searchName={searchName}
-                            setSearchName={setSearchName}
-                            cartItems={cartItems}
-                            onAddToCart={isAdmin ? undefined : addToCart}
-                        />
-                    )}
-                />
+                {/* Fallback route keeps users on catalog for unknown paths */}
+                <Route render={renderCatalogPage}/>
             </Switch>
             <footer className="site-footer">
                 © 2026 Emerald Sip. All rights reserved. Serving customers in Ireland and across the European Union.
