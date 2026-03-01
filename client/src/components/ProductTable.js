@@ -4,39 +4,33 @@ import {ProductDetailsModal} from "./ProductDetailsModal";
 
 
 export const ProductTable = props => {
+    // Defensive normalization for incoming props.
     const products = Array.isArray(props.products) ? props.products : []
     const cartItems = Array.isArray(props.cartItems) ? props.cartItems : []
+    // Selected row product is displayed in details modal.
     const [selectedProduct, setSelectedProduct] = useState(null)
     const sortConfig = props.sortConfig || {column: "name", direction: "asc"}
-    const onSortChange = props.onSortChange || (() => {
-    })
+    const onSortChange = props.onSortChange || (() => {})
     const onAddToCart = props.onAddToCart
+    // Fast lookup for "already in cart" state by product id.
     const cartProductIdSet = new Set(cartItems.map((item) => item._id))
 
     const handleSort = (column) => {
+        // Toggle sort direction when same column is clicked, otherwise reset to ascending.
         onSortChange((previousConfig) => {
             if (previousConfig.column === column) {
-                return {
-                    column,
-                    direction: previousConfig.direction === "asc" ? "desc" : "asc"
-                }
+                return { column, direction: previousConfig.direction === "asc" ? "desc" : "asc"}
             }
-
-            return {
-                column,
-                direction: "asc"
-            }
+            return { column, direction: "asc" }
         })
     }
 
     const getSortIndicator = (column) => {
-        if (sortConfig.column !== column) {
-            return ""
-        }
-
+        if (sortConfig.column !== column) return ""
         return sortConfig.direction === "asc" ? "▲" : "▼"
     }
 
+    // Sorting keeps numeric columns numeric and other columns lexical.
     const sortedProducts = [...products].sort((firstProduct, secondProduct) => {
         const directionFactor = sortConfig.direction === "asc" ? 1 : -1
 
@@ -88,12 +82,15 @@ export const ProductTable = props => {
                 </tr>
                 </thead>
 
-                <tbody>{sortedProducts.map((product) => <ProductTableRow key={product._id} product={product}
-                                                                         onOpenDetails={setSelectedProduct}
-                                                                         isInCart={cartProductIdSet.has(product._id)}
-                                                                         onAddToCart={onAddToCart}/>)}</tbody>
+                <tbody>
+                {sortedProducts.map((product) => <ProductTableRow key={product._id} product={product}
+                                                                  onOpenDetails={setSelectedProduct}
+                                                                  isInCart={cartProductIdSet.has(product._id)}
+                                                                  onAddToCart={onAddToCart}/>)}
+                </tbody>
             </table>
 
+            {/* Details modal opens when a row sets selectedProduct */}
             <ProductDetailsModal product={selectedProduct} onClose={() => setSelectedProduct(null)}
                                  isInCart={selectedProduct ? cartProductIdSet.has(selectedProduct._id) : false}
                                  onAddToCart={onAddToCart}
