@@ -10,6 +10,9 @@ export const Register = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    // Selected profile photo file for multipart upload.
+    const [selectedFile, setSelectedFile] = useState(null)
+
     // Redirect after successful registration.
     const [isRegistered, setIsRegistered] = useState(false)
     // Client-side validation errors by field.
@@ -42,6 +45,14 @@ export const Register = () => {
         setErrors((previousErrors) => ({...previousErrors, confirmPassword: ""}))
     }
 
+    const handleFileChange = e =>
+    {
+        // Keep the selected file for multipart/form-data submit.
+        setSelectedFile(e.target.files[0] || null)
+        // Clear stale server error once user re-selects file.
+        setServerError("")
+    }
+
     const validate = () => {
         // Build all validation errors first, then render them together.
         const next = {}
@@ -58,6 +69,7 @@ export const Register = () => {
 
         if (!confirmPassword) next.confirmPassword = "Please confirm password"
         else if (password !== confirmPassword) next.confirmPassword = "Passwords do not match"
+        if (!selectedFile) next.profilePhoto = "Profile photo is required"
 
         return next
     }
@@ -82,11 +94,26 @@ export const Register = () => {
         const encodedEmail = encodeURIComponent(email.trim())
         const encodedPassword = encodeURIComponent(password)
 
-        axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`)
+        // Build multipart payload for profile photo upload.
+        const formData = new FormData()
+        if (selectedFile) {
+            formData.append("profilePhoto", selectedFile)
+        }
+
+        axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`, formData,
+         {headers: {"Content-type": "multipart/form-data"}}    
+        )
             .then((res) => {
+                
+                if (res.data.errorMessage) {
+                    setServerError(res.data.errorMessage)
+                    return
+                }
+
                 // Save authenticated session values returned by backend.
                 localStorage.name = res.data.name
                 localStorage.accessLevel = res.data.accessLevel
+                localStorage.profilePhoto = res.data.profilePhoto
                 localStorage.token = res.data.token
                 setIsRegistered(true)
             })
@@ -138,6 +165,14 @@ export const Register = () => {
             />
             {/* Confirm-password validation message */}
             {errors.confirmPassword ? <div className="error-text">{errors.confirmPassword}</div> : null}<br/><br/>
+            
+            <input
+                type="file"
+                accept=".png,.jpg,.jpeg,image/png,image/jpeg"
+                onChange={handleFileChange}
+            />
+            {errors.profilePhoto ? <div className="error-text">{errors.profilePhoto}</div> : null}
+            <br/><br/>
 
             <Button value="Register New User" className="green-button" onClick={handleSubmit}/>
             <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>

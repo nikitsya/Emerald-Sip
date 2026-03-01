@@ -9,6 +9,8 @@ const NavigationComponent = ({cartItemsCount = 0}) => {
     const closeMenu = () => setIsMenuOpen(false); // Close menu after link click
     const isLoggedIn = Number(localStorage.accessLevel) > ACCESS_LEVEL_GUEST
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const profilePhoto = localStorage.profilePhoto
+
 
     return (
         <header className="top-nav-shell">
@@ -32,7 +34,17 @@ const NavigationComponent = ({cartItemsCount = 0}) => {
                 <div className={"top-nav-right " + (isMenuOpen ? "menu-open" : "")}>
                     <div className="top-nav-auth-row">
                         {isLoggedIn ? (
-                            <Logout/>
+                            <div className="top-nav-user-group">
+                                {profilePhoto && profilePhoto !== "null" ? (
+                                    <img
+                                        className="top-nav-profile-photo"
+                                        src={`data:;base64,${profilePhoto}`}
+                                        alt="Profile"
+                                    />
+                                ) : null}
+                                <Logout/>
+                            </div>
+                            
                         ) : (
                             <>
                                 <Link to="/Login" className="top-nav-link" onClick={closeMenu}>Login</Link>
