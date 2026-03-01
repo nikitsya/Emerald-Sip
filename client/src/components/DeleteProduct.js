@@ -12,7 +12,6 @@ export const DeleteProduct = props => {
     // Stores backend error text for failed delete attempts.
     const [error, setError] = useState("")
 
-
     const handleConfirmDelete = () => {
         setIsDeleting(true)
         setError("")
