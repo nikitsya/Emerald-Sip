@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {App} from "./App"
 
-
 // Render <App /> into <div id="root"></div> from public/index.html
 ReactDOM.render(<App/>, document.getElementById(`root`))
 
