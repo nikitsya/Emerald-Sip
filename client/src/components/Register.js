@@ -93,6 +93,12 @@ export const Register = () => {
         const encodedEmail = encodeURIComponent(email.trim())
         const encodedPassword = encodeURIComponent(password)
 
+        // Build multipart payload for profile photo upload.
+        const formData = new FormData()
+        if (selectedFile) {
+            formData.append("profilePhoto", selectedFile)
+        }
+
         axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`)
             .then((res) => {
                 // Save authenticated session values returned by backend.
