@@ -104,31 +104,51 @@ router.post(`/users/register/:name/:email/:password`, upload.single("profilePhot
 router.post(`/users/login/:email/:password`, (req, res, next) => {
     usersModel.findOne({email: req.params.email})
         .then((data) => {
-            // Intentionally return generic login failure message for unknown users.
             if (!data) {
                 return res.json({errorMessage: `User is not logged in`})
             }
 
-            // Compare provided password against stored bcrypt hash.
             bcrypt.compare(req.params.password, data.password, (err, result) => {
                 if (err) {
                     return next(err)
                 }
 
-                if (result) {
-                    // Signed token carries user identity and authorization level.
-                    const token = jwt.sign({
-                        email: data.email,
-                        accessLevel: data.accessLevel
-                    }, JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn: process.env.JWT_EXPIRY})
-                    res.json({name: data.name, accessLevel: data.accessLevel, token: token})
-                } else {
-                    res.json({errorMessage: `User is not logged in`})
+                if (!result) {
+                    return res.json({errorMessage: `User is not logged in`})
                 }
+
+                const token = jwt.sign(
+                    {email: data.email, accessLevel: data.accessLevel},
+                    JWT_PRIVATE_KEY,
+                    {algorithm: "HS256", expiresIn: process.env.JWT_EXPIRY}
+                )
+
+                fs.readFile(
+                    `${process.env.UPLOADED_FILES_FOLDER}/${data.profilePhotoFilename}`,
+                    "base64",
+                    (readErr, fileData) => {
+                        if (readErr || !fileData) {
+                            return res.json({
+                                name: data.name,
+                                accessLevel: data.accessLevel,
+                                profilePhoto: null,
+                                token: token
+                            })
+                        }
+
+                        res.json({
+                            name: data.name,
+                            accessLevel: data.accessLevel,
+                            profilePhoto: fileData,
+                            token: token
+                        })
+                    }
+                )
             })
         })
         .catch((err) => next(err))
 })
+
 
 // Stateless logout endpoint: client is expected to discard its JWT token.
 router.post(`/users/logout`, (req, res) => {
