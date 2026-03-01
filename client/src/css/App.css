@@ -334,7 +334,7 @@ form input[readonly] {
 }
 
 /* Narrow desktop/tablet: keep image and text separated */
-@media (min-width: 771px) and (max-width: 930px) {
+@media (min-width: 681px) and (max-width: 930px) {
     .table-container thead th:nth-child(1),
     .table-container tbody td:nth-child(1) {
         width: 24%;
@@ -378,7 +378,7 @@ form input[readonly] {
 }
 
 /* Tablet view: show less row data than desktop by hiding secondary columns */
-@media (min-width: 771px) and (max-width: 992px) {
+@media (min-width: 681px) and (max-width: 992px) {
     .table-container thead th:nth-child(5),
     .table-container tbody td:nth-child(5),
     .table-container thead th:nth-child(6),
@@ -563,7 +563,7 @@ form input[readonly] {
     margin: 0;
 }
 
-@media (max-width: 770px) {
+@media (max-width: 680px) {
     .modal-overlay {
         padding: 8px;
     }
@@ -865,7 +865,7 @@ form input[readonly] {
 }
 
 /* Desktop */
-@media (min-width: 771px) {
+@media (min-width: 681px) {
     .container {
         padding: 20px;
     }
@@ -876,9 +876,9 @@ form input[readonly] {
 }
 
 
-/* Mobile Card Layout (≤ 770px) */
+/* Mobile Card Layout (≤ 680px) */
 
-@media (max-width: 770px) {
+@media (max-width: 680px) {
     .catalog-toolbar,
     .catalog-filters {
         padding: 12px;
@@ -1176,7 +1176,7 @@ form input[readonly] {
     line-height: 1.4;
 }
 
-@media (max-width: 770px) {
+@media (max-width: 680px) {
     .top-nav {
         position: relative; /* Anchor dropdown sections */
         flex-wrap: wrap;
