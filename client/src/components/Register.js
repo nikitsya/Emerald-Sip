@@ -165,6 +165,7 @@ export const Register = () => {
                 accept=".png,.jpg,.jpeg,image/png,image/jpeg"
                 onChange={handleFileChange}
             />
+            {errors.profilePhoto ? <div className="error-text">{errors.profilePhoto}</div> : null}
             <br/><br/>
 
             <Button value="Register New User" className="green-button" onClick={handleSubmit}/>
