@@ -28,7 +28,7 @@ How to use:
 - Leave the cell empty for `Partial` and `To do` items.
 - Update status as you complete work.
 
-Last reviewed: 2026-02-27
+Last reviewed: 2026-03-01
 
 | Done | Status      | Requirement                                                                                                       | Max |
 |------|-------------|-------------------------------------------------------------------------------------------------------------------|----:|
@@ -42,7 +42,7 @@ Last reviewed: 2026-02-27
 |      | Partial     | Show less data on a tablet row compared to a computer                                                             | 2.5 |
 | ✅    |             | Clicking a row/card opens modal with all data                                                                     | 2.5 |
 | ✅    |             | Use tokens and a `.PEM` file                                                                                      | 2.5 |
-|      | *           | User-friendly client-side validation                                                                              |   5 |
+|      | Partial     | User-friendly client-side validation                                                                              |   5 |
 | ✅    |             | Router validation                                                                                                 | 2.5 |
 | ✅    |             | MongoDB model validation                                                                                          | 2.5 |
 | ✅    |             | Implement middleware                                                                                              | 2.5 |
@@ -63,9 +63,9 @@ Last reviewed: 2026-02-27
 |      | Partial     | Add new record (including images), with error handling UI                                                         | 2.5 |
 |      | Partial     | Edit records (including images), with error handling UI                                                           | 2.5 |
 |      | Partial     | Delete products, including modal                                                                                  | 2.5 |
-|      | Partial     | Logged-in customer purchase products                                                                              | 2.5 |
+| ✅    |             | Logged-in customer purchase products                                                                              | 2.5 |
 |      | To do       | Logged-in customer view purchase history (with filter/search/sort/images)                                         | 2.5 |
 |      | To do       | Logged-in customer return products                                                                                | 2.5 |
 |      | in progress | Logged-in customer create profile with photo, including error handling UI                                         | 2.5 |
 |      | To do       | Logged-in customer edit profile with photo, including error handling UI                                           | 2.5 |
-|      | Partial     | Guest customer purchase products and save customer/product details for sales history, including error handling UI | 2.5 |
+| ✅    |             | Guest customer purchase products and save customer/product details for sales history, including error handling UI | 2.5 |
