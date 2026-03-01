@@ -2,6 +2,7 @@ import React from "react"
 import {Link} from "react-router-dom"
 import {Button} from "./Button"
 
+// Shared product form fields used by both Add and Edit pages.
 export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSubmit}) => (
     <form>
         <label>Name</label>
