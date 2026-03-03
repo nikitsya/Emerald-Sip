@@ -11,6 +11,35 @@ const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 
 const emptyFolder = require('empty-folder')
 
+// Validates phone format used by profile endpoints (7-15 digits).
+const isPhoneValid = (phone) => /^\d{7,15}$/.test(String(phone || ``).trim())
+
+// Sends a consistent profile payload to the client, including base64 photo when available.
+const sendProfileResponse = (user, res) => {
+     // Shared profile fields returned by both GET/PUT profile endpoints.
+    const basePayload = {
+        name: user.name,
+        email: user.email,
+        phone: user.phone || ``,
+        address: user.address || ``,
+        accessLevel: user.accessLevel
+    }
+
+    if (!user.profilePhotoFilename) {
+        return res.json({...basePayload, profilePhoto: null})
+    }
+
+    // Read stored profile image and attach it as base64 to JSON response.
+    fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${user.profilePhotoFilename}`, "base64", (readErr, fileData) => {
+        // If image read fails, still return profile data without breaking profile page.
+        if (readErr || !fileData) {
+            return res.json({...basePayload, profilePhoto: null})
+        }
+        // Successful image read: return profile with photo payload.
+        res.json({...basePayload, profilePhoto: fileData})
+    })
+}
+
 
 // Development-only endpoint: clears users and recreates a known admin account.
 router.post(`/users/reset_user_collection`, (req, res, next) => {
