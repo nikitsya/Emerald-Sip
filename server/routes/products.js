@@ -271,7 +271,7 @@ router.put(`/products/:id`, (req, res, next) => {
         if (err) {
             next(createError(403, `User is not logged in`))
         } else {
-            productsModel.findByIdAndUpdate(req.params.id, {$set: req.body})
+            productsModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true, runValidators: true})
                 .then(data => {
                     res.json(data)
                 })
