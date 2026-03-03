@@ -178,6 +178,28 @@ router.post(`/users/login/:email/:password`, (req, res, next) => {
         .catch((err) => next(err))
 })
 
+// Returns the currently logged-in user's profile data.
+router.get(`/users/profile`, (req, res, next) => {
+    // Verify JWT from request header before allowing profile access.
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
+        if (err) {
+            return next(createError(403, `User is not logged in`))
+        }
+
+         // Use email from decoded token to fetch the exact user profile.
+        usersModel.findOne({email: decodedToken.email})
+            .then((data) => {
+                // Token is valid but user record no longer exists.
+                if (!data) {
+                    return next(createError(404, `User profile not found`))
+                }
+                // Reuse shared profile response helper (with base64 photo if available).
+                sendProfileResponse(data, res)
+            })
+            // Forward DB errors to centralized error handler middleware.
+            .catch((findErr) => next(findErr))
+    })
+})
 
 // Stateless logout endpoint: client is expected to discard its JWT token.
 router.post(`/users/logout`, (req, res) => {
