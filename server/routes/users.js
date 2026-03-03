@@ -201,6 +201,61 @@ router.get(`/users/profile`, (req, res, next) => {
     })
 })
 
+// Updates logged-in user's profile data and optionally replaces profile photo.
+router.put(`/users/profile`, upload.single("profilePhoto"), (req, res, next) => {
+    // Updates logged-in user's profile data and optionally replaces profile photo.
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
+        if (err) {
+            return next(createError(403, `User is not logged in`))
+        }
+
+        // Resolve current user from token identity.
+        usersModel.findOne({email: decodedToken.email})
+            .then((data) => {
+                if (!data) {
+                    return next(createError(404, `User profile not found`))
+                }
+
+                // Normalize incoming text fields before validation/storage.
+                const name = String(req.body.name || ``).trim()
+                const phone = String(req.body.phone || ``).trim()
+                const address = String(req.body.address || ``).trim()
+
+                // Profile validation rules for professional error handling UI.
+                if (!name) return next(createError(400, `Name is required`))
+                if (phone && !isPhoneValid(phone)) return next(createError(400, `Phone must be 7-15 digits`))
+                if (!address) return next(createError(400, `Address is required`))
+
+                // Prepare DB update object with text fields.
+                const updates = {name, phone, address}
+
+                // Handle optional new profile image upload.
+                if (req.file) {
+                    // Only allow supported image MIME types.
+                    if (req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/jpeg") {
+                        // Remove invalid uploaded file and return validation error.
+                        return fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`, () => {
+                            next(createError(400, `Only .png, .jpg and .jpeg format accepted`))
+                        })
+                    }
+                    
+                    // Remove previous profile photo file to avoid orphan files.
+                    if (data.profilePhotoFilename) {
+                        fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${data.profilePhotoFilename}`, () => {})
+                    }
+                    // Save new random uploaded filename in user record.
+                    updates.profilePhotoFilename = req.file.filename
+                }
+
+                // Persist profile updates and return fresh profile payload to client.
+                usersModel.findByIdAndUpdate(data._id, {$set: updates}, {new: true})
+                    .then((updatedUser) => sendProfileResponse(updatedUser, res))
+                    .catch((updateErr) => next(updateErr))
+            })
+            .catch((findErr) => next(findErr))
+    })
+})
+
 // Stateless logout endpoint: client is expected to discard its JWT token.
 router.post(`/users/logout`, (req, res) => {
     res.json({})
