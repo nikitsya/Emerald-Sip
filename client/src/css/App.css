@@ -836,6 +836,16 @@ form input[readonly] {
     margin: 0;
 }
 
+.catalog-admin-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.catalog-stock-link {
+    margin: 0;
+}
+
 .catalog-add-product-icon {
     height: 38px;
 }
@@ -904,6 +914,10 @@ form input[readonly] {
     }
 
     .catalog-add-product-link {
+        align-self: flex-end;
+    }
+
+    .catalog-admin-links {
         align-self: flex-end;
     }
 
@@ -1017,6 +1031,165 @@ form input[readonly] {
         object-fit: cover;
         border-radius: 12px;
         background: transparent;
+    }
+}
+
+/* Admin stock page */
+.admin-stock-page {
+    max-width: 1040px;
+    padding: 20px;
+}
+
+.admin-stock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.admin-stock-header h2 {
+    margin: 0;
+    color: #2f3d2c;
+}
+
+.admin-stock-global-error {
+    margin-bottom: 12px;
+    border: 1px solid #d9b5a3;
+    background: #fff7f3;
+    color: #8d3f22;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.admin-stock-empty {
+    border: 1px solid #d4dfbf;
+    border-radius: 10px;
+    background: #fefffc;
+    padding: 12px;
+    color: #3f4f39;
+}
+
+.admin-stock-list {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-stock-item {
+    border: 1px solid #d4dfbf;
+    border-radius: 12px;
+    background: #fefffc;
+    padding: 12px;
+}
+
+.admin-stock-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-stock-image,
+.admin-stock-image-placeholder {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+}
+
+.admin-stock-image {
+    object-fit: cover;
+    border: 1px solid #dae3cd;
+}
+
+.admin-stock-image-placeholder {
+    border: 1px dashed #c9d5ba;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #60715a;
+    font-size: 12px;
+    background: #f5f8ef;
+}
+
+.admin-stock-meta {
+    min-width: 0;
+}
+
+.admin-stock-meta h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #253128;
+}
+
+.admin-stock-meta p {
+    margin: 4px 0 0;
+    color: #4f6150;
+}
+
+.admin-stock-actions {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-stock-input {
+    width: 150px;
+    max-width: 100%;
+    height: 38px;
+    border: 1px solid #c9d5ba;
+    border-radius: 8px;
+    background: #fbfdf8;
+    color: #2f3d2c;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+.admin-stock-input:focus {
+    outline: none;
+    border-color: #7f9766;
+    box-shadow: 0 0 0 2px rgba(127, 151, 102, 0.2);
+}
+
+.admin-stock-row-error {
+    margin: 8px 0 0;
+    color: #8d3f22;
+    font-size: 13px;
+}
+
+.admin-stock-row-success {
+    margin: 8px 0 0;
+    color: #2f6b2d;
+    font-size: 13px;
+}
+
+@media (max-width: 680px) {
+    .admin-stock-page {
+        padding: 12px;
+    }
+
+    .admin-stock-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-stock-header .blue-button {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .admin-stock-main {
+        align-items: flex-start;
+    }
+
+    .admin-stock-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-stock-input,
+    .admin-stock-actions .green-button {
+        width: 100%;
+        margin-right: 0;
     }
 }
 
