@@ -309,20 +309,15 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, ca
                     <div className="catalog-results-head">
                         <h2>{filteredProducts.length} products found</h2>
                         {isAdmin ? (
-                            <div className="catalog-admin-links">
-                                <Link className="blue-button catalog-stock-link" to="/AdminAdjustStock">
-                                    Adjust stock
-                                </Link>
-                                <Link
-                                    className="catalog-add-product-link"
-                                    to="/AddProduct"
-                                    aria-label="Add Product"
-                                    title="Add Product"
-                                >
-                                    <img className="catalog-add-product-icon" src="/images/buttons/admin/add_product.png"
-                                         alt="Add Product"/>
-                                </Link>
-                            </div>
+                            <Link
+                                className="catalog-add-product-link"
+                                to="/AddProduct"
+                                aria-label="Add Product"
+                                title="Add Product"
+                            >
+                                <img className="catalog-add-product-icon" src="/images/buttons/admin/add_product.png"
+                                     alt="Add Product"/>
+                            </Link>
                         ) : null}
                     </div>
 

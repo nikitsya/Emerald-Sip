@@ -57,29 +57,36 @@ const NavigationComponent = ({cartItemsCount = 0}) => {
                     <div className={"top-nav-right " + (isMenuOpen ? "menu-open" : "")}>
                         <div className="top-nav-auth-row">
                             {isLoggedIn ? (
-                                <div className="top-nav-user-group">
-                                    <button
-                                        type="button"
-                                        className="top-nav-profile-trigger"
-                                        onClick={() => {
-                                            closeMenu()
-                                            setIsProfileModalOpen(true)
-                                        }}
-                                        aria-label="Open profile menu"
-                                        aria-haspopup="dialog"
-                                        aria-expanded={isProfileModalOpen}
-                                    >
-                                        {hasProfilePhoto ? (
-                                            <img
-                                                className="top-nav-profile-photo"
-                                                src={`data:;base64,${profilePhoto}`}
-                                                alt="Profile"
-                                            />
-                                        ) : (
-                                            <span className="top-nav-profile-fallback">{profileInitial}</span>
-                                        )}
-                                    </button>
-                                </div>
+                                <>
+                                    {isAdmin ? (
+                                        <Link to="/AdminAdjustStock" className="top-nav-link" onClick={closeMenu}>
+                                            Adjust stock
+                                        </Link>
+                                    ) : null}
+                                    <div className="top-nav-user-group">
+                                        <button
+                                            type="button"
+                                            className="top-nav-profile-trigger"
+                                            onClick={() => {
+                                                closeMenu()
+                                                setIsProfileModalOpen(true)
+                                            }}
+                                            aria-label="Open profile menu"
+                                            aria-haspopup="dialog"
+                                            aria-expanded={isProfileModalOpen}
+                                        >
+                                            {hasProfilePhoto ? (
+                                                <img
+                                                    className="top-nav-profile-photo"
+                                                    src={`data:;base64,${profilePhoto}`}
+                                                    alt="Profile"
+                                                />
+                                            ) : (
+                                                <span className="top-nav-profile-fallback">{profileInitial}</span>
+                                            )}
+                                        </button>
+                                    </div>
+                                </>
                             ) : (
                                 <>
                                     <Link to="/Login" className="top-nav-link" onClick={closeMenu}>Login</Link>

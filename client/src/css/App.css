@@ -836,16 +836,6 @@ form input[readonly] {
     margin: 0;
 }
 
-.catalog-admin-links {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.catalog-stock-link {
-    margin: 0;
-}
-
 .catalog-add-product-icon {
     height: 38px;
 }
@@ -914,10 +904,6 @@ form input[readonly] {
     }
 
     .catalog-add-product-link {
-        align-self: flex-end;
-    }
-
-    .catalog-admin-links {
         align-self: flex-end;
     }
 
