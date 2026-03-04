@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom"
+import {BrowserRouter, Link, Redirect, Route, Switch} from "react-router-dom"
 import {DisplayAllProducts} from "./components/DisplayAllProducts"
 import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
@@ -88,6 +88,7 @@ export const App = () => {
             </Switch>
             <footer className="site-footer">
                 © 2026 Emerald Sip. All rights reserved. Serving customers in Ireland and across the European Union.
+                <Link to="/ResetDatabase" className="top-nav-link top-nav-danger">Reset Database</Link>
             </footer>
         </BrowserRouter>
     )
