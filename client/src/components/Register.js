@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "./Button"
@@ -12,6 +12,8 @@ export const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     // Selected profile photo file for multipart upload.
     const [selectedFile, setSelectedFile] = useState(null)
+    const [previewPhoto, setPreviewPhoto] = useState(null)
+
 
     // Redirect after successful registration.
     const [isRegistered, setIsRegistered] = useState(false)
@@ -47,11 +49,27 @@ export const Register = () => {
 
     const handleFileChange = e =>
     {
-        // Keep the selected file for multipart/form-data submit.
-        setSelectedFile(e.target.files[0] || null)
-        // Clear stale server error once user re-selects file.
-        setServerError("")
+         const file = e.target.files[0] || null
+    // Keep the selected file for multipart/form-data submit.
+    setSelectedFile(file)
+    // Clear stale server error once user re-selects file.
+    setServerError("")
+
+    if (file) {
+        setPreviewPhoto(URL.createObjectURL(file))
+    } else {
+        setPreviewPhoto(null)
     }
+    }
+
+useEffect(() => {
+    return () => {
+        if (previewPhoto) {
+            URL.revokeObjectURL(previewPhoto)
+        }
+    }
+}, [previewPhoto])
+
 
     const validate = () => {
         // Build all validation errors first, then render them together.
