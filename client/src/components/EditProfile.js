@@ -23,6 +23,7 @@ const [serverError, setServerError] = useState("")
 const [successMessage, setSuccessMessage] = useState("")
 const [isLoading, setIsLoading] = useState(true)
 
+// Redirect to catalog after successful save.
 const [isSaved, setIsSaved] = useState(false)
 
 useEffect(() => {
