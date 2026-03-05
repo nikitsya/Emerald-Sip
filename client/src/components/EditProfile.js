@@ -48,3 +48,41 @@ const validate = () => {
     if (phone.trim() && !/^\d{7,15}$/.test(phone.trim())) next.phone = "Phone must be 7-15 digits"
     return next
 }
+
+const handleSubmit = (e) => {
+    e.preventDefault()
+    setServerError("")
+    setSuccessMessage("")
+
+    const next = validate()
+    if (Object.keys(next).length > 0) {
+        setErrors(next)
+        return
+    }
+    setErrors({})
+
+    // Send text fields and optional image in one multipart request.
+    const formData = new FormData()
+    formData.append("name", name.trim())
+    formData.append("phone", phone.trim())
+    formData.append("address", address.trim())
+    if (selectedFile) formData.append("profilePhoto", selectedFile)
+
+    axios.put(`${SERVER_HOST}/users/profile`, formData, {
+        headers: {
+            authorization: localStorage.token,
+            "Content-type": "multipart/form-data"
+        }
+    })
+        .then((res) => {
+            // Keep client identity/avatar in sync with updated profile.
+            localStorage.name = res.data.name
+            localStorage.profilePhoto = res.data.profilePhoto
+            setProfilePhoto(res.data.profilePhoto || null)
+            setSelectedFile(null)
+            setSuccessMessage("Profile updated successfully")
+        })
+        .catch((err) => {
+            setServerError(err?.response?.data || "Failed to update profile")
+        })
+}
