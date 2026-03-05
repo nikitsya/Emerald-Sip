@@ -62,6 +62,15 @@ export const Register = () => {
     }
     }
 
+useEffect(() => {
+    return () => {
+        if (previewPhoto) {
+            URL.revokeObjectURL(previewPhoto)
+        }
+    }
+}, [previewPhoto])
+
+
     const validate = () => {
         // Build all validation errors first, then render them together.
         const next = {}
