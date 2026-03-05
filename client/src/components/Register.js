@@ -12,6 +12,8 @@ export const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("")
     // Selected profile photo file for multipart upload.
     const [selectedFile, setSelectedFile] = useState(null)
+    const [previewPhoto, setPreviewPhoto] = useState(null)
+
 
     // Redirect after successful registration.
     const [isRegistered, setIsRegistered] = useState(false)
