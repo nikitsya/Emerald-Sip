@@ -55,6 +55,8 @@ const handleSubmit = (e) => {
     e.preventDefault()
     setServerError("")
     setSuccessMessage("")
+    setIsSaved(false)
+
 
     const next = validate()
     if (Object.keys(next).length > 0) {
