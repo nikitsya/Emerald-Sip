@@ -88,6 +88,7 @@ const handleSubmit = (e) => {
             setProfilePhoto(res.data.profilePhoto || null)
             setSelectedFile(null)
             setSuccessMessage("Profile updated successfully")
+            setPreviewPhoto(null)
             setIsSaved(true)
         })
         .catch((err) => {
@@ -115,7 +116,7 @@ return (
         ) : profilePhoto ? (
             <img className="profile-preview" src={`data:;base64,${profilePhoto}`} alt="Profile"/>
         ) : null}
-        
+
         <input
             className={errors.name ? "field-error" : ""}
             type="text"
