@@ -1850,8 +1850,8 @@ form input[readonly] {
 }
 
 .profile-file-preview {
-    width: 56px;
-    height: 56px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #d8e5d2;
