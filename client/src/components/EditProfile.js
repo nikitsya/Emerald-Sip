@@ -110,8 +110,12 @@ return (
         {serverError ? <div className="error-text">{serverError}</div> : null}
         {successMessage ? <div className="success-text">{successMessage}</div> : null}
 
-        {profilePhoto ? <img className="profile-preview" src={`data:;base64,${profilePhoto}`} alt="Profile"/> : null}
-
+        {profilePhoto ? (
+            <img className="profile-preview" src={previewPhoto} alt="Selected preview"/>
+        ) : profilePhoto ? (
+            <img className="profile-preview" src={`data:;base64,${profilePhoto}`} alt="Profile"/>
+        ) : null}
+        
         <input
             className={errors.name ? "field-error" : ""}
             type="text"
