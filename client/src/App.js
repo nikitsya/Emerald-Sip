@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom"
+import {BrowserRouter, Link, Redirect, Route, Switch} from "react-router-dom"
 import {DisplayAllProducts} from "./components/DisplayAllProducts"
 import {AddProduct} from "./components/AddProduct"
 import {EditProduct} from "./components/EditProduct"
@@ -16,6 +16,7 @@ import {useShoppingCart} from "./hooks/useShoppingCart"
 import {PayPalMessage} from "./components/PayPalMessage"
 import {EditProfile} from "./components/EditProfile"
 
+import {AdminAdjustStock} from "./components/AdminAdjustStock"
 
 
 // Main app component with all routes
@@ -60,6 +61,11 @@ export const App = () => {
                 <Route exact path="/Login" component={Login}/>
                 <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
                 <Route exact path="/ResetDatabase" component={ResetDatabase}/>
+                <Route
+                    exact
+                    path="/AdminAdjustStock"
+                    render={() => (isAdmin ? <AdminAdjustStock/> : <Redirect to="/DisplayAllProducts"/>)}
+                />
 
                 {/* Catalog routes share the same renderer to avoid duplicated props logic */}
                 <Route exact path="/" render={renderCatalogPage}/>
@@ -92,6 +98,7 @@ export const App = () => {
             </Switch>
             <footer className="site-footer">
                 © 2026 Emerald Sip. All rights reserved. Serving customers in Ireland and across the European Union.
+                <Link to="/ResetDatabase" className="top-nav-link top-nav-danger">Reset Database</Link>
             </footer>
         </BrowserRouter>
     )
