@@ -45,6 +45,15 @@ useEffect(() => {
         .finally(() => setIsLoading(false))
 }, [])
 
+useEffect(() => {
+    return () => {
+        if (previewPhoto) {
+            URL.revokeObjectURL(previewPhoto)
+        }
+    }
+}, [previewPhoto])
+
+
 const validate = () => {
     // Collect all validation issues before submit.
     const next = {}
