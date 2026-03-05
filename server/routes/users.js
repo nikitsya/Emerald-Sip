@@ -11,6 +11,35 @@ const upload = multer({dest: `${process.env.UPLOADED_FILES_FOLDER}`})
 
 const emptyFolder = require('empty-folder')
 
+// Validates phone format used by profile endpoints (7-15 digits).
+const isPhoneValid = (phone) => /^\d{7,15}$/.test(String(phone || ``).trim())
+
+// Sends a consistent profile payload to the client, including base64 photo when available.
+const sendProfileResponse = (user, res) => {
+     // Shared profile fields returned by both GET/PUT profile endpoints.
+    const basePayload = {
+        name: user.name,
+        email: user.email,
+        phone: user.phone || ``,
+        address: user.address || ``,
+        accessLevel: user.accessLevel
+    }
+
+    if (!user.profilePhotoFilename) {
+        return res.json({...basePayload, profilePhoto: null})
+    }
+
+    // Read stored profile image and attach it as base64 to JSON response.
+    fs.readFile(`${process.env.UPLOADED_FILES_FOLDER}/${user.profilePhotoFilename}`, "base64", (readErr, fileData) => {
+        // If image read fails, still return profile data without breaking profile page.
+        if (readErr || !fileData) {
+            return res.json({...basePayload, profilePhoto: null})
+        }
+        // Successful image read: return profile with photo payload.
+        res.json({...basePayload, profilePhoto: fileData})
+    })
+}
+
 
 // Development-only endpoint: clears users and recreates a known admin account.
 router.post(`/users/reset_user_collection`, (req, res, next) => {
@@ -149,6 +178,83 @@ router.post(`/users/login/:email/:password`, (req, res, next) => {
         .catch((err) => next(err))
 })
 
+// Returns the currently logged-in user's profile data.
+router.get(`/users/profile`, (req, res, next) => {
+    // Verify JWT from request header before allowing profile access.
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
+        if (err) {
+            return next(createError(403, `User is not logged in`))
+        }
+
+         // Use email from decoded token to fetch the exact user profile.
+        usersModel.findOne({email: decodedToken.email})
+            .then((data) => {
+                // Token is valid but user record no longer exists.
+                if (!data) {
+                    return next(createError(404, `User profile not found`))
+                }
+                // Reuse shared profile response helper (with base64 photo if available).
+                sendProfileResponse(data, res)
+            })
+            // Forward DB errors to centralized error handler middleware.
+            .catch((findErr) => next(findErr))
+    })
+})
+
+// Updates logged-in user's profile data and optionally replaces profile photo.
+router.put(`/users/profile`, upload.single("profilePhoto"), (req, res, next) => {
+    // Updates logged-in user's profile data and optionally replaces profile photo.
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
+        if (err) {
+            return next(createError(403, `User is not logged in`))
+        }
+
+        // Resolve current user from token identity.
+        usersModel.findOne({email: decodedToken.email})
+            .then((data) => {
+                if (!data) {
+                    return next(createError(404, `User profile not found`))
+                }
+
+                // Normalize incoming text fields before validation/storage.
+                const name = String(req.body.name || ``).trim()
+                const phone = String(req.body.phone || ``).trim()
+                const address = String(req.body.address || ``).trim()
+
+                // Profile validation rules for professional error handling UI.
+                if (!name) return next(createError(400, `Name is required`))
+                if (phone && !isPhoneValid(phone)) return next(createError(400, `Phone must be 7-15 digits`))
+                if (!address) return next(createError(400, `Address is required`))
+
+                // Prepare DB update object with text fields.
+                const updates = {name, phone, address}
+
+                // Handle optional new profile image upload.
+                if (req.file) {
+                    // Only allow supported image MIME types.
+                    if (req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/jpeg") {
+                        // Remove invalid uploaded file and return validation error.
+                        return fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${req.file.filename}`, () => {
+                            next(createError(400, `Only .png, .jpg and .jpeg format accepted`))
+                        })
+                    }
+                    
+                    // Remove previous profile photo file to avoid orphan files.
+                    if (data.profilePhotoFilename) {
+                        fs.unlink(`${process.env.UPLOADED_FILES_FOLDER}/${data.profilePhotoFilename}`, () => {})
+                    }
+                    // Save new random uploaded filename in user record.
+                    updates.profilePhotoFilename = req.file.filename
+                }
+
+                // Persist profile updates and return fresh profile payload to client.
+                usersModel.findByIdAndUpdate(data._id, {$set: updates}, {new: true})
+                    .then((updatedUser) => sendProfileResponse(updatedUser, res))
+                    .catch((updateErr) => next(updateErr))
+            })
+            .catch((findErr) => next(findErr))
+    })
+})
 
 // Stateless logout endpoint: client is expected to discard its JWT token.
 router.post(`/users/logout`, (req, res) => {

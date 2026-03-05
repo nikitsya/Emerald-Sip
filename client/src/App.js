@@ -14,6 +14,8 @@ import {LoggedInRoute} from "./components/LoggedInRoute"
 import {ShoppingCart} from "./components/ShoppingCart"
 import {useShoppingCart} from "./hooks/useShoppingCart"
 import {PayPalMessage} from "./components/PayPalMessage"
+import {EditProfile} from "./components/EditProfile"
+
 import {AdminAdjustStock} from "./components/AdminAdjustStock"
 
 
@@ -88,6 +90,8 @@ export const App = () => {
                 <LoggedInRoute exact path="/AddProduct" component={AddProduct}/>
                 <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct}/>
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
+                <LoggedInRoute exact path="/EditProfile" component={EditProfile}/>
+
 
                 {/* Fallback route keeps users on catalog for unknown paths */}
                 <Route render={renderCatalogPage}/>
