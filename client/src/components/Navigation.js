@@ -63,9 +63,17 @@ const NavigationComponent = ({ cartItemsCount = 0 }) => {
                             {isLoggedIn ? (
                                 <>
                                     {isAdmin ? (
-                                        <Link to="/AdminAdjustStock" className="top-nav-link" onClick={closeMenu}>
-                                            Adjust stock
-                                        </Link>
+                                        <>
+                                            <Link to="/AdminAdjustStock" className="top-nav-link" onClick={closeMenu}>
+                                                Adjust stock
+                                            </Link>
+                                            <Link to="/AdminViewCustomers" className="top-nav-link" onClick={closeMenu}>
+                                                View Customers
+                                            </Link>
+                                            <Link to="/AdminViewCustomersPurchaseHistory" className="top-nav-link" onClick={closeMenu}>
+                                                View Customers Purchase History
+                                            </Link>
+                                        </>
                                     ) : null}
                                     <div className="top-nav-user-group">
                                         <button

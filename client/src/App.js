@@ -17,6 +17,8 @@ import {PayPalMessage} from "./components/PayPalMessage"
 import {EditProfile} from "./components/EditProfile"
 
 import {AdminAdjustStock} from "./components/AdminAdjustStock"
+import {AdminViewCustomers} from "./components/AdminViewCustomers"
+import {AdminViewCustomersPurchaseHistory} from "./components/AdminViewCustomersPurchaseHistory"
 
 
 // Main app component with all routes
@@ -65,6 +67,16 @@ export const App = () => {
                     exact
                     path="/AdminAdjustStock"
                     render={() => (isAdmin ? <AdminAdjustStock/> : <Redirect to="/DisplayAllProducts"/>)}
+                />
+                <Route
+                    exact
+                    path="/AdminViewCustomers"
+                    render={() => (isAdmin ? <AdminViewCustomers/> : <Redirect to="/DisplayAllProducts"/>)}
+                />
+                <Route
+                    exact
+                    path="/AdminViewCustomersPurchaseHistory"
+                    render={() => (isAdmin ? <AdminViewCustomersPurchaseHistory/> : <Redirect to="/DisplayAllProducts"/>)}
                 />
 
                 {/* Catalog routes share the same renderer to avoid duplicated props logic */}
