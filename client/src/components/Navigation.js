@@ -42,6 +42,7 @@ const NavigationComponent = ({cartItemsCount = 0}) => {
                                         alt="Profile"
                                     />
                                 ) : null}
+                                <Link to="/EditProfile" className="top-nav-link" onClick={closeMenu}>Edit Profile</Link>
                                 <Logout/>
                             </div>
                             
