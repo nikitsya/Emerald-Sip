@@ -39,3 +39,12 @@ useEffect(() => {
         })
         .finally(() => setIsLoading(false))
 }, [])
+
+const validate = () => {
+    // Collect all validation issues before submit.
+    const next = {}
+    if (!name.trim()) next.name = "Name is required"
+    if (!address.trim()) next.address = "Address is required"
+    if (phone.trim() && !/^\d{7,15}$/.test(phone.trim())) next.phone = "Phone must be 7-15 digits"
+    return next
+}
