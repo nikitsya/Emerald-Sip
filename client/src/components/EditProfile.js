@@ -144,7 +144,15 @@ return (
         <input
             type="file"
             accept=".png,.jpg,.jpeg,image/png,image/jpeg"
-            onChange={(e) => setSelectedFile(e.target.files[0] || null)}
+            onChange={(e) => {
+                const file = e.target.files[0] || null
+                setSelectedFile(file)
+                if (file) {
+                    setPreviewPhoto(URL.createObjectURL(file))
+                } else {
+                    setPreviewPhoto(null)
+                }
+            }}
         /><br/><br/>
 
         <Button value="Save Profile" className="green-button" onClick={handleSubmit}/>
