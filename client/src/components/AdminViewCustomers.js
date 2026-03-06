@@ -74,9 +74,6 @@ export const AdminViewCustomers = () => {
     }
 
     const orderedCustomerEmailSet = useMemo(() => new Set(orderedCustomerEmails), [orderedCustomerEmails])
-    const customersWithOrdersCount = useMemo(() => {
-        return customers.filter((customer) => orderedCustomerEmailSet.has(String(customer?.email || "").trim().toLowerCase())).length
-    }, [customers, orderedCustomerEmailSet])
 
     const filteredAndSortedCustomers = useMemo(() => {
         const normalizedSearch = searchTerm.trim().toLowerCase()
@@ -119,7 +116,6 @@ export const AdminViewCustomers = () => {
             <div className="admin-purchase-summary">
                 <div><strong>{filteredAndSortedCustomers.length}</strong> customers shown</div>
                 <div><strong>{customers.length}</strong> total customers</div>
-                <div><strong>{customersWithOrdersCount}</strong> with orders</div>
             </div>
 
             <div className="admin-purchase-controls">
