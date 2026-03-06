@@ -2841,6 +2841,10 @@ form input[readonly] {
     cursor: pointer;
 }
 
+.purchase-return-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 .purchase-return-btn:hover,
 .purchase-return-btn:focus {
     background: #dfe8cf;
