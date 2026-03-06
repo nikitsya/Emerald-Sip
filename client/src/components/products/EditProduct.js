@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
-import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
-import {buildProductPayload, mapProductToFormValues, useProductForm, validateProductForm} from "../hooks/useProductForm"
+import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {buildProductPayload, mapProductToFormValues, useProductForm, validateProductForm} from "../../hooks/useProductForm"
 import {ProductFormFields} from "./ProductFormFields"
 
 // Maps backend/network failures to user-friendly messages for edit flow.

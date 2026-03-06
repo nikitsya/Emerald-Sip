@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
-import {ACCESS_LEVEL_ADMIN} from "../config/global_constants"
+import {ACCESS_LEVEL_ADMIN} from "../../config/global_constants"
 
 
 const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`

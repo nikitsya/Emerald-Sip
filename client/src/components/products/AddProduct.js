@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
-import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
-import {buildProductPayload, useProductForm, validateProductForm} from "../hooks/useProductForm"
+import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {buildProductPayload, useProductForm, validateProductForm} from "../../hooks/useProductForm"
 import {ProductFormFields} from "./ProductFormFields"
 
 
