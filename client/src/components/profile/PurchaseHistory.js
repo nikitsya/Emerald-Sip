@@ -85,6 +85,15 @@ export const PurchaseHistory = () => {
     // Temporary placeholder for return action; API wiring in next step.
     const handleReturnClick = () => {}
 
+    const requestReturnItem = (saleId, itemId) => {
+    return axios.patch(
+        `${SERVER_HOST}/sales/return-item/${saleId}/${itemId}`,
+        {},
+        {headers: {"authorization": localStorage.token}}
+    )
+}
+
+
     const periodOptions = useMemo(() => {
         const periodsByValue = new Map()
 
