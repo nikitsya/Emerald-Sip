@@ -47,7 +47,7 @@ const getProductDocument = (req, res, next) => {
 router.get(`/products/:id`, verifyUsersJWTPassword, getProductDocument)
 
 
-// Route handler: creates a new product document. only admin users can create products.
+// Route handler: creates a new product document.
 
 const createNewProductDocument = (req, res, next) => {
     productsModel.create(req.body)
@@ -61,7 +61,7 @@ const createNewProductDocument = (req, res, next) => {
 router.post(`/products`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, createNewProductDocument)
 
 
-// Route handler: updates one product document by ID. only admin users can update products.
+// Route handler: updates one product document by ID.
 
 const updateProductDocument = (req, res, next) => {
     productsModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true, runValidators: true})
@@ -74,24 +74,16 @@ const updateProductDocument = (req, res, next) => {
 // Update one product (admin only).
 router.put(`/products/:id`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, updateProductDocument)
 
+// Route handler: deletes one product document by ID.
+const deleteProductDocument = (req, res, next) => {
+    productsModel.findByIdAndDelete(req.params.id)
+        .then(data => {
+            res.json(data)
+        })
+        .catch((err) => next(err))
+}
 
-// Protected endpoint: only admin users can delete products.
-router.delete(`/products/:id`, (req, res, next) => {
-    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
-        if (err) {
-            next(createError(403, `User is not logged in`))
-        } else {
-            if (decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN) {
-                productsModel.findByIdAndDelete(req.params.id)
-                    .then(data => {
-                        res.json(data)
-                    })
-                    .catch((err) => next(err))
-            } else {
-                next(createError(403, `User is not an administrator, so they cannot delete records`))
-            }
-        }
-    })
-})
+// Delete one product (admin only).
+router.delete(`/products/:id`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, deleteProductDocument)
 
 module.exports = router
