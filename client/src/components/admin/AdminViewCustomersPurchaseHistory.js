@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react"
 import axios from "axios"
 import {Link, Redirect, withRouter} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {getAdminErrorMessage, getSortIndicator} from "./adminShared"
 
 // Normalizes monetary values to EUR format used across admin reports.
 const formatCurrency = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
@@ -30,19 +31,6 @@ const getSortValue = (purchase, column) => {
             : 0
     }
     return String(purchase?.[column] || "").toLowerCase()
-}
-
-const getErrorMessage = (error, fallbackMessage) => {
-    const status = error?.response?.status
-    if (status === 401 || status === 403) return "Your admin session expired. Please log in again."
-    if (status && status >= 500) return "Server error. Please try again in a moment."
-    if (error?.code === "ERR_NETWORK") return "Cannot connect to server. Check backend connection."
-
-    const responseData = error?.response?.data
-    if (typeof responseData === "string" && responseData.trim()) return responseData.trim()
-    if (typeof responseData?.message === "string" && responseData.message.trim()) return responseData.message.trim()
-    if (typeof error?.message === "string" && error.message.trim()) return error.message.trim()
-    return fallbackMessage
 }
 
 const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
@@ -76,7 +64,7 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
             })
             .catch((error) => {
                 setPurchases([])
-                setLoadError(getErrorMessage(error, "Failed to load purchase history. Please try again."))
+                setLoadError(getAdminErrorMessage(error, "Failed to load purchase history. Please try again."))
             })
             .finally(() => setIsLoading(false))
     }, [])
@@ -94,11 +82,6 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
             }
             return {column, direction: column === "createdAt" ? "desc" : "asc"}
         })
-    }
-
-    const getSortIndicator = (column) => {
-        if (sortConfig.column !== column) return ""
-        return sortConfig.direction === "asc" ? "▲" : "▼"
     }
 
     const filteredAndSortedPurchases = useMemo(() => {
@@ -219,28 +202,28 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
                         <tr>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("createdAt")}>
-                                    Date {getSortIndicator("createdAt")}
+                                    Date {getSortIndicator(sortConfig, "createdAt")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("orderID")}>
-                                    Order ID {getSortIndicator("orderID")}
+                                    Order ID {getSortIndicator(sortConfig, "orderID")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("customerName")}>
-                                    Customer {getSortIndicator("customerName")}
+                                    Customer {getSortIndicator(sortConfig, "customerName")}
                                 </button>
                             </th>
                             <th>Type</th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("total")}>
-                                    Total {getSortIndicator("total")}
+                                    Total {getSortIndicator(sortConfig, "total")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("itemsCount")}>
-                                    Items {getSortIndicator("itemsCount")}
+                                    Items {getSortIndicator(sortConfig, "itemsCount")}
                                 </button>
                             </th>
                             <th>Details</th>

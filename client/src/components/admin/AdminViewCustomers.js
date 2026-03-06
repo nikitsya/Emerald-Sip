@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react"
 import axios from "axios"
 import {Link, Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {getAdminErrorMessage, getSortIndicator} from "./adminShared"
 
 export const AdminViewCustomers = () => {
     // Restrict customer list and purchase metadata to admin users.
@@ -13,19 +14,6 @@ export const AdminViewCustomers = () => {
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
     const [searchTerm, setSearchTerm] = useState("")
     const [orderFilter, setOrderFilter] = useState("all")
-
-    const getErrorMessage = useCallback((error, fallbackMessage) => {
-        const status = error?.response?.status
-        if (status === 401 || status === 403) return "Your admin session expired. Please log in again."
-        if (status && status >= 500) return "Server error. Please try again in a moment."
-        if (error?.code === "ERR_NETWORK") return "Cannot connect to server. Check backend connection."
-
-        const responseData = error?.response?.data
-        if (typeof responseData === "string" && responseData.trim()) return responseData.trim()
-        if (typeof responseData?.message === "string" && responseData.message.trim()) return responseData.message.trim()
-        if (typeof error?.message === "string" && error.message.trim()) return error.message.trim()
-        return fallbackMessage
-    }, [])
 
     const loadCustomers = useCallback(() => {
         setIsLoading(true)
@@ -51,10 +39,10 @@ export const AdminViewCustomers = () => {
             .catch((error) => {
                 setCustomers([])
                 setOrderedCustomerEmails([])
-                setLoadError(getErrorMessage(error, "Failed to load customers. Please try again."))
+                setLoadError(getAdminErrorMessage(error, "Failed to load customers. Please try again."))
             })
             .finally(() => setIsLoading(false))
-    }, [getErrorMessage])
+    }, [])
 
     useEffect(() => {
         if (!isAdmin) return
@@ -69,11 +57,6 @@ export const AdminViewCustomers = () => {
             }
             return {column, direction: "asc"}
         })
-    }
-
-    const getSortIndicator = (column) => {
-        if (sortConfig.column !== column) return ""
-        return sortConfig.direction === "asc" ? "▲" : "▼"
     }
 
     const orderedCustomerEmailSet = useMemo(() => new Set(orderedCustomerEmails), [orderedCustomerEmails])
@@ -183,22 +166,22 @@ export const AdminViewCustomers = () => {
                             <th>Photo</th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("name")}>
-                                    Name {getSortIndicator("name")}
+                                    Name {getSortIndicator(sortConfig, "name")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("email")}>
-                                    Email {getSortIndicator("email")}
+                                    Email {getSortIndicator(sortConfig, "email")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("phone")}>
-                                    Phone {getSortIndicator("phone")}
+                                    Phone {getSortIndicator(sortConfig, "phone")}
                                 </button>
                             </th>
                             <th>
                                 <button type="button" className="table-sort-btn" onClick={() => handleSort("address")}>
-                                    Address {getSortIndicator("address")}
+                                    Address {getSortIndicator(sortConfig, "address")}
                                 </button>
                             </th>
                             <th>History</th>

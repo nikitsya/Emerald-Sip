@@ -2,26 +2,12 @@ import React, {useCallback, useEffect, useState} from "react"
 import axios from "axios"
 import {Link, Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {getAdminErrorMessage} from "./adminShared"
 
 // Product cards show a single preview image, this helper safely extracts it.
 const getFirstImage = (product) => {
     if (!Array.isArray(product.images) || product.images.length === 0) return ""
     return product.images[0] || ""
-}
-
-// Maps backend/network errors to readable UI text for admin stock actions.
-const getErrorMessage = (error, fallbackMessage) => {
-    const status = error?.response?.status
-    if (status === 401 || status === 403) return "Your admin session expired. Please log in again."
-    if (status === 404) return "Product was not found. Refresh and try again."
-    if (status && status >= 500) return "Server error. Please try again in a moment."
-    if (error?.code === "ERR_NETWORK") return "Cannot connect to server. Check backend connection."
-
-    const responseData = error?.response?.data
-    if (typeof responseData === "string" && responseData.trim()) return responseData.trim()
-    if (typeof responseData?.message === "string" && responseData.message.trim()) return responseData.message.trim()
-    if (typeof error?.message === "string" && error.message.trim()) return error.message.trim()
-    return fallbackMessage
 }
 
 // Validates admin-entered stock values before sending update requests.
@@ -75,7 +61,9 @@ export const AdminAdjustStock = () => {
             })
             .catch((error) => {
                 setProducts([])
-                setLoadError(getErrorMessage(error, "Failed to load products. Please try again."))
+                setLoadError(getAdminErrorMessage(error, "Failed to load products. Please try again.", {
+                    notFoundMessage: "Product was not found. Refresh and try again."
+                }))
             })
             .finally(() => setIsLoading(false))
     }, [])
@@ -150,7 +138,9 @@ export const AdminAdjustStock = () => {
             .catch((error) => {
                 setSaveErrorById((current) => ({
                     ...current,
-                    [productId]: getErrorMessage(error, "Could not update stock for this product.")
+                    [productId]: getAdminErrorMessage(error, "Could not update stock for this product.", {
+                        notFoundMessage: "Product was not found. Refresh and try again."
+                    })
                 }))
             })
             .finally(() => {
