@@ -1302,43 +1302,53 @@ form input[readonly] {
 }
 
 .admin-purchase-table-wrap table {
-    min-width: 1120px;
+    min-width: 1040px;
+    table-layout: auto;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(1),
 .admin-purchase-table-wrap tbody td:nth-child(1) {
-    width: 14%;
+    width: 13%;
+    white-space: nowrap;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(2),
 .admin-purchase-table-wrap tbody td:nth-child(2) {
-    width: 16%;
+    width: 15%;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(3),
 .admin-purchase-table-wrap tbody td:nth-child(3) {
-    width: 24%;
+    width: 18%;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(4),
 .admin-purchase-table-wrap tbody td:nth-child(4) {
     width: 8%;
     text-align: left;
+    white-space: nowrap;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(5),
 .admin-purchase-table-wrap tbody td:nth-child(5) {
-    width: 9%;
+    width: 8%;
+    white-space: nowrap;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(6),
 .admin-purchase-table-wrap tbody td:nth-child(6) {
-    width: 7%;
+    width: 6%;
+    white-space: nowrap;
 }
 
 .admin-purchase-table-wrap thead th:nth-child(7),
 .admin-purchase-table-wrap tbody td:nth-child(7) {
-    width: 22%;
+    width: 32%;
+    min-width: 280px;
     text-align: left;
 }
 
@@ -1374,8 +1384,9 @@ form input[readonly] {
 }
 
 .admin-purchase-items-list li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
     gap: 10px;
     font-size: 13px;
     color: #324132;
@@ -1383,6 +1394,10 @@ form input[readonly] {
 
 .admin-purchase-items-list li span {
     overflow-wrap: anywhere;
+}
+
+.admin-purchase-items-list li strong {
+    white-space: nowrap;
 }
 
 .admin-purchase-no-items {
