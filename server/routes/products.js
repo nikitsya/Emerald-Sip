@@ -86,7 +86,7 @@ const deleteProductDocument = (req, res, next) => {
 }
 
 // Delete one product (admin only).
-router.delete(`/products/:id`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, deleteProductDocument)
+router.delete(`/products/:id`, validateProductIDParam, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, deleteProductDocument)
 
 // Middleware: validates MongoDB ObjectId route parameter.
 const validateProductIDParam = (req, res, next) => {
