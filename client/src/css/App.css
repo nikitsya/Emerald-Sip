@@ -1299,6 +1299,22 @@ form input[readonly] {
     margin-left: 8px;
     color: #4b6336;
     font-weight: 700;
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.admin-purchase-clear-filter:hover {
+    color: #2f4b20;
+}
+
+.admin-purchase-clear-filter:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(127, 151, 102, 0.2);
+    border-radius: 4px;
 }
 
 .admin-purchase-table-wrap table {

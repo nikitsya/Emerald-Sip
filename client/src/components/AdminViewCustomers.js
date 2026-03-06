@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react"
+import React, {useCallback, useEffect, useMemo, useState} from "react"
 import axios from "axios"
 import {Link, Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
@@ -6,9 +6,12 @@ import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 export const AdminViewCustomers = () => {
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
     const [customers, setCustomers] = useState([])
+    const [orderedCustomerEmails, setOrderedCustomerEmails] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [loadError, setLoadError] = useState("")
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
+    const [searchTerm, setSearchTerm] = useState("")
+    const [orderFilter, setOrderFilter] = useState("all")
 
     const getErrorMessage = useCallback((error, fallbackMessage) => {
         const status = error?.response?.status
@@ -27,12 +30,25 @@ export const AdminViewCustomers = () => {
         setIsLoading(true)
         setLoadError("")
 
-        axios.get(`${SERVER_HOST}/users`, {headers: {"authorization": localStorage.token}})
-            .then((response) => {
-                setCustomers(Array.isArray(response.data) ? response.data : [])
+        Promise.all([
+            axios.get(`${SERVER_HOST}/users`, {headers: {"authorization": localStorage.token}}),
+            axios.get(`${SERVER_HOST}/sales/customers/purchase-history`, {headers: {"authorization": localStorage.token}})
+        ])
+            .then(([customersResponse, purchaseHistoryResponse]) => {
+                const nextCustomers = Array.isArray(customersResponse.data) ? customersResponse.data : []
+                const purchaseHistory = Array.isArray(purchaseHistoryResponse.data) ? purchaseHistoryResponse.data : []
+                const emailsWithOrders = Array.from(new Set(
+                    purchaseHistory
+                        .map((purchase) => String(purchase?.customerEmail || "").trim().toLowerCase())
+                        .filter((email) => email !== "")
+                ))
+
+                setCustomers(nextCustomers)
+                setOrderedCustomerEmails(emailsWithOrders)
             })
             .catch((error) => {
                 setCustomers([])
+                setOrderedCustomerEmails([])
                 setLoadError(getErrorMessage(error, "Failed to load customers. Please try again."))
             })
             .finally(() => setIsLoading(false))
@@ -42,8 +58,6 @@ export const AdminViewCustomers = () => {
         if (!isAdmin) return
         loadCustomers()
     }, [isAdmin, loadCustomers])
-
-    if (!isAdmin) return <Redirect to="/DisplayAllProducts"/>
 
     const handleSort = (column) => {
         setSortConfig((previousConfig) => {
@@ -59,12 +73,41 @@ export const AdminViewCustomers = () => {
         return sortConfig.direction === "asc" ? "▲" : "▼"
     }
 
-    const sortedCustomers = [...customers].sort((firstCustomer, secondCustomer) => {
-        const directionFactor = sortConfig.direction === "asc" ? 1 : -1
-        const firstValue = String(firstCustomer?.[sortConfig.column] || "").toLowerCase()
-        const secondValue = String(secondCustomer?.[sortConfig.column] || "").toLowerCase()
-        return firstValue.localeCompare(secondValue) * directionFactor
-    })
+    const orderedCustomerEmailSet = useMemo(() => new Set(orderedCustomerEmails), [orderedCustomerEmails])
+    const customersWithOrdersCount = useMemo(() => {
+        return customers.filter((customer) => orderedCustomerEmailSet.has(String(customer?.email || "").trim().toLowerCase())).length
+    }, [customers, orderedCustomerEmailSet])
+
+    const filteredAndSortedCustomers = useMemo(() => {
+        const normalizedSearch = searchTerm.trim().toLowerCase()
+
+        const filteredCustomers = customers.filter((customer) => {
+            const customerEmail = String(customer?.email || "").trim().toLowerCase()
+            const hasOrders = customerEmail !== "" && orderedCustomerEmailSet.has(customerEmail)
+
+            if (orderFilter === "with-orders" && !hasOrders) return false
+            if (orderFilter === "without-orders" && hasOrders) return false
+            if (!normalizedSearch) return true
+
+            const searchableText = [
+                customer.name,
+                customer.email,
+                customer.phone,
+                customer.address
+            ].map((value) => String(value || "").toLowerCase()).join(" ")
+
+            return searchableText.includes(normalizedSearch)
+        })
+
+        return filteredCustomers.sort((firstCustomer, secondCustomer) => {
+            const directionFactor = sortConfig.direction === "asc" ? 1 : -1
+            const firstValue = String(firstCustomer?.[sortConfig.column] || "").toLowerCase()
+            const secondValue = String(secondCustomer?.[sortConfig.column] || "").toLowerCase()
+            return firstValue.localeCompare(secondValue) * directionFactor
+        })
+    }, [customers, orderFilter, orderedCustomerEmailSet, searchTerm, sortConfig])
+
+    if (!isAdmin) return <Redirect to="/DisplayAllProducts"/>
 
     return (
         <div className="container admin-customers-page">
@@ -72,6 +115,48 @@ export const AdminViewCustomers = () => {
                 <h2>View Customers</h2>
                 <Link className="blue-button" to="/DisplayAllProducts">Back to catalog</Link>
             </div>
+
+            <div className="admin-purchase-summary">
+                <div><strong>{filteredAndSortedCustomers.length}</strong> customers shown</div>
+                <div><strong>{customers.length}</strong> total customers</div>
+                <div><strong>{customersWithOrdersCount}</strong> with orders</div>
+            </div>
+
+            <div className="admin-purchase-controls">
+                <input
+                    className="admin-purchase-search"
+                    type="search"
+                    placeholder="Search by name, email, phone or address"
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                />
+
+                <select
+                    className="admin-purchase-select"
+                    value={orderFilter}
+                    onChange={(event) => setOrderFilter(event.target.value)}
+                >
+                    <option value="all">All customers</option>
+                    <option value="with-orders">With orders</option>
+                    <option value="without-orders">Without orders</option>
+                </select>
+            </div>
+
+            {searchTerm.trim() || orderFilter !== "all" ? (
+                <div className="admin-purchase-filter-note">
+                    Filters active.
+                    <button
+                        type="button"
+                        className="admin-purchase-clear-filter"
+                        onClick={() => {
+                            setSearchTerm("")
+                            setOrderFilter("all")
+                        }}
+                    >
+                        Clear
+                    </button>
+                </div>
+            ) : null}
 
             {loadError ? (
                 <div className="admin-stock-global-error" role="alert">
@@ -86,7 +171,11 @@ export const AdminViewCustomers = () => {
                 <div className="admin-stock-empty">No customers available.</div>
             ) : null}
 
-            {!isLoading && customers.length > 0 ? (
+            {!isLoading && customers.length > 0 && filteredAndSortedCustomers.length === 0 && !loadError ? (
+                <div className="admin-stock-empty">No customers found for the current filters.</div>
+            ) : null}
+
+            {!isLoading && filteredAndSortedCustomers.length > 0 ? (
                 <div className="table-container admin-customers-table-wrap">
                     <table>
                         <thead>
@@ -117,7 +206,7 @@ export const AdminViewCustomers = () => {
                         </thead>
 
                         <tbody>
-                        {sortedCustomers.map((customer) => (
+                        {filteredAndSortedCustomers.map((customer) => (
                             <tr key={customer._id}>
                                 <td data-label="Photo">
                                     {customer.profilePhoto ? (
