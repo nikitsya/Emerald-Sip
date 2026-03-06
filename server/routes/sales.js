@@ -48,7 +48,9 @@ const formatSaleForAdmin = (sale) => ({
             _id: String(item?._id || ``),
             name: String(item?.name || ``).trim(),
             price: Number(item?.price) || 0,
-            quantity: Math.max(1, Number(item?.quantity) || 1)
+            quantity: Math.max(1, Number(item?.quantity) || 1),
+            isReturned: Boolean(item?.isReturned),
+            returnedAt: item?.returnedAt || null
         }))
         : []
 })
