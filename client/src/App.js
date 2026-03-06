@@ -15,6 +15,7 @@ import {ShoppingCart} from "./components/cart/ShoppingCart"
 import {useShoppingCart} from "./hooks/useShoppingCart"
 import {PayPalMessage} from "./components/system/PayPalMessage"
 import {EditProfile} from "./components/profile/EditProfile"
+import {PurchaseHistory} from "./components/profile/PurchaseHistory"
 import {AdminAdjustStock} from "./components/admin/AdminAdjustStock"
 import {AdminViewCustomers} from "./components/admin/AdminViewCustomers"
 import {AdminViewCustomersPurchaseHistory} from "./components/admin/AdminViewCustomersPurchaseHistory"
@@ -113,6 +114,7 @@ export const App = () => {
                 />
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
                 <LoggedInRoute exact path="/EditProfile" component={EditProfile}/>
+                <LoggedInRoute exact path="/PurchaseHistory" component={PurchaseHistory}/>
 
 
                 {/* Fallback route keeps users on catalog for unknown paths */}
