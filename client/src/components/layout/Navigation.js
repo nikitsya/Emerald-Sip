@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react"; // useState controls mobile 
 import { Link } from "react-router-dom";
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST } from "../../config/global_constants"
 import {Logout} from "../auth/Logout"
+import {AUTH_SESSION_CHANGED_EVENT, getStoredAccessLevel, hasValidToken} from "../auth/authShared"
 
 
 export const Navigation = ({ cartItemsCount = 0 }) => {
+    const [, setSessionVersion] = useState(0)
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
     const closeMenu = () => setIsMenuOpen(false); // Close menu after link click
     const closeProfileModal = () => setIsProfileModalOpen(false)
 
-    const isLoggedIn = Number(localStorage.accessLevel) > ACCESS_LEVEL_GUEST
-    const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const accessLevel = getStoredAccessLevel()
+    const isLoggedIn = accessLevel > ACCESS_LEVEL_GUEST && hasValidToken()
+    const isAdmin = accessLevel >= ACCESS_LEVEL_ADMIN && hasValidToken()
     const profileRoleLabel = isAdmin ? "Administrator" : "Customer account"
 
     const profilePhoto = localStorage.profilePhoto
@@ -36,6 +39,17 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
             document.removeEventListener("keydown", handleEscClose)
         }
     }, [isProfileModalOpen])
+
+    useEffect(() => {
+        const handleSessionChanged = () => setSessionVersion((previousVersion) => previousVersion + 1)
+        window.addEventListener(AUTH_SESSION_CHANGED_EVENT, handleSessionChanged)
+        window.addEventListener("storage", handleSessionChanged)
+
+        return () => {
+            window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, handleSessionChanged)
+            window.removeEventListener("storage", handleSessionChanged)
+        }
+    }, [])
 
 
     return (

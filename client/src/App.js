@@ -9,7 +9,7 @@ import {Register} from "./components/auth/Register"
 import "./css/App.css"
 import {Navigation} from "./components/layout/Navigation"
 import {Login} from "./components/auth/Login"
-import {ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST} from "./config/global_constants"
+import {ACCESS_LEVEL_ADMIN} from "./config/global_constants"
 import {LoggedInRoute} from "./components/auth/LoggedInRoute"
 import {ShoppingCart} from "./components/cart/ShoppingCart"
 import {useShoppingCart} from "./hooks/useShoppingCart"
@@ -18,10 +18,13 @@ import {EditProfile} from "./components/profile/EditProfile"
 import {AdminAdjustStock} from "./components/admin/AdminAdjustStock"
 import {AdminViewCustomers} from "./components/admin/AdminViewCustomers"
 import {AdminViewCustomersPurchaseHistory} from "./components/admin/AdminViewCustomersPurchaseHistory"
+import {AUTH_SESSION_CHANGED_EVENT, getStoredAccessLevel, hasValidToken, setGuestSession} from "./components/auth/authShared"
 
 
 // Main app component with all routes
 export const App = () => {
+    // Triggers re-render whenever auth session changes (login/logout/profile updates).
+    const [, setSessionVersion] = useState(0)
     // Shared search query for both catalog routes.
     const [searchName, setSearchName] = useState("");
     // Centralized cart state/actions used across product and cart pages.
@@ -36,15 +39,26 @@ export const App = () => {
 
     useEffect(() => {
         // Initialize guest session defaults once when the app is first mounted.
-        if (typeof localStorage.accessLevel === "undefined") {
-            localStorage.name = "GUEST"
-            localStorage.accessLevel = ACCESS_LEVEL_GUEST
-            localStorage.token = null
+        const currentAccessLevel = Number(localStorage.accessLevel)
+        if (!Number.isFinite(currentAccessLevel)) {
+            setGuestSession()
+        }
+    }, [])
+
+    useEffect(() => {
+        const handleSessionChanged = () => setSessionVersion((previousVersion) => previousVersion + 1)
+        window.addEventListener(AUTH_SESSION_CHANGED_EVENT, handleSessionChanged)
+        window.addEventListener("storage", handleSessionChanged)
+
+        return () => {
+            window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, handleSessionChanged)
+            window.removeEventListener("storage", handleSessionChanged)
         }
     }, [])
 
     // Admin users can manage products, customers can buy products.
-    const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
+    const accessLevel = getStoredAccessLevel()
+    const isAdmin = accessLevel >= ACCESS_LEVEL_ADMIN && hasValidToken()
     const renderCatalogPage = () => (
         <DisplayAllProducts
             searchName={searchName}

@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "../ui/Button"
 import {SERVER_HOST} from "../../config/global_constants"
+import {getStoredAccessLevel, hasValidToken, setUserSession} from "../auth/authShared"
 
 
 export const EditProfile = () => {
@@ -92,8 +93,12 @@ const handleSubmit = (e) => {
     })
         .then((res) => {
             // Keep client identity/avatar in sync with updated profile.
-            localStorage.name = res.data.name
-            localStorage.profilePhoto = res.data.profilePhoto
+            setUserSession({
+                name: res.data.name,
+                accessLevel: getStoredAccessLevel(),
+                profilePhoto: res.data.profilePhoto,
+                token: hasValidToken() ? localStorage.token : null
+            })
             setProfilePhoto(res.data.profilePhoto || null)
             setSelectedFile(null)
             setSuccessMessage("Profile updated successfully")

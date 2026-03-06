@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react"
 import {Link} from "react-router-dom"
 import {BuyProduct} from "./BuyProduct"
+import {getStoredAccessLevel, hasValidToken} from "../auth/authShared"
 
 
 const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
@@ -19,7 +20,7 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
     const totalItemQuantity = items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
 
     // Logged-in users can skip guest details form.
-    const isLoggedIn = Number(localStorage.accessLevel) > 0 && !!localStorage.token
+    const isLoggedIn = getStoredAccessLevel() > 0 && hasValidToken()
 
     // Guest checkout contact fields sent to backend guest sales endpoint.
     const [guestDetails, setGuestDetails] = useState({

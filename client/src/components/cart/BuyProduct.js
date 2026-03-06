@@ -3,6 +3,7 @@ import axios from "axios"
 import {Redirect} from "react-router-dom"
 import {SANDBOX_CLIENT_ID, SERVER_HOST} from "../../config/global_constants"
 import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js"
+import {getStoredAccessLevel, hasValidToken} from "../auth/authShared"
 
 
 export const BuyProduct = props => {
@@ -26,7 +27,7 @@ export const BuyProduct = props => {
 
     // After PayPal approval, persist sale in backend for either logged-in or guest checkout.
     const onApprove = paymentData => {
-        const isLoggedIn = Number(localStorage.accessLevel) > 0 && !!localStorage.token
+        const isLoggedIn = getStoredAccessLevel() > 0 && hasValidToken()
 
         const orderID = paymentData.orderID
         const endpoint = isLoggedIn
