@@ -70,7 +70,7 @@ export const Login = () => {
     }
 
     return (
-        <form className="form-container" noValidate={true} id="loginOrRegistrationForm">
+        <form className="form-container" noValidate={true}>
             <h2>Login</h2>
 
             {/* Server-level auth error message */}

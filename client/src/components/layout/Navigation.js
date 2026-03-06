@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"; // useState controls mobile menu open/close
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST } from "../../config/global_constants"
 import {Logout} from "../auth/Logout"
 
 
-const NavigationComponent = ({ cartItemsCount = 0 }) => {
+export const Navigation = ({ cartItemsCount = 0 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
@@ -129,5 +129,3 @@ const NavigationComponent = ({ cartItemsCount = 0 }) => {
         </>
     );
 };
-
-export const Navigation = withRouter(NavigationComponent)

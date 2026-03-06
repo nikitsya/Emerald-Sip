@@ -122,7 +122,7 @@ export const Register = () => {
 
 
     return (
-        <form className="form-container" noValidate={true} id="loginOrRegistrationForm">
+        <form className="form-container" noValidate={true}>
 
             {/* Redirect to product listing after successful registration */}
             {isRegistered ? <Redirect to="/DisplayAllProducts"/> : null}
