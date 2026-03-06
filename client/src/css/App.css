@@ -2823,3 +2823,26 @@ form input[readonly] {
         font-size: 13px;
     }
 }
+
+.purchase-history-item-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.purchase-return-btn {
+    border: 1px solid #7c9462;
+    border-radius: 999px;
+    background: #eef5e3;
+    color: #2f3d2c;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+.purchase-return-btn:hover,
+.purchase-return-btn:focus {
+    background: #dfe8cf;
+}
+
