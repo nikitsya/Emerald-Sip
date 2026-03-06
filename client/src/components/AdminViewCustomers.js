@@ -112,6 +112,7 @@ export const AdminViewCustomers = () => {
                                     Address {getSortIndicator("address")}
                                 </button>
                             </th>
+                            <th>History</th>
                         </tr>
                         </thead>
 
@@ -133,6 +134,18 @@ export const AdminViewCustomers = () => {
                                 <td data-label="Email">{customer.email || "Not provided"}</td>
                                 <td data-label="Phone">{customer.phone || "Not provided"}</td>
                                 <td data-label="Address">{customer.address || "Not provided"}</td>
+                                <td data-label="History">
+                                    {customer.email ? (
+                                        <Link
+                                            className="blue-button admin-customer-history-link"
+                                            to={`/AdminViewCustomersPurchaseHistory?email=${encodeURIComponent(customer.email)}`}
+                                        >
+                                            View history
+                                        </Link>
+                                    ) : (
+                                        <span>Unavailable</span>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                         </tbody>
