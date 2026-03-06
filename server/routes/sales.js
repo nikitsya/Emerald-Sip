@@ -115,7 +115,7 @@ router.get(`/sales/my-purchase-history`, (req, res, next) => {
 })
 
 // Logged-in customer returns one item from their own purchase history.
-router.patch(`/sales/return-item/:saleId/:itemId`, (req, res, next) => {
+router.patch(`/sales/return-item/:saleId/:itemId`, validateReturnRouteParams, (req, res, next) => {
     jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: [`HS256`]}, (err, decodedToken) => {
         if (err || !decodedToken) {
             return next(createError(403, `User is not logged in`))
