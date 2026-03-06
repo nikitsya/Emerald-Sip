@@ -84,7 +84,7 @@ export const PurchaseHistory = () => {
         })
     }
 
-    // Temporary placeholder for return action; API wiring in next step.
+ // Handles logged-in item return request and refreshes the updated sale in local state.
     const handleReturnClick = (saleId, itemId) => {
     setLoadError("")
     const itemKey = `${saleId}:${itemId}`
