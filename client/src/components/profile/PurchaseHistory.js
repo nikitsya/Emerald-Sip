@@ -283,7 +283,17 @@ export const PurchaseHistory = () => {
                                                                 )}
                                                                 <span>{item.name || "Item"} x {quantity}</span>
                                                             </span>
-                                                            <strong>{formatPrice(lineTotal)}</strong>
+                                                            <div className="purchase-history-item-right">
+                                                                <strong>{formatPrice(lineTotal)}</strong>
+                                                                <button
+                                                                    type="button"
+                                                                    className="purchase-return-btn"
+                                                                    onClick={handleReturnClick}
+                                                                >
+                                                                    Return
+                                                                </button>
+                                                            </div>
+
                                                         </li>
                                                     )
                                                 })}
