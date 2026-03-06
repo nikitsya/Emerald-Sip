@@ -82,6 +82,9 @@ export const PurchaseHistory = () => {
         })
     }
 
+    // Temporary placeholder for return action; API wiring in next step.
+    const handleReturnClick = () => {}
+
     const periodOptions = useMemo(() => {
         const periodsByValue = new Map()
 
