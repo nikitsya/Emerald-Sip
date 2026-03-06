@@ -2,7 +2,8 @@ import React, {useState} from "react"
 import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "../ui/Button"
-import {ACCESS_LEVEL_GUEST, SERVER_HOST} from "../../config/global_constants"
+import {SERVER_HOST} from "../../config/global_constants"
+import {getAuthErrorMessage, setGuestSession, setUserSession} from "./authShared"
 
 
 export const Login = () => {
@@ -16,18 +17,11 @@ export const Login = () => {
     // Server-side authentication error message.
     const [serverError, setServerError] = useState("")
 
-    const handleEmailChange = e => {
-        // Keep input value synced with component state.
-        setEmail(e.target.value)
-        // Clear previous backend error as user edits credentials.
+    // Reusable field updater that also clears stale server and field errors.
+    const handleFieldChange = (setValue, fieldName) => (e) => {
+        setValue(e.target.value)
         setServerError("")
-    }
-
-    const handlePasswordChange = e => {
-        // Keep input value synced with component state.
-        setPassword(e.target.value)
-        // Clear previous backend error as user edits credentials.
-        setServerError("")
+        setErrors((previousErrors) => ({...previousErrors, [fieldName]: ""}))
     }
 
     const validate = () => {
@@ -35,8 +29,9 @@ export const Login = () => {
         const next = {}
 
         // Basic required + format checks for email.
-        if (!email.trim()) next.email = "Email is required"
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Invalid email format"
+        const normalizedEmail = email.trim()
+        if (!normalizedEmail) next.email = "Email is required"
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) next.email = "Invalid email format"
 
         // Password is required for login request.
         if (!password) next.password = "Password is required"
@@ -58,24 +53,18 @@ export const Login = () => {
 
         setErrors({})
 
-        //axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/login/${email}/${password}`)
             .then(res => {
                 // Backend returns errorMessage for invalid credentials.
                 if (res.data.errorMessage) throw new Error(res.data.errorMessage)
 
-                // Persist session data used by route guards and protected requests.
-                localStorage.name = res.data.name
-                localStorage.accessLevel = res.data.accessLevel
-                localStorage.profilePhoto = res.data.profilePhoto || null
-                localStorage.token = res.data.token
+                setUserSession(res.data)
                 setIsLoggedIn(true)
             })
             .catch(err => {
                 // Reset to guest mode on failed login attempt.
-                localStorage.name = "GUEST"
-                localStorage.accessLevel = ACCESS_LEVEL_GUEST
-                setServerError(err?.response?.data || err.message || "Login failed")
+                setGuestSession()
+                setServerError(getAuthErrorMessage(err, "Login failed"))
             })
     }
 
@@ -96,7 +85,7 @@ export const Login = () => {
                 autoComplete="email"
                 autoFocus
                 value={email}
-                onChange={handleEmailChange}
+                onChange={handleFieldChange(setEmail, "email")}
             />
 
             {/* Email validation message */}
@@ -109,7 +98,7 @@ export const Login = () => {
                 placeholder="Password"
                 autoComplete="password"
                 value={password}
-                onChange={handlePasswordChange}
+                onChange={handleFieldChange(setPassword, "password")}
             />
 
             {/* Password validation message */}

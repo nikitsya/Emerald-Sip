@@ -8,6 +8,9 @@ export const LoggedInRoute = ({component: Component, exact, path, ...rest}) =>
         exact={exact}
         path={path}
         render={props => Number(localStorage.accessLevel) > ACCESS_LEVEL_GUEST
+            && Boolean(localStorage.token)
+            && localStorage.token !== "null"
+            && localStorage.token !== "undefined"
             ? <Component {...props} {...rest} />
             : <Redirect to="/DisplayAllProducts"/>}
     />

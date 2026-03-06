@@ -3,30 +3,30 @@ import {Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "../ui/Button"
 import {SERVER_HOST} from "../../config/global_constants"
+import {clearSession, getAuthErrorMessage} from "./authShared"
 
 
 export const Logout = ({onLoggedOut = () => {}}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
+    const [serverError, setServerError] = useState("")
 
     const handleSubmit = e => {
         e.preventDefault()
+        setServerError("")
 
-        //axios.defaults.withCredentials = true // needed for sessions to work
         axios.post(`${SERVER_HOST}/users/logout`)
             .then(() => {
-                localStorage.clear()
+                clearSession()
                 onLoggedOut()
-
-                //  localStorage.name = "GUEST"
-                //  localStorage.accessLevel = ACCESS_LEVEL_GUEST
                 setIsLoggedIn(false)
             })
-            .catch(err => console.log(`${err.response.data}\n${err}`))
+            .catch(err => setServerError(getAuthErrorMessage(err, "Logout failed")))
     }
 
     return (
         <div>
             {!isLoggedIn ? <Redirect to="/DisplayAllProducts"/> : null}
+            {serverError ? <div className="error-text">{serverError}</div> : null}
             <Button value="Log out" className="red-button" onClick={handleSubmit}/>
         </div>
     )

@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom"
 import axios from "axios"
 import {Button} from "../ui/Button"
 import {SERVER_HOST} from "../../config/global_constants"
+import {getAuthErrorMessage, setUserSession} from "./authShared"
 
 export const Register = () => {
     // Controlled form fields for registration.
@@ -22,53 +23,35 @@ export const Register = () => {
     // Backend error message (e.g. duplicate user).
     const [serverError, setServerError] = useState("")
 
-    const handleNameChange = e => {
-        setName(e.target.value)
-        // Clear previous server error as user edits form values.
+    // Reusable field updater that also clears stale server and field errors.
+    const handleFieldChange = (setValue, fieldName) => (event) => {
+        setValue(event.target.value)
         setServerError("")
-        setErrors((previousErrors) => ({...previousErrors, name: ""}))
+        setErrors((previousErrors) => ({...previousErrors, [fieldName]: ""}))
     }
 
-    const handleEmailChange = e => {
-        setEmail(e.target.value)
+    const handleFileChange = (event) => {
+        const file = event.target.files[0] || null
+        // Keep the selected file for multipart/form-data submit.
+        setSelectedFile(file)
+        // Clear stale server error once user re-selects file.
         setServerError("")
-        setErrors((previousErrors) => ({...previousErrors, email: ""}))
-    }
+        setErrors((previousErrors) => ({...previousErrors, profilePhoto: ""}))
 
-    const handlePasswordChange = e => {
-        setPassword(e.target.value)
-        setServerError("")
-        setErrors((previousErrors) => ({...previousErrors, password: ""}))
-    }
-
-    const handleConfirmPasswordChange = e => {
-        setConfirmPassword(e.target.value)
-        setServerError("")
-        setErrors((previousErrors) => ({...previousErrors, confirmPassword: ""}))
-    }
-
-    const handleFileChange = e =>
-    {
-         const file = e.target.files[0] || null
-    // Keep the selected file for multipart/form-data submit.
-    setSelectedFile(file)
-    // Clear stale server error once user re-selects file.
-    setServerError("")
-
-    if (file) {
-        setPreviewPhoto(URL.createObjectURL(file))
-    } else {
+        if (file) {
+            setPreviewPhoto(URL.createObjectURL(file))
+            return
+        }
         setPreviewPhoto(null)
     }
-    }
 
-useEffect(() => {
-    return () => {
-        if (previewPhoto) {
-            URL.revokeObjectURL(previewPhoto)
+    useEffect(() => {
+        return () => {
+            if (previewPhoto) {
+                URL.revokeObjectURL(previewPhoto)
+            }
         }
-    }
-}, [previewPhoto])
+    }, [previewPhoto])
 
 
     const validate = () => {
@@ -119,24 +102,19 @@ useEffect(() => {
         }
 
         axios.post(`${SERVER_HOST}/users/register/${encodedName}/${encodedEmail}/${encodedPassword}`, formData,
-         {headers: {"Content-type": "multipart/form-data"}}    
+            {headers: {"Content-type": "multipart/form-data"}}
         )
             .then((res) => {
-                
                 if (res.data.errorMessage) {
                     setServerError(res.data.errorMessage)
                     return
                 }
 
-                // Save authenticated session values returned by backend.
-                localStorage.name = res.data.name
-                localStorage.accessLevel = res.data.accessLevel
-                localStorage.profilePhoto = res.data.profilePhoto
-                localStorage.token = res.data.token
+                setUserSession(res.data)
                 setIsRegistered(true)
             })
             .catch(err => {
-                setServerError(err?.response?.data || "Registration failed")
+                setServerError(getAuthErrorMessage(err, "Registration failed"))
             })
     }
 
@@ -154,7 +132,7 @@ useEffect(() => {
             <input
                 className={errors.name ? "field-error" : ""}
                 name="name" type="text" placeholder="Name" autoComplete="name" value={name}
-                onChange={handleNameChange} autoFocus
+                onChange={handleFieldChange(setName, "name")} autoFocus
             />
             {/* Name field validation message */}
             {errors.name ? <div className="error-text">{errors.name}</div> : null}<br/>
@@ -162,7 +140,7 @@ useEffect(() => {
             <input
                 className={errors.email ? "field-error" : ""}
                 name="email" type="email" placeholder="Email" autoComplete="email" value={email}
-                onChange={handleEmailChange}
+                onChange={handleFieldChange(setEmail, "email")}
             />
             {/* Email field validation message */}
             {errors.email ? <div className="error-text">{errors.email}</div> : null}<br/>
@@ -171,7 +149,7 @@ useEffect(() => {
                 className={errors.password ? "field-error" : ""}
                 name="password" type="password" placeholder="Password" autoComplete="password"
                 title="Password must be at least ten-digits long and contains at least one lowercase letter, one uppercase letter, one digit and one of the following characters (£!#€$%^&*)"
-                value={password} onChange={handlePasswordChange}
+                value={password} onChange={handleFieldChange(setPassword, "password")}
             />
             {/* Password field validation message */}
             {errors.password ? <div className="error-text">{errors.password}</div> : null}<br/>
@@ -179,7 +157,7 @@ useEffect(() => {
             <input
                 className={errors.confirmPassword ? "field-error" : ""}
                 name="confirmPassword" type="password" placeholder="Confirm password" autoComplete="confirmPassword"
-                value={confirmPassword} onChange={handleConfirmPasswordChange}
+                value={confirmPassword} onChange={handleFieldChange(setConfirmPassword, "confirmPassword")}
             />
             {/* Confirm-password validation message */}
             {errors.confirmPassword ? <div className="error-text">{errors.confirmPassword}</div> : null}<br/><br/>
