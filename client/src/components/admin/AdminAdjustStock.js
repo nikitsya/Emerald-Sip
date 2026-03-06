@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from "react"
 import axios from "axios"
-import {Link, Redirect} from "react-router-dom"
+import {Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {AdminPageHeader} from "./AdminPageHeader"
 import {getAdminErrorMessage} from "./adminShared"
 
 // Product cards show a single preview image, this helper safely extracts it.
@@ -150,10 +151,7 @@ export const AdminAdjustStock = () => {
 
     return (
         <div className="container admin-stock-page">
-            <div className="admin-stock-header">
-                <h2>Adjust Stock Levels</h2>
-                <Link className="blue-button" to="/DisplayAllProducts">Back to catalog</Link>
-            </div>
+            <AdminPageHeader title="Adjust Stock Levels"/>
 
             {loadError ? (
                 <div className="admin-stock-global-error" role="alert">

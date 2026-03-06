@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react"
 import axios from "axios"
 import {Link, Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {AdminPageHeader} from "./AdminPageHeader"
 import {getAdminErrorMessage, getSortIndicator} from "./adminShared"
 
 export const AdminViewCustomers = () => {
@@ -95,10 +96,7 @@ export const AdminViewCustomers = () => {
 
     return (
         <div className="container admin-customers-page">
-            <div className="admin-stock-header">
-                <h2>View Customers</h2>
-                <Link className="blue-button" to="/DisplayAllProducts">Back to catalog</Link>
-            </div>
+            <AdminPageHeader title="View Customers"/>
 
             <div className="admin-purchase-summary">
                 <div><strong>{filteredAndSortedCustomers.length}</strong> customers shown</div>

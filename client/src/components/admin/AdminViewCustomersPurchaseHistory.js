@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react"
 import axios from "axios"
 import {Link, Redirect, withRouter} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
+import {AdminPageHeader} from "./AdminPageHeader"
 import {getAdminErrorMessage, getSortIndicator} from "./adminShared"
 
 // Normalizes monetary values to EUR format used across admin reports.
@@ -144,10 +145,7 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
 
     return (
         <div className="container admin-stock-page admin-purchase-history-page">
-            <div className="admin-stock-header">
-                <h2>Customer Purchase History</h2>
-                <Link className="blue-button" to="/DisplayAllProducts">Back to catalog</Link>
-            </div>
+            <AdminPageHeader title="Customer Purchase History"/>
 
             <div className="admin-purchase-summary">
                 <div><strong>{summary.orderCount}</strong> orders</div>
