@@ -87,6 +87,7 @@ export const PurchaseHistory = () => {
  // Handles logged-in item return request and refreshes the updated sale in local state.
     const handleReturnClick = (saleId, itemId) => {
     setLoadError("")
+    // Build a stable key so only one clicked item shows loading state.
     const itemKey = `${saleId}:${itemId}`
     setReturningItemKey(itemKey)
 
@@ -102,6 +103,7 @@ export const PurchaseHistory = () => {
         .catch((error) => {
             setLoadError(getAdminErrorMessage(error, "Failed to return item. Please try again."))
         })
+        // Always release button lock even if request fails.
         .finally(() => setReturningItemKey(""))
 }
 
