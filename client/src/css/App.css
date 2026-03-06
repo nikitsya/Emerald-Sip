@@ -1356,13 +1356,8 @@ form input[readonly] {
     font-size: 13px;
 }
 
-.admin-customer-delete-button {
-    width: 100%;
-    min-width: 0;
+.admin-customer-delete-icon-button {
     margin: 0;
-    height: 34px;
-    padding: 0 10px;
-    font-size: 13px;
 }
 
 .admin-purchase-history-page {
@@ -1621,10 +1616,6 @@ form input[readonly] {
     }
 
     .admin-customer-history-link {
-        width: 100%;
-    }
-
-    .admin-customer-delete-button {
         width: 100%;
     }
 

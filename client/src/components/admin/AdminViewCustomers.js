@@ -263,11 +263,13 @@ export const AdminViewCustomers = () => {
                                 <td data-label="Actions">
                                     <button
                                         type="button"
-                                        className="red-button admin-customer-delete-button"
+                                        className="icon-button admin-action-link admin-customer-delete-icon-button"
                                         onClick={() => openDeleteCustomerModal(customer)}
                                         disabled={isDeletingCustomer}
+                                        aria-label="Delete customer"
+                                        title="Delete customer"
                                     >
-                                        Delete
+                                        <img className="admin-action-icon" src="/images/buttons/admin/delete.png" alt="Delete"/>
                                     </button>
                                 </td>
                             </tr>
