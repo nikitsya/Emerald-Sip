@@ -3,7 +3,6 @@ const createError = require(`http-errors`)
 const fs = require(`fs`)
 const jwt = require(`jsonwebtoken`)
 const salesModel = require(`../models/sales`)
-
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, `utf8`)
 
 // Normalizes basket payload and strips invalid entries before persistence.

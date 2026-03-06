@@ -3,7 +3,6 @@ const createError = require('http-errors')
 const productsModel = require(`../models/products`)
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
-
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
 
 // Public endpoint: returns all products sorted by insertion order.
