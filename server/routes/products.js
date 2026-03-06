@@ -1,9 +1,11 @@
+const mongoose = require(`mongoose`)
 const router = require(`express`).Router()
 const createError = require('http-errors')
 const productsModel = require(`../models/products`)
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
+
 
 // Middleware: verifies JWT and exposes decoded token for next handlers.
 const verifyUsersJWTPassword = (req, res, next) => {
@@ -85,5 +87,14 @@ const deleteProductDocument = (req, res, next) => {
 
 // Delete one product (admin only).
 router.delete(`/products/:id`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, deleteProductDocument)
+
+// Middleware: validates MongoDB ObjectId route parameter.
+const validateProductIDParam = (req, res, next) => {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+        return next(createError(400, `Invalid product id`))
+    }
+    next()
+}
+
 
 module.exports = router
