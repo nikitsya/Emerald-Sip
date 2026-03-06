@@ -1278,40 +1278,46 @@ form input[readonly] {
 }
 
 .admin-customers-table-wrap table {
-    min-width: 860px;
+    min-width: 980px;
 }
 
 .admin-customers-table-wrap thead th:nth-child(1),
 .admin-customers-table-wrap tbody td:nth-child(1) {
-    width: 12%;
+    width: 11%;
 }
 
 .admin-customers-table-wrap thead th:nth-child(2),
 .admin-customers-table-wrap tbody td:nth-child(2) {
-    width: 19%;
+    width: 18%;
 }
 
 .admin-customers-table-wrap thead th:nth-child(3),
 .admin-customers-table-wrap tbody td:nth-child(3) {
-    width: 22%;
+    width: 21%;
     text-align: left;
 }
 
 .admin-customers-table-wrap thead th:nth-child(4),
 .admin-customers-table-wrap tbody td:nth-child(4) {
-    width: 14%;
+    width: 13%;
     text-align: left;
 }
 
 .admin-customers-table-wrap thead th:nth-child(5),
 .admin-customers-table-wrap tbody td:nth-child(5) {
-    width: 23%;
+    width: 20%;
     text-align: left;
 }
 
 .admin-customers-table-wrap thead th:nth-child(6),
 .admin-customers-table-wrap tbody td:nth-child(6) {
-    width: 10%;
+    width: 9%;
+    text-align: left;
+}
+
+.admin-customers-table-wrap thead th:nth-child(7),
+.admin-customers-table-wrap tbody td:nth-child(7) {
+    width: 8%;
     text-align: left;
 }
 
@@ -1342,6 +1348,15 @@ form input[readonly] {
 }
 
 .admin-customer-history-link {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.admin-customer-delete-button {
     width: 100%;
     min-width: 0;
     margin: 0;
@@ -1588,7 +1603,8 @@ form input[readonly] {
 
     .admin-customers-table-wrap tbody td:nth-child(4),
     .admin-customers-table-wrap tbody td:nth-child(5),
-    .admin-customers-table-wrap tbody td:nth-child(6) {
+    .admin-customers-table-wrap tbody td:nth-child(6),
+    .admin-customers-table-wrap tbody td:nth-child(7) {
         display: block;
         grid-column: 1 / -1;
         width: 100%;
@@ -1605,6 +1621,10 @@ form input[readonly] {
     }
 
     .admin-customer-history-link {
+        width: 100%;
+    }
+
+    .admin-customer-delete-button {
         width: 100%;
     }
 

@@ -4,6 +4,7 @@ const usersModel = require(`../models/users`)
 const bcrypt = require('bcryptjs')  // Password hashing/checking for stored credentials.
 const fs = require('fs')
 const path = require('path')
+const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
 
@@ -285,6 +286,45 @@ router.get(`/users`, (req, res, next) => {
                 })))
 
                 res.json(payload)
+            })
+            .catch((findErr) => next(findErr))
+    })
+})
+
+// Allows administrators to remove a customer account by ID.
+router.delete(`/users/:id`, (req, res, next) => {
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
+        if (err) {
+            return next(createError(403, `User is not logged in`))
+        }
+
+        if (Number(decodedToken.accessLevel) < Number(process.env.ACCESS_LEVEL_ADMIN)) {
+            return next(createError(403, `User is not an administrator, so they cannot delete customer records`))
+        }
+
+        const customerID = String(req.params.id || ``).trim()
+        if (!mongoose.isValidObjectId(customerID)) {
+            return next(createError(404, `Customer not found`))
+        }
+
+        usersModel.findOne({_id: customerID, accessLevel: Number(process.env.ACCESS_LEVEL_CUSTOMER)})
+            .then((customer) => {
+                if (!customer) {
+                    return next(createError(404, `Customer not found`))
+                }
+
+                const profilePhotoFilename = String(customer.profilePhotoFilename || ``).trim()
+
+                usersModel.deleteOne({_id: customer._id})
+                    .then(() => {
+                        // Profile photo file is best-effort cleanup and does not block API success.
+                        if (profilePhotoFilename) {
+                            fs.unlink(getUploadedFilePath(profilePhotoFilename), () => {})
+                        }
+
+                        res.json({success: true})
+                    })
+                    .catch((deleteErr) => next(deleteErr))
             })
             .catch((findErr) => next(findErr))
     })

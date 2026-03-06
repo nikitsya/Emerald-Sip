@@ -4,6 +4,7 @@ import {Link, Redirect} from "react-router-dom"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
 import {AdminPageHeader} from "./AdminPageHeader"
 import {getAdminErrorMessage, getSortIndicator} from "./adminShared"
+import {AdminDeleteCustomerModal} from "./AdminDeleteCustomerModal"
 
 export const AdminViewCustomers = () => {
     // Restrict customer list and purchase metadata to admin users.
@@ -12,6 +13,9 @@ export const AdminViewCustomers = () => {
     const [orderedCustomerEmails, setOrderedCustomerEmails] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [loadError, setLoadError] = useState("")
+    const [deleteError, setDeleteError] = useState("")
+    const [customerToDelete, setCustomerToDelete] = useState(null)
+    const [isDeletingCustomer, setIsDeletingCustomer] = useState(false)
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
     const [searchTerm, setSearchTerm] = useState("")
     const [orderFilter, setOrderFilter] = useState("all")
@@ -58,6 +62,45 @@ export const AdminViewCustomers = () => {
             }
             return {column, direction: "asc"}
         })
+    }
+
+    const openDeleteCustomerModal = (customer) => {
+        setDeleteError("")
+        setCustomerToDelete(customer)
+    }
+
+    const closeDeleteCustomerModal = () => {
+        if (isDeletingCustomer) return
+        setDeleteError("")
+        setCustomerToDelete(null)
+    }
+
+    const handleDeleteCustomer = (customer) => {
+        const customerID = String(customer?._id || "").trim()
+        if (!customerID) return
+
+        setIsDeletingCustomer(true)
+        setDeleteError("")
+
+        axios.delete(`${SERVER_HOST}/users/${customerID}`, {headers: {"authorization": localStorage.token}})
+            .then(() => {
+                const removedEmail = String(customer?.email || "").trim().toLowerCase()
+                setCustomers((previousCustomers) =>
+                    previousCustomers.filter((existingCustomer) => String(existingCustomer?._id || "") !== customerID)
+                )
+                if (removedEmail) {
+                    setOrderedCustomerEmails((previousEmails) => previousEmails.filter((email) => email !== removedEmail))
+                }
+                setCustomerToDelete(null)
+            })
+            .catch((error) => {
+                setDeleteError(getAdminErrorMessage(
+                    error,
+                    "Failed to delete customer. Please try again.",
+                    {notFoundMessage: "Customer was already removed. Refresh and try again."}
+                ))
+            })
+            .finally(() => setIsDeletingCustomer(false))
     }
 
     const orderedCustomerEmailSet = useMemo(() => new Set(orderedCustomerEmails), [orderedCustomerEmails])
@@ -183,6 +226,7 @@ export const AdminViewCustomers = () => {
                                 </button>
                             </th>
                             <th>History</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
 
@@ -216,12 +260,30 @@ export const AdminViewCustomers = () => {
                                         <span>Unavailable</span>
                                     )}
                                 </td>
+                                <td data-label="Actions">
+                                    <button
+                                        type="button"
+                                        className="red-button admin-customer-delete-button"
+                                        onClick={() => openDeleteCustomerModal(customer)}
+                                        disabled={isDeletingCustomer}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                         </tbody>
                     </table>
                 </div>
             ) : null}
+
+            <AdminDeleteCustomerModal
+                customer={customerToDelete}
+                isDeleting={isDeletingCustomer}
+                error={deleteError}
+                onConfirm={handleDeleteCustomer}
+                onClose={closeDeleteCustomerModal}
+            />
         </div>
     )
 }
