@@ -47,25 +47,19 @@ const getProductDocument = (req, res, next) => {
 router.get(`/products/:id`, verifyUsersJWTPassword, getProductDocument)
 
 
-// Protected endpoint: only admin users can create products.
-router.post(`/products`, (req, res, next) => {
-    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
-        if (err) {
-            next(createError(403, `User is not logged in`))
-        } else {
-            // accessLevel is compared against configured admin threshold.
-            if (decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN) {
-                productsModel.create(req.body)
-                    .then(data => {
-                        res.json(data)
-                    })
-                    .catch((err) => next(err))
-            } else {
-                next(createError(403, `User is not an administrator, so they cannot delete records`))
-            }
-        }
-    })
-})
+// Route handler: creates a new product document. only admin users can create products.
+
+const createNewProductDocument = (req, res, next) => {
+    productsModel.create(req.body)
+        .then(data => {
+            res.json(data)
+        })
+        .catch((err) => next(err))
+}
+
+// Add new product (admin only).
+router.post(`/products`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, createNewProductDocument)
+
 
 // Protected endpoint: only admin users can update products.
 router.put(`/products/:id`, (req, res, next) => {
