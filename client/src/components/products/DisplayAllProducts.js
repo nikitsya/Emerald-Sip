@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react"
 import {Link} from "react-router-dom"
 import axios from "axios"
 import {ProductTable} from "./ProductTable"
+import {ProductDeleteModal} from "./ProductDeleteModal"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
 
 
@@ -56,6 +57,9 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, ca
     const [capacityFilters, setCapacityFilters] = useState([])
     const [isCapacityFilterOpen, setIsCapacityFilterOpen] = useState(false)
     const [sortConfig, setSortConfig] = useState({column: "name", direction: "asc"})
+    const [productToDelete, setProductToDelete] = useState(null)
+    const [isDeletingProduct, setIsDeletingProduct] = useState(false)
+    const [deleteError, setDeleteError] = useState("")
 
     useEffect(() => {
         // Public products endpoint returns full catalog for client-side filtering/sorting.
@@ -107,6 +111,37 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, ca
         const productCapacity = normalizeText(product.capacityMl)
         return !(capacityFilters.length > 0 && !capacityFilters.includes(productCapacity))
     })
+
+    const openDeleteModal = (product) => {
+        if (!isAdmin) return
+        setDeleteError("")
+        setProductToDelete(product)
+    }
+
+    const closeDeleteModal = () => {
+        if (isDeletingProduct) return
+        setProductToDelete(null)
+        setDeleteError("")
+    }
+
+    const handleDeleteProduct = (product) => {
+        if (!product || !product._id) return
+        setIsDeletingProduct(true)
+        setDeleteError("")
+
+        axios.delete(`${SERVER_HOST}/products/${product._id}`, {headers: {"authorization": localStorage.token}})
+            .then(() => {
+                // Keep local catalog in sync after successful delete.
+                setProducts((currentProducts) => currentProducts.filter((currentProduct) => currentProduct._id !== product._id))
+                setProductToDelete(null)
+            })
+            .catch((err) => {
+                setDeleteError(err?.response?.data || "Failed to delete product")
+            })
+            .finally(() => {
+                setIsDeletingProduct(false)
+            })
+    }
 
     // Resets all filter controls and search text to defaults.
     const clearAllFilters = () => {
@@ -331,11 +366,20 @@ export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, ca
                                 onAddToCart={onAddToCart}
                                 sortConfig={sortConfig}
                                 onSortChange={setSortConfig}
+                                onRequestDelete={openDeleteModal}
                             />
                         )}
                     </div>
                 </section>
             </div>
+
+            <ProductDeleteModal
+                product={productToDelete}
+                isDeleting={isDeletingProduct}
+                error={deleteError}
+                onConfirm={handleDeleteProduct}
+                onClose={closeDeleteModal}
+            />
         </div>
     )
 }

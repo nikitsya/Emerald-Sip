@@ -1,17 +1,21 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {ProductTableRow} from "./ProductTableRow"
 import {ProductDetailsModal} from "./ProductDetailsModal";
+
+const EMPTY_PRODUCTS = []
+const EMPTY_CART_ITEMS = []
 
 
 export const ProductTable = props => {
     // Defensive normalization for incoming props.
-    const products = Array.isArray(props.products) ? props.products : []
-    const cartItems = Array.isArray(props.cartItems) ? props.cartItems : []
+    const products = Array.isArray(props.products) ? props.products : EMPTY_PRODUCTS
+    const cartItems = Array.isArray(props.cartItems) ? props.cartItems : EMPTY_CART_ITEMS
     // Selected row product is displayed in details modal.
     const [selectedProduct, setSelectedProduct] = useState(null)
     const sortConfig = props.sortConfig || {column: "name", direction: "asc"}
     const onSortChange = props.onSortChange || (() => {})
     const onAddToCart = props.onAddToCart
+    const onRequestDelete = props.onRequestDelete
     // Fast lookup for "already in cart" state by product id.
     const cartProductIdSet = new Set(cartItems.map((item) => item._id))
     const cartQuantityByProductId = new Map(
@@ -31,6 +35,21 @@ export const ProductTable = props => {
     const getSortIndicator = (column) => {
         if (sortConfig.column !== column) return ""
         return sortConfig.direction === "asc" ? "▲" : "▼"
+    }
+
+    useEffect(() => {
+        if (!selectedProduct) return
+        const hasSelectedProduct = products.some((product) => product._id === selectedProduct._id)
+        if (!hasSelectedProduct) setSelectedProduct(null)
+    }, [products, selectedProduct])
+
+    const handleRequestDelete = (productToDelete) => {
+        if (typeof onRequestDelete === "function") onRequestDelete(productToDelete)
+    }
+
+    const handleRequestDeleteFromModal = (productToDelete) => {
+        setSelectedProduct(null)
+        handleRequestDelete(productToDelete)
     }
 
     // Sorting keeps numeric columns numeric and other columns lexical.
@@ -90,7 +109,8 @@ export const ProductTable = props => {
                                                                   onOpenDetails={setSelectedProduct}
                                                                   isInCart={cartProductIdSet.has(product._id)}
                                                                   cartQuantity={cartQuantityByProductId.get(product._id) || 0}
-                                                                  onAddToCart={onAddToCart}/>)}
+                                                                  onAddToCart={onAddToCart}
+                                                                  onRequestDelete={handleRequestDelete}/>)}
                 </tbody>
             </table>
 
@@ -99,6 +119,7 @@ export const ProductTable = props => {
                                  isInCart={selectedProduct ? cartProductIdSet.has(selectedProduct._id) : false}
                                  cartQuantity={selectedProduct ? (cartQuantityByProductId.get(selectedProduct._id) || 0) : 0}
                                  onAddToCart={onAddToCart}
+                                 onRequestDelete={handleRequestDeleteFromModal}
             />
         </>
     )

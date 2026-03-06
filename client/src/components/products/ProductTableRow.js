@@ -8,6 +8,7 @@ export const ProductTableRow = props => {
     // Row receives selected product and callbacks from ProductTable.
     const {product, onOpenDetails, isInCart = false, cartQuantity = 0} = props;
     const onAddToCart = props.onAddToCart
+    const onRequestDelete = props.onRequestDelete
     // Admin view shows edit/delete actions instead of add-to-cart.
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
     const canAddToCart = !isAdmin && typeof onAddToCart === "function"
@@ -26,6 +27,10 @@ export const ProductTableRow = props => {
         e.stopPropagation()
         if (isAtStockLimit) return
         if (onAddToCart) onAddToCart(product)
+    }
+    const handleDeleteClick = (e) => {
+        e.stopPropagation()
+        if (typeof onRequestDelete === "function") onRequestDelete(product)
     }
 
     return (
@@ -59,7 +64,7 @@ export const ProductTableRow = props => {
                         </button>
                     ) : null}
 
-                    {/* Admin actions: quick links to edit/delete routes */}
+                    {/* Admin actions: edit link and delete confirmation trigger */}
                     {isAdmin ? (
                         <Link
                             className="icon-button admin-action-link"
@@ -72,14 +77,15 @@ export const ProductTableRow = props => {
                     ) : null}
 
                     {isAdmin ? (
-                        <Link
+                        <button
+                            type="button"
                             className="icon-button admin-action-link"
-                            to={"/DeleteProduct/" + product._id}
+                            onClick={handleDeleteClick}
                             aria-label="Delete product"
                             title="Delete product"
                         >
                             <img className="admin-action-icon" src="/images/buttons/admin/delete.png" alt="Delete"/>
-                        </Link>
+                        </button>
                     ) : null}
                 </div>
             </td>

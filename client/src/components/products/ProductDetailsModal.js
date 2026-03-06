@@ -5,7 +5,7 @@ import {ACCESS_LEVEL_ADMIN} from "../../config/global_constants"
 
 const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 
-export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = false, cartQuantity = 0}) => {
+export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDelete, isInCart = false, cartQuantity = 0}) => {
     useEffect(() => {
         if (!product) return
 
@@ -35,12 +35,17 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = f
     // Admin-only actions are shown based on access level in localStorage.
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
     const canAddToCart = typeof onAddToCart === "function"
+    const canDeleteProduct = typeof onRequestDelete === "function"
     const stockQty = Number.isFinite(Number(product.stockQty)) ? Math.max(0, Math.floor(Number(product.stockQty))) : 0
     const isAtStockLimit = stockQty <= 0 || cartQuantity >= stockQty
     const addToCartLabel = stockQty <= 0 ? "Out of Stock" : (isAtStockLimit ? "Stock Limit Reached" : (isInCart ? "Added to Cart" : "Add to Cart"))
     const handleAddToCart = () => {
         if (!canAddToCart || isAtStockLimit) return
         onAddToCart(product)
+    }
+    const handleDeleteClick = () => {
+        if (!canDeleteProduct) return
+        onRequestDelete(product)
     }
 
     return (
@@ -98,7 +103,9 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, isInCart = f
                         ) : null}
                         {/* Admin actions: edit/delete selected product */}
                         {isAdmin ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
-                        {isAdmin ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}
+                        {isAdmin && canDeleteProduct ? (
+                            <button type="button" className="red-button" onClick={handleDeleteClick}>Delete</button>
+                        ) : null}
                     </div>
                 </div>
             </div>
