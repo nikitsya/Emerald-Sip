@@ -51,18 +51,21 @@ router.post(`/products`, (req, res, next) => {
     })
 })
 
-// Protected endpoint: any authenticated user can update a product in current logic.
-// Note: unlike POST/DELETE, this route does not enforce admin-level authorization.
+// Protected endpoint: only admin users can update products.
 router.put(`/products/:id`, (req, res, next) => {
-    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err) => {
+    jwt.verify(req.headers.authorization, JWT_PRIVATE_KEY, {algorithms: ["HS256"]}, (err, decodedToken) => {
         if (err) {
             next(createError(403, `User is not logged in`))
         } else {
-            productsModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true, runValidators: true})
-                .then(data => {
-                    res.json(data)
-                })
-                .catch((err) => next(err))
+            if (decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN) {
+                productsModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true, runValidators: true})
+                    .then(data => {
+                        res.json(data)
+                    })
+                    .catch((err) => next(err))
+            } else {
+                next(createError(403, `User is not an administrator, so they cannot update records`))
+            }
         }
     })
 })
