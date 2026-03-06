@@ -87,6 +87,8 @@ export const PurchaseHistory = () => {
     // Temporary placeholder for return action; API wiring in next step.
     const handleReturnClick = (saleId, itemId) => {
     setLoadError("")
+    const itemKey = `${saleId}:${itemId}`
+    setReturningItemKey(itemKey)
 
     requestReturnItem(saleId, itemId)
         .then((res) => {
@@ -100,6 +102,7 @@ export const PurchaseHistory = () => {
         .catch((error) => {
             setLoadError(getAdminErrorMessage(error, "Failed to return item. Please try again."))
         })
+        .finally(() => setReturningItemKey(""))
 }
 
 
