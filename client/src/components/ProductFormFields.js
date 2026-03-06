@@ -58,6 +58,30 @@ export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSub
         <label>Color</label>
         <input type="text" name="color" value={formValues.color} onChange={onFieldChange(`color`)}/>
 
+        <label>Stock quantity</label>
+        <input
+            type="number"
+            name="stockQty"
+            min="0"
+            step="1"
+            value={formValues.stockQty}
+            className={errors.stockQty ? "field-error" : ""}
+            onChange={onFieldChange(`stockQty`)}
+        />
+        {errors.stockQty ? <div className="error-text">{errors.stockQty}</div> : null}
+
+        <label>Low stock threshold</label>
+        <input
+            type="number"
+            name="lowStockThreshold"
+            min="0"
+            step="1"
+            value={formValues.lowStockThreshold}
+            className={errors.lowStockThreshold ? "field-error" : ""}
+            onChange={onFieldChange(`lowStockThreshold`)}
+        />
+        {errors.lowStockThreshold ? <div className="error-text">{errors.lowStockThreshold}</div> : null}
+
         <Button value={submitLabel} className="green-button" onClick={onSubmit}/>
         <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>
     </form>
