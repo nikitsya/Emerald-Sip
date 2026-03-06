@@ -310,6 +310,9 @@ export const PurchaseHistory = () => {
                                                             </span>
                                                             <div className="purchase-history-item-right">
                                                                 <strong>{formatPrice(lineTotal)}</strong>
+                                                            {item.isReturned ? (
+                                                                <span className="purchase-returned-badge">Returned</span>
+                                                            ) : (
                                                                 <button
                                                                     type="button"
                                                                     className="purchase-return-btn"
@@ -317,6 +320,7 @@ export const PurchaseHistory = () => {
                                                                 >
                                                                     Return
                                                                 </button>
+                                                            )}
                                                             </div>
 
                                                         </li>
