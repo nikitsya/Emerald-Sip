@@ -2523,8 +2523,50 @@ form input[readonly] {
 .profile-file-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 12px;
+}
+
+.profile-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.profile-file-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #8fad72;
+    background: #f2f8ec;
+    color: #355220;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-file-button:hover {
+    background: #e8f3de;
+    border-color: #789f56;
+}
+
+.profile-file-button:focus-visible {
+    outline: 3px solid #cde3b6;
+    outline-offset: 2px;
+}
+
+.profile-file-name {
+    color: #4b5a42;
+    font-size: 14px;
 }
 
 .profile-file-preview {
@@ -2859,4 +2901,3 @@ form input[readonly] {
     font-weight: 700;
     padding: 3px 10px;
 }
-

@@ -159,7 +159,12 @@ return (
         {errors.address ? <div className="error-text">{errors.address}</div> : null}<br/>
 
     <div className="profile-file-row">
+        <label className="profile-file-button" htmlFor="profilePhotoInput">
+            {profilePhoto || previewPhoto ? "Change photo" : "Add photo"}
+        </label>
         <input
+            id="profilePhotoInput"
+            className="profile-file-input"
             type="file"
             accept=".png,.jpg,.jpeg,image/png,image/jpeg"
             onChange={(e) => {
@@ -172,6 +177,9 @@ return (
                 }
             }}
         />
+        <span className="profile-file-name">
+            {selectedFile ? selectedFile.name : profilePhoto ? "Current photo" : "No photo selected"}
+        </span>
         {previewPhoto ? (
             <img className="profile-file-preview" src={previewPhoto} alt="Profile preview"/>
         ) : null}
