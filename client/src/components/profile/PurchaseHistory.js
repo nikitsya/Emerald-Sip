@@ -365,6 +365,35 @@ const closeReturnConfirm = () => {
                     </table>
                 </div>
             ) : null}
+        {itemToReturn ? (
+    <div className="modal-overlay" onClick={closeReturnConfirm}>
+        <div
+            className="confirm-delete-card"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Confirm return item"
+        >
+            <h3>Confirm Return</h3>
+            <p>Return "{itemToReturn.itemName}"?</p>
+            <div className="modal-actions">
+                <button type="button" className="red-button" onClick={closeReturnConfirm}>
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    className="green-button"
+                    onClick={() => {
+                        handleReturnClick(itemToReturn.saleId, itemToReturn.itemId)
+                        closeReturnConfirm()
+                    }}
+                >
+                    Confirm Return
+                </button>
+            </div>
+        </div>
+    </div>
+) : null}    
 
         </div>
     )
