@@ -27,19 +27,22 @@ app.listen(process.env.SERVER_PORT, () => {
 // If route is not found, create a 404 error
 const createError = require('http-errors')
 app.use((req, res, next) => {
-    next(createError(404))
+    next(createError(404, `Route not found`))
 })
 
 // Handle all other errors here
-app.use(function (err, req, res) {
+app.use(function (err, req, res, next) {
+    if (res.headersSent) {
+        return next(err)
+    }
+
     // Print the error message in the terminal
     console.error(err.message)
 
-    // If there is no status code, use 500 (server error)
-    if (!err.statusCode) {
-        err.statusCode = 500
-    }
+    // Normalize status/message so every route returns a predictable error payload.
+    const statusCode = Number(err.statusCode || err.status || 500)
+    const message = String(err.message || `Internal Server Error`)
 
     // Send status code and message back to the client
-    res.status(err.statusCode).send(err.message)
+    res.status(statusCode).send(message)
 })
