@@ -140,7 +140,9 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
                         </div>
                         <div className="profile-modal-actions">
                             <Link to="/EditProfile" className="blue-button profile-modal-edit-button" onClick={closeProfileModal}>Edit Profile</Link>
-                            <Link to="/PurchaseHistory" className="blue-button profile-modal-history-button" onClick={closeProfileModal}>Purchase History</Link>
+                            {!isAdmin ? (
+                                <Link to="/PurchaseHistory" className="blue-button profile-modal-history-button" onClick={closeProfileModal}>Purchase History</Link>
+                            ) : null}
                             <Logout onLoggedOut={closeProfileModal} />
                         </div>
                     </div>

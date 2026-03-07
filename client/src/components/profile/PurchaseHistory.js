@@ -97,7 +97,7 @@ const openReturnConfirm = (saleId, item) => {
 }
 
 // Closes return confirmation modal without API call.
-const closeReturnConfirm = () => {
+    const closeReturnConfirm = () => {
     setItemToReturn(null)
 }
 
@@ -123,7 +123,6 @@ const closeReturnConfirm = () => {
         // Always release button lock even if request fails.
         .finally(() => setReturningItemKey(""))
 }
-
 
     const requestReturnItem = (saleId, itemId) => {
     return axios.patch(

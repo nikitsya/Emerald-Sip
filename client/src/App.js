@@ -9,7 +9,7 @@ import {Register} from "./components/auth/Register"
 import "./css/App.css"
 import {Navigation} from "./components/layout/Navigation"
 import {Login} from "./components/auth/Login"
-import {ACCESS_LEVEL_ADMIN} from "./config/global_constants"
+import {ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST} from "./config/global_constants"
 import {LoggedInRoute} from "./components/auth/LoggedInRoute"
 import {ShoppingCart} from "./components/cart/ShoppingCart"
 import {useShoppingCart} from "./hooks/useShoppingCart"
@@ -114,7 +114,13 @@ export const App = () => {
                 />
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
                 <LoggedInRoute exact path="/EditProfile" component={EditProfile}/>
-                <LoggedInRoute exact path="/PurchaseHistory" component={PurchaseHistory}/>
+                <Route exact path="/PurchaseHistory"
+                    render={() => (
+                        accessLevel > ACCESS_LEVEL_GUEST && hasValidToken() && !isAdmin
+                            ? <PurchaseHistory/>
+                            : <Redirect to="/DisplayAllProducts"/>
+                    )}
+                />
 
 
                 {/* Fallback route keeps users on catalog for unknown paths */}
