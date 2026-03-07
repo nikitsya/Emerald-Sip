@@ -383,6 +383,7 @@ const closeReturnConfirm = () => {
                 <button
                     type="button"
                     className="green-button"
+                    disabled={Boolean(returningItemKey)}
                     onClick={() => {
                         handleReturnClick(itemToReturn.saleId, itemToReturn.itemId)
                         closeReturnConfirm()
