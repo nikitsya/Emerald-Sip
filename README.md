@@ -52,6 +52,8 @@ Authors:
 
 ```text
 .
+├── docs
+│   └── screenshots
 ├── client
 │   ├── public
 │   └── src
@@ -68,6 +70,28 @@ Authors:
 ├── ProgressTracker.md
 └── README.md
 ```
+
+## Screenshots
+
+### Main Pages
+
+![Screenshot 1](./docs/screenshots/screen-01.png)
+![Screenshot 2](./docs/screenshots/screen-02.png)
+![Screenshot 3](./docs/screenshots/screen-03.png)
+![Screenshot 4](./docs/screenshots/screen-04.png)
+![Screenshot 5](./docs/screenshots/screen-05.png)
+![Screenshot 6](./docs/screenshots/screen-06.png)
+
+### Additional Views
+
+![Screenshot 7](./docs/screenshots/screen-07.png)
+![Screenshot 8](./docs/screenshots/screen-08.png)
+![Screenshot 9](./docs/screenshots/screen-09.png)
+![Screenshot 10](./docs/screenshots/screen-10.png)
+![Screenshot 11](./docs/screenshots/screen-11.png)
+![Screenshot 12](./docs/screenshots/screen-12.png)
+![Screenshot 13](./docs/screenshots/screen-13.png)
+![Screenshot 14](./docs/screenshots/screen-14.png)
 
 ## Prerequisites
 
