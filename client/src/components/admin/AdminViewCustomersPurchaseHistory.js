@@ -199,7 +199,8 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
                         <thead>
                         <tr>
                             <th>
-                                <button type="button" className="table-sort-btn" onClick={() => handleSort("createdAt")}>
+                                <button type="button" className="table-sort-btn"
+                                        onClick={() => handleSort("createdAt")}>
                                     Date {getSortIndicator(sortConfig, "createdAt")}
                                 </button>
                             </th>
@@ -209,7 +210,8 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
                                 </button>
                             </th>
                             <th>
-                                <button type="button" className="table-sort-btn" onClick={() => handleSort("customerName")}>
+                                <button type="button" className="table-sort-btn"
+                                        onClick={() => handleSort("customerName")}>
                                     Customer {getSortIndicator(sortConfig, "customerName")}
                                 </button>
                             </th>
@@ -220,7 +222,8 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
                                 </button>
                             </th>
                             <th>
-                                <button type="button" className="table-sort-btn" onClick={() => handleSort("itemsCount")}>
+                                <button type="button" className="table-sort-btn"
+                                        onClick={() => handleSort("itemsCount")}>
                                     Items {getSortIndicator(sortConfig, "itemsCount")}
                                 </button>
                             </th>
@@ -238,13 +241,16 @@ const AdminViewCustomersPurchaseHistoryComponent = ({location}) => {
                                     <td data-label="Date">{formatDateTime(purchase.createdAt)}</td>
                                     <td data-label="Order ID">{purchase.orderID || "Unknown order"}</td>
                                     <td data-label="Customer">
-                                        <div className="admin-purchase-customer-name">{purchase.customerName || "Unknown customer"}</div>
-                                        <div className="admin-purchase-customer-meta">{purchase.customerEmail || "Email not provided"}</div>
+                                        <div
+                                            className="admin-purchase-customer-name">{purchase.customerName || "Unknown customer"}</div>
+                                        <div
+                                            className="admin-purchase-customer-meta">{purchase.customerEmail || "Email not provided"}</div>
                                         {purchase.customerPhone ? (
                                             <div className="admin-purchase-customer-meta">{purchase.customerPhone}</div>
                                         ) : null}
                                         {purchase.customerAddress ? (
-                                            <div className="admin-purchase-customer-meta">{purchase.customerAddress}</div>
+                                            <div
+                                                className="admin-purchase-customer-meta">{purchase.customerAddress}</div>
                                         ) : null}
                                     </td>
                                     <td data-label="Type">{purchase.isGuest ? "Guest" : "Registered"}</td>

@@ -130,7 +130,8 @@ export const ShoppingCart = ({cartItems, onUpdateQuantity, onRemoveItem, onClear
                                     </button>
                                 </div>
 
-                                <p className="cart-item-subtotal"><span>Subtotal</span> <strong>{formatPrice(subtotal)}</strong>
+                                <p className="cart-item-subtotal"><span>Subtotal</span>
+                                    <strong>{formatPrice(subtotal)}</strong>
                                 </p>
 
                                 <button

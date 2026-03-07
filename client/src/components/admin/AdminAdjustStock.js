@@ -232,7 +232,8 @@ export const AdminAdjustStock = () => {
                                 </div>
 
                                 {fieldErrorById[product._id] ? (
-                                    <p id={`stock-error-${product._id}`} className="admin-stock-row-error">{fieldErrorById[product._id]}</p>
+                                    <p id={`stock-error-${product._id}`}
+                                       className="admin-stock-row-error">{fieldErrorById[product._id]}</p>
                                 ) : null}
 
                                 {saveErrorById[product._id] ? (

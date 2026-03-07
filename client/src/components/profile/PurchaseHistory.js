@@ -87,50 +87,50 @@ export const PurchaseHistory = () => {
     }
 
 // Opens confirmation modal before triggering return API.
-const openReturnConfirm = (saleId, item) => {
-    setLoadError("")
-    setItemToReturn({
-        saleId: String(saleId),
-        itemId: String(item?._id || ""),
-        itemName: String(item?.name || "Item")
-    })
-}
+    const openReturnConfirm = (saleId, item) => {
+        setLoadError("")
+        setItemToReturn({
+            saleId: String(saleId),
+            itemId: String(item?._id || ""),
+            itemName: String(item?.name || "Item")
+        })
+    }
 
 // Closes return confirmation modal without API call.
     const closeReturnConfirm = () => {
-    setItemToReturn(null)
-}
+        setItemToReturn(null)
+    }
 
- // Handles logged-in item return request and refreshes the updated sale in local state.
+    // Handles logged-in item return request and refreshes the updated sale in local state.
     const handleReturnClick = (saleId, itemId) => {
-    setLoadError("")
-    // Build a stable key so only one clicked item shows loading state.
-    const itemKey = `${saleId}:${itemId}`
-    setReturningItemKey(itemKey)
+        setLoadError("")
+        // Build a stable key so only one clicked item shows loading state.
+        const itemKey = `${saleId}:${itemId}`
+        setReturningItemKey(itemKey)
 
-    requestReturnItem(saleId, itemId)
-        .then((res) => {
-            setPurchases((previousPurchases) => {
-                const updatedSale = res.data
-                return previousPurchases.map((purchase) =>
-                    String(purchase._id) === String(updatedSale._id) ? updatedSale : purchase
-                )
+        requestReturnItem(saleId, itemId)
+            .then((res) => {
+                setPurchases((previousPurchases) => {
+                    const updatedSale = res.data
+                    return previousPurchases.map((purchase) =>
+                        String(purchase._id) === String(updatedSale._id) ? updatedSale : purchase
+                    )
+                })
             })
-        })
-        .catch((error) => {
-            setLoadError(getAdminErrorMessage(error, "Failed to return item. Please try again."))
-        })
-        // Always release button lock even if request fails.
-        .finally(() => setReturningItemKey(""))
-}
+            .catch((error) => {
+                setLoadError(getAdminErrorMessage(error, "Failed to return item. Please try again."))
+            })
+            // Always release button lock even if request fails.
+            .finally(() => setReturningItemKey(""))
+    }
 
     const requestReturnItem = (saleId, itemId) => {
-    return axios.patch(
-        `${SERVER_HOST}/sales/return-item/${saleId}/${itemId}`,
-        {},
-        {headers: {"authorization": localStorage.token}}
-    )
-}
+        return axios.patch(
+            `${SERVER_HOST}/sales/return-item/${saleId}/${itemId}`,
+            {},
+            {headers: {"authorization": localStorage.token}}
+        )
+    }
 
 
     const periodOptions = useMemo(() => {
@@ -275,7 +275,8 @@ const openReturnConfirm = (saleId, item) => {
                         <thead>
                         <tr>
                             <th>
-                                <button type="button" className="table-sort-btn" onClick={() => handleSort("createdAt")}>
+                                <button type="button" className="table-sort-btn"
+                                        onClick={() => handleSort("createdAt")}>
                                     Date {getSortIndicator(sortConfig, "createdAt")}
                                 </button>
                             </th>
@@ -290,7 +291,8 @@ const openReturnConfirm = (saleId, item) => {
                                 </button>
                             </th>
                             <th>
-                                <button type="button" className="table-sort-btn" onClick={() => handleSort("itemsCount")}>
+                                <button type="button" className="table-sort-btn"
+                                        onClick={() => handleSort("itemsCount")}>
                                     Items {getSortIndicator(sortConfig, "itemsCount")}
                                 </button>
                             </th>
@@ -329,24 +331,26 @@ const openReturnConfirm = (saleId, item) => {
                                                                         alt={item.name || "Item"}
                                                                     />
                                                                 ) : (
-                                                                    <span className="purchase-history-item-image-placeholder">-</span>
+                                                                    <span
+                                                                        className="purchase-history-item-image-placeholder">-</span>
                                                                 )}
                                                                 <span>{item.name || "Item"} x {quantity}</span>
                                                             </span>
                                                             <div className="purchase-history-item-right">
                                                                 <strong>{formatPrice(lineTotal)}</strong>
-                                                            {item.isReturned ? (
-                                                                <span className="purchase-returned-badge">Returned</span>
-                                                            ) : (
-                                                               <button
-                                                                    type="button"
-                                                                    className="purchase-return-btn"
-                                                                    onClick={() => openReturnConfirm(purchase._id, item)}
-                                                                    disabled={isReturning}
-                                                                >
-                                                                    {isReturning ? "Returning..." : "Return"}
-                                                                </button>
-                                                            )}
+                                                                {item.isReturned ? (
+                                                                    <span
+                                                                        className="purchase-returned-badge">Returned</span>
+                                                                ) : (
+                                                                    <button
+                                                                        type="button"
+                                                                        className="purchase-return-btn"
+                                                                        onClick={() => openReturnConfirm(purchase._id, item)}
+                                                                        disabled={isReturning}
+                                                                    >
+                                                                        {isReturning ? "Returning..." : "Return"}
+                                                                    </button>
+                                                                )}
                                                             </div>
 
                                                         </li>
@@ -364,36 +368,36 @@ const openReturnConfirm = (saleId, item) => {
                     </table>
                 </div>
             ) : null}
-        {itemToReturn ? (
-    <div className="modal-overlay" onClick={closeReturnConfirm}>
-        <div
-            className="confirm-delete-card"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Confirm return item"
-        >
-            <h3>Confirm Return</h3>
-            <p>Return "{itemToReturn.itemName}"?</p>
-            <div className="modal-actions">
-                <button type="button" className="red-button" onClick={closeReturnConfirm}>
-                    Cancel
-                </button>
-                <button
-                    type="button"
-                    className="green-button"
-                    disabled={Boolean(returningItemKey)}
-                    onClick={() => {
-                        handleReturnClick(itemToReturn.saleId, itemToReturn.itemId)
-                        closeReturnConfirm()
-                    }}
-                >
-                    Confirm Return
-                </button>
-            </div>
-        </div>
-    </div>
-) : null}    
+            {itemToReturn ? (
+                <div className="modal-overlay" onClick={closeReturnConfirm}>
+                    <div
+                        className="confirm-delete-card"
+                        onClick={(event) => event.stopPropagation()}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Confirm return item"
+                    >
+                        <h3>Confirm Return</h3>
+                        <p>Return "{itemToReturn.itemName}"?</p>
+                        <div className="modal-actions">
+                            <button type="button" className="red-button" onClick={closeReturnConfirm}>
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="green-button"
+                                disabled={Boolean(returningItemKey)}
+                                onClick={() => {
+                                    handleReturnClick(itemToReturn.saleId, itemToReturn.itemId)
+                                    closeReturnConfirm()
+                                }}
+                            >
+                                Confirm Return
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            ) : null}
 
         </div>
     )

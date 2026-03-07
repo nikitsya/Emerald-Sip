@@ -2520,6 +2520,7 @@ form input[readonly] {
     border: 2px solid #d8e5d2;
     margin-bottom: 12px;
 }
+
 .profile-file-row {
     display: flex;
     align-items: center;
@@ -2586,9 +2587,8 @@ form input[readonly] {
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(170, 208, 139, 0.2) 0, rgba(170, 208, 139, 0) 45%),
-        rgba(25, 37, 24, 0.5);
+    background: radial-gradient(circle at 20% 20%, rgba(170, 208, 139, 0.2) 0, rgba(170, 208, 139, 0) 45%),
+    rgba(25, 37, 24, 0.5);
     backdrop-filter: blur(4px);
 }
 
@@ -2596,11 +2596,9 @@ form input[readonly] {
     width: min(360px, 100%);
     border: 1px solid #d6e2c9;
     border-radius: 22px;
-    background:
-        linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 252, 241, 0.94) 100%);
-    box-shadow:
-        0 24px 52px rgba(27, 41, 24, 0.28),
-        0 2px 0 rgba(255, 255, 255, 0.8) inset;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 252, 241, 0.94) 100%);
+    box-shadow: 0 24px 52px rgba(27, 41, 24, 0.28),
+    0 2px 0 rgba(255, 255, 255, 0.8) inset;
     padding: 26px 20px 20px;
     text-align: center;
     position: relative;
@@ -2887,6 +2885,7 @@ form input[readonly] {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
 .purchase-return-btn:hover,
 .purchase-return-btn:focus {
     background: #dfe8cf;

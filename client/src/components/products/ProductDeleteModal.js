@@ -62,7 +62,8 @@ export const ProductDeleteModal = ({product, isDeleting = false, error = "", onC
                     Are you sure you want to delete <strong>{product.name || "this product"}</strong>?
                 </p>
 
-                {previewImage ? <img className="confirm-delete-image" src={previewImage} alt={product.name || "Product"} /> : null}
+                {previewImage ?
+                    <img className="confirm-delete-image" src={previewImage} alt={product.name || "Product"}/> : null}
 
                 {error ? <p className="confirm-delete-error" role="alert">{error}</p> : null}
 

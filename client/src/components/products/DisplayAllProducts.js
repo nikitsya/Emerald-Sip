@@ -28,7 +28,7 @@ const CAPACITY_OPTIONS = [
 
 const parseRange = (rangeValue) => {
     const [minValue, maxValue] = rangeValue.split("-")
-    return { min: Number(minValue), max: Number(maxValue) }
+    return {min: Number(minValue), max: Number(maxValue)}
 }
 
 const matchesRange = (value, rangeValue) => {
@@ -47,7 +47,10 @@ const matchesRange = (value, rangeValue) => {
 
 const normalizeText = (value) => (value || "").toString().trim()
 
-export const DisplayAllProducts = ({searchName = "", setSearchName = s => {}, cartItems = [], onAddToCart}) => {
+export const DisplayAllProducts = ({
+                                       searchName = "", setSearchName = s => {
+    }, cartItems = [], onAddToCart
+                                   }) => {
     // Source dataset returned from backend `/products`.
     const [products, setProducts] = useState([])
     const [materialFilter, setMaterialFilter] = useState("any")

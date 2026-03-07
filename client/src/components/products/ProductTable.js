@@ -13,7 +13,8 @@ export const ProductTable = props => {
     // Selected row product is displayed in details modal.
     const [selectedProduct, setSelectedProduct] = useState(null)
     const sortConfig = props.sortConfig || {column: "name", direction: "asc"}
-    const onSortChange = props.onSortChange || (() => {})
+    const onSortChange = props.onSortChange || (() => {
+    })
     const onAddToCart = props.onAddToCart
     const onRequestDelete = props.onRequestDelete
     // Fast lookup for "already in cart" state by product id.
@@ -26,9 +27,9 @@ export const ProductTable = props => {
         // Toggle sort direction when same column is clicked, otherwise reset to ascending.
         onSortChange((previousConfig) => {
             if (previousConfig.column === column) {
-                return { column, direction: previousConfig.direction === "asc" ? "desc" : "asc"}
+                return {column, direction: previousConfig.direction === "asc" ? "desc" : "asc"}
             }
-            return { column, direction: "asc" }
+            return {column, direction: "asc"}
         })
     }
 

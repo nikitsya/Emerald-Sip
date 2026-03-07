@@ -6,7 +6,10 @@ import {SERVER_HOST} from "../../config/global_constants"
 import {clearSession} from "./authShared"
 
 
-export const Logout = ({onLoggedOut = () => {}}) => {
+export const Logout = ({
+                           onLoggedOut = () => {
+                           }
+                       }) => {
     // Component redirects after successful logout request.
     const [isLoggedIn, setIsLoggedIn] = useState(true)
 
@@ -14,7 +17,8 @@ export const Logout = ({onLoggedOut = () => {}}) => {
         e.preventDefault()
         // Server logout is best-effort; app auth state is controlled client-side with JWT in localStorage.
         axios.post(`${SERVER_HOST}/users/logout`)
-            .catch(() => {})
+            .catch(() => {
+            })
             .finally(() => {
                 // Always clear client session to avoid stale admin/customer UI after logout.
                 clearSession()

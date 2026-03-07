@@ -36,7 +36,7 @@ const readProfilePhotoAsBase64 = (photoFilename) =>
 
 // Sends a consistent profile payload to the client, including base64 photo when available.
 const sendProfileResponse = (user, res) => {
-     // Shared profile fields returned by both GET/PUT profile endpoints.
+    // Shared profile fields returned by both GET/PUT profile endpoints.
     const basePayload = {
         name: user.name,
         email: user.email,
@@ -70,10 +70,9 @@ router.post(`/users/reset_user_collection`, (req, res, next) => {
                     password: hash,
                     accessLevel: parseInt(process.env.ACCESS_LEVEL_ADMIN)
                 })
-                    .then(createData => 
-                        {
-                            emptyFolder(uploadedFilesFolderPath, false, result => res.json(createData))
-                        })                     
+                    .then(createData => {
+                        emptyFolder(uploadedFilesFolderPath, false, result => res.json(createData))
+                    })
                     .catch(() => next(createError(500, `Failed to create Admin user for testing purposes`)))
             })
         })
@@ -114,21 +113,31 @@ router.post(`/users/register/:name/:email/:password`, upload.single("profilePhot
                         .then(data => {
                             // Issue JWT immediately after successful registration.
                             const token = jwt.sign({
-                                email: data.email,
-                                accessLevel: data.accessLevel},
+                                    email: data.email,
+                                    accessLevel: data.accessLevel
+                                },
                                 JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn: process.env.JWT_EXPIRY})
 
                             if (!uploadedPhotoFilename) {
-                                return res.json({name: data.name, accessLevel: data.accessLevel, profilePhoto: null, token: token})
+                                return res.json({
+                                    name: data.name,
+                                    accessLevel: data.accessLevel,
+                                    profilePhoto: null,
+                                    token: token
+                                })
                             }
 
-                            fs.readFile(getUploadedFilePath(uploadedPhotoFilename), 'base64', (readErr, fileData) =>
-                            {
+                            fs.readFile(getUploadedFilePath(uploadedPhotoFilename), 'base64', (readErr, fileData) => {
                                 if (readErr) {
                                     return next(readErr)
                                 }
 
-                                res.json({name: data.name, accessLevel: data.accessLevel, profilePhoto: fileData, token: token})
+                                res.json({
+                                    name: data.name,
+                                    accessLevel: data.accessLevel,
+                                    profilePhoto: fileData,
+                                    token: token
+                                })
                             })
                         })
                         .catch(() => next(createError(409, `User was not registered`)))
@@ -195,7 +204,7 @@ router.get(`/users/profile`, (req, res, next) => {
             return next(createError(403, `User is not logged in`))
         }
 
-         // Use email from decoded token to fetch the exact user profile.
+        // Use email from decoded token to fetch the exact user profile.
         usersModel.findOne({email: decodedToken.email})
             .then((data) => {
                 // Token is valid but user record no longer exists.
@@ -246,10 +255,11 @@ router.put(`/users/profile`, upload.single("profilePhoto"), (req, res, next) => 
                             next(createError(400, `Only .png, .jpg and .jpeg format accepted`))
                         })
                     }
-                    
+
                     // Remove previous profile photo file to avoid orphan files.
                     if (data.profilePhotoFilename) {
-                        fs.unlink(getUploadedFilePath(data.profilePhotoFilename), () => {})
+                        fs.unlink(getUploadedFilePath(data.profilePhotoFilename), () => {
+                        })
                     }
                     // Save new random uploaded filename in user record.
                     updates.profilePhotoFilename = req.file.filename
@@ -322,7 +332,8 @@ router.delete(`/users/:id`, (req, res, next) => {
                     .then(() => {
                         // Profile photo file is best-effort cleanup and does not block API success.
                         if (profilePhotoFilename) {
-                            fs.unlink(getUploadedFilePath(profilePhotoFilename), () => {})
+                            fs.unlink(getUploadedFilePath(profilePhotoFilename), () => {
+                            })
                         }
 
                         res.json({success: true})

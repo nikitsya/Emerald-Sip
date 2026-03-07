@@ -269,7 +269,8 @@ export const AdminViewCustomers = () => {
                                         aria-label="Delete customer"
                                         title="Delete customer"
                                     >
-                                        <img className="admin-action-icon" src="/images/buttons/admin/delete.png" alt="Delete"/>
+                                        <img className="admin-action-icon" src="/images/buttons/admin/delete.png"
+                                             alt="Delete"/>
                                     </button>
                                 </td>
                             </tr>

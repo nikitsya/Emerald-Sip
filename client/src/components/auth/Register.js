@@ -162,7 +162,7 @@ export const Register = () => {
             />
             {/* Confirm-password validation message */}
             {errors.confirmPassword ? <div className="error-text">{errors.confirmPassword}</div> : null}<br/><br/>
-            
+
             <label htmlFor="registerProfilePhoto">Profile photo (optional)</label>
             <input
                 id="registerProfilePhoto"

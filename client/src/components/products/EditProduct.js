@@ -2,7 +2,12 @@ import React, {useEffect, useState} from "react"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
 import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
-import {buildProductPayload, mapProductToFormValues, useProductForm, validateProductForm} from "../../hooks/useProductForm"
+import {
+    buildProductPayload,
+    mapProductToFormValues,
+    useProductForm,
+    validateProductForm
+} from "../../hooks/useProductForm"
 import {ProductFormFields} from "./ProductFormFields"
 
 // Prevents rendering raw HTML error pages inside form error UI.

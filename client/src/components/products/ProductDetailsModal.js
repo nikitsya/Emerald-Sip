@@ -5,7 +5,14 @@ import {ACCESS_LEVEL_ADMIN} from "../../config/global_constants"
 
 const formatPrice = (value) => `€ ${(Number(value) || 0).toFixed(2)}`
 
-export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDelete, isInCart = false, cartQuantity = 0}) => {
+export const ProductDetailsModal = ({
+                                        product,
+                                        onClose,
+                                        onAddToCart,
+                                        onRequestDelete,
+                                        isInCart = false,
+                                        cartQuantity = 0
+                                    }) => {
     useEffect(() => {
         if (!product) return
 
@@ -58,8 +65,8 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDel
             <div className="modal-card" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true"
                  aria-label={product.name}>
                 <div className="modal-hero">
-                    { primaryImage
-                        ? ( <img className="modal-hero-image" src={primaryImage} alt={product.name}/>)
+                    {primaryImage
+                        ? (<img className="modal-hero-image" src={primaryImage} alt={product.name}/>)
                         : (<div className="modal-hero-empty">No image available</div>)
                     }
                 </div>
@@ -81,14 +88,14 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDel
 
                     {/* Optional additional product images */}
                     {additionalImages.length > 0
-                        ? ( <div className="modal-images"> {additionalImages.map((src, i) => (
-                                <img key={i} className="modal-thumb" src={src} alt={`${product.name}-extra-${i + 1}`}/>
-                            ))}</div>)
+                        ? (<div className="modal-images"> {additionalImages.map((src, i) => (
+                            <img key={i} className="modal-thumb" src={src} alt={`${product.name}-extra-${i + 1}`}/>
+                        ))}</div>)
                         : null}
 
                     <div className="modal-actions">
                         {/* Customer action: add item to cart */}
-                        { canAddToCart ? (
+                        {canAddToCart ? (
                             <button
                                 type="button"
                                 className="icon-button add-to-cart-icon-button"

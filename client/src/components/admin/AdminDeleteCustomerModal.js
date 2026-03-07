@@ -59,7 +59,8 @@ export const AdminDeleteCustomerModal = ({customer, isDeleting = false, error = 
                 <h3>Delete Customer</h3>
                 <p>Are you sure you want to delete <strong>{customerName}</strong>?</p>
                 {customerEmail ? <p>{customerEmail}</p> : null}
-                {customerPhoto ? <img className="confirm-delete-image" src={`data:;base64,${customerPhoto}`} alt={customerName} /> : null}
+                {customerPhoto ? <img className="confirm-delete-image" src={`data:;base64,${customerPhoto}`}
+                                      alt={customerName}/> : null}
                 {error ? <p className="confirm-delete-error" role="alert">{error}</p> : null}
 
                 <div className="confirm-delete-actions">

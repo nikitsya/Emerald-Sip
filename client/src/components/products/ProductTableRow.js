@@ -38,9 +38,9 @@ export const ProductTableRow = props => {
 
     return (
         <tr onClick={handleRowClick} className="product-row-clickable">
-            <td data-label="Images">{ firstImage
+            <td data-label="Images">{firstImage
                 ? <img className="product-thumb" src={firstImage} alt={product.name}/>
-                : "-" }
+                : "-"}
             </td>
             <td data-label="Product Name">{product.name}</td>
             <td data-label="Price">{formatPrice(product.price)}</td>

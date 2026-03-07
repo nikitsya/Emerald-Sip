@@ -79,7 +79,8 @@ export const PayPalMessage = (props) => {
             ) : null}
 
             <div className="paypal-status-actions">
-                <Link className={`${currentContent.primaryButtonClass} paypal-status-button`} to={currentContent.primaryTarget}>
+                <Link className={`${currentContent.primaryButtonClass} paypal-status-button`}
+                      to={currentContent.primaryTarget}>
                     {currentContent.primaryButton}
                 </Link>
                 <Link className="blue-button paypal-status-button" to={currentContent.secondaryTarget}>

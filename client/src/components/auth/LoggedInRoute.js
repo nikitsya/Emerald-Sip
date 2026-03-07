@@ -10,7 +10,7 @@ export const LoggedInRoute = ({component: Component, exact, path, ...rest}) =>
         path={path}
         // Guard protected routes by access level and a non-empty token value.
         render={props => getStoredAccessLevel() > ACCESS_LEVEL_GUEST
-            && hasValidToken()
+        && hasValidToken()
             ? <Component {...props} {...rest} />
             : <Redirect to="/DisplayAllProducts"/>}
     />

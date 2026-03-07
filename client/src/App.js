@@ -19,7 +19,12 @@ import {PurchaseHistory} from "./components/profile/PurchaseHistory"
 import {AdminAdjustStock} from "./components/admin/AdminAdjustStock"
 import {AdminViewCustomers} from "./components/admin/AdminViewCustomers"
 import {AdminViewCustomersPurchaseHistory} from "./components/admin/AdminViewCustomersPurchaseHistory"
-import {AUTH_SESSION_CHANGED_EVENT, getStoredAccessLevel, hasValidToken, setGuestSession} from "./components/auth/authShared"
+import {
+    AUTH_SESSION_CHANGED_EVENT,
+    getStoredAccessLevel,
+    hasValidToken,
+    setGuestSession
+} from "./components/auth/authShared"
 
 
 // Main app component with all routes
@@ -80,13 +85,14 @@ export const App = () => {
                 <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>
                 <Route exact path="/ResetDatabase" component={ResetDatabase}/>
                 <Route exact path="/AdminAdjustStock"
-                    render={() => (isAdmin ? <AdminAdjustStock/> : <Redirect to="/DisplayAllProducts"/>)}
+                       render={() => (isAdmin ? <AdminAdjustStock/> : <Redirect to="/DisplayAllProducts"/>)}
                 />
                 <Route exact path="/AdminViewCustomers"
-                    render={() => (isAdmin ? <AdminViewCustomers/> : <Redirect to="/DisplayAllProducts"/>)}
+                       render={() => (isAdmin ? <AdminViewCustomers/> : <Redirect to="/DisplayAllProducts"/>)}
                 />
                 <Route exact path="/AdminViewCustomersPurchaseHistory"
-                    render={() => (isAdmin ? <AdminViewCustomersPurchaseHistory/> : <Redirect to="/DisplayAllProducts"/>)}
+                       render={() => (isAdmin ? <AdminViewCustomersPurchaseHistory/> :
+                           <Redirect to="/DisplayAllProducts"/>)}
                 />
 
                 {/* Catalog routes share the same renderer to avoid duplicated props logic */}
@@ -94,32 +100,32 @@ export const App = () => {
                 <Route exact path="/DisplayAllProducts" render={renderCatalogPage}/>
                 <Route exact path="/Cart"
                     // Admin accounts are redirected because checkout flow is customer-only.
-                    render={() => (isAdmin
-                        ? (<Redirect to="/DisplayAllProducts"/>)
-                        : (<ShoppingCart
-                            cartItems={cartItems}
-                            onUpdateQuantity={updateCartItemQuantity}
-                            onRemoveItem={removeCartItem}
-                            onClearCart={clearCart}
-                        />))
-                    }
+                       render={() => (isAdmin
+                           ? (<Redirect to="/DisplayAllProducts"/>)
+                           : (<ShoppingCart
+                               cartItems={cartItems}
+                               onUpdateQuantity={updateCartItemQuantity}
+                               onRemoveItem={removeCartItem}
+                               onClearCart={clearCart}
+                           />))
+                       }
                 />
 
                 {/* Product management routes */}
                 <LoggedInRoute exact path="/AddProduct" component={AddProduct}/>
                 <Route exact path="/EditProduct/:id"
-                    render={(routeProps) => (isAdmin
-                        ? <EditProduct {...routeProps}/>
-                        : <Redirect to="/DisplayAllProducts"/>)}
+                       render={(routeProps) => (isAdmin
+                           ? <EditProduct {...routeProps}/>
+                           : <Redirect to="/DisplayAllProducts"/>)}
                 />
                 <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct}/>
                 <LoggedInRoute exact path="/EditProfile" component={EditProfile}/>
                 <Route exact path="/PurchaseHistory"
-                    render={() => (
-                        accessLevel > ACCESS_LEVEL_GUEST && hasValidToken() && !isAdmin
-                            ? <PurchaseHistory/>
-                            : <Redirect to="/DisplayAllProducts"/>
-                    )}
+                       render={() => (
+                           accessLevel > ACCESS_LEVEL_GUEST && hasValidToken() && !isAdmin
+                               ? <PurchaseHistory/>
+                               : <Redirect to="/DisplayAllProducts"/>
+                       )}
                 />
 
 

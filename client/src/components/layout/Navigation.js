@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"; // useState controls mobile menu open/close
-import { Link } from "react-router-dom";
-import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST } from "../../config/global_constants"
+import React, {useEffect, useState} from "react"; // useState controls mobile menu open/close
+import {Link} from "react-router-dom";
+import {ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_GUEST} from "../../config/global_constants"
 import {Logout} from "../auth/Logout"
 import {AUTH_SESSION_CHANGED_EVENT, getStoredAccessLevel, hasValidToken} from "../auth/authShared"
 
 
-export const Navigation = ({ cartItemsCount = 0 }) => {
+export const Navigation = ({cartItemsCount = 0}) => {
     const [, setSessionVersion] = useState(0)
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
@@ -69,7 +69,7 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
 
                     <div className={"top-nav-left " + (isMenuOpen ? "menu-open" : "")}>
                         <Link to="/" className="top-nav-logo-link" onClick={closeMenu} aria-label="Home">
-                            <img className="top-nav-logo" src="/icons/logo.png" alt="Emerald Sip logo" />
+                            <img className="top-nav-logo" src="/icons/logo.png" alt="Emerald Sip logo"/>
                         </Link>
                     </div>
 
@@ -79,13 +79,16 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
                                 <>
                                     {isAdmin ? (
                                         <>
-                                            <Link to="/AdminAdjustStock" className="top-nav-link top-nav-admin-link" onClick={closeMenu}>
+                                            <Link to="/AdminAdjustStock" className="top-nav-link top-nav-admin-link"
+                                                  onClick={closeMenu}>
                                                 Adjust stock
                                             </Link>
-                                            <Link to="/AdminViewCustomers" className="top-nav-link top-nav-admin-link" onClick={closeMenu}>
+                                            <Link to="/AdminViewCustomers" className="top-nav-link top-nav-admin-link"
+                                                  onClick={closeMenu}>
                                                 View Customers
                                             </Link>
-                                            <Link to="/AdminViewCustomersPurchaseHistory" className="top-nav-link top-nav-admin-link" onClick={closeMenu}>
+                                            <Link to="/AdminViewCustomersPurchaseHistory"
+                                                  className="top-nav-link top-nav-admin-link" onClick={closeMenu}>
                                                 Purchase History
                                             </Link>
                                         </>
@@ -103,7 +106,8 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
                                             aria-expanded={isProfileModalOpen}
                                         >
                                             {hasProfilePhoto ? (
-                                                <img className="top-nav-profile-photo" src={`data:;base64,${profilePhoto}`} alt="Profile" />
+                                                <img className="top-nav-profile-photo"
+                                                     src={`data:;base64,${profilePhoto}`} alt="Profile"/>
                                             ) : (
                                                 <span className="top-nav-profile-fallback">{profileInitial}</span>
                                             )}
@@ -113,10 +117,12 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
                             ) : (
                                 <>
                                     <Link to="/Login" className="top-nav-link" onClick={closeMenu}>Login</Link>
-                                    <Link to="/Register" className="top-nav-link top-nav-action" onClick={closeMenu}>Register</Link>
+                                    <Link to="/Register" className="top-nav-link top-nav-action"
+                                          onClick={closeMenu}>Register</Link>
                                 </>
                             )}
-                            {!isAdmin ? <Link to="/Cart" className="top-nav-link top-nav-cart-link" onClick={closeMenu}>Cart ({cartItemsCount})</Link> : null}
+                            {!isAdmin ? <Link to="/Cart" className="top-nav-link top-nav-cart-link" onClick={closeMenu}>Cart
+                                ({cartItemsCount})</Link> : null}
                         </div>
                     </div>
                 </nav>
@@ -124,12 +130,16 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
 
             {isLoggedIn && isProfileModalOpen ? (
                 <div className="profile-modal-overlay" onClick={closeProfileModal}>
-                    <div className="profile-modal-card" onClick={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="Profile menu">
-                        <button type="button" className="profile-modal-close" onClick={closeProfileModal} aria-label="Close profile menu">×</button>
+                    <div className="profile-modal-card" onClick={(event) => event.stopPropagation()} role="dialog"
+                         aria-modal="true" aria-label="Profile menu">
+                        <button type="button" className="profile-modal-close" onClick={closeProfileModal}
+                                aria-label="Close profile menu">×
+                        </button>
                         <div className="profile-modal-head">
                             <div className="profile-modal-avatar-wrap">
                                 {hasProfilePhoto ? (
-                                    <img className="profile-modal-avatar" src={`data:;base64,${profilePhoto}`} alt="Profile" />
+                                    <img className="profile-modal-avatar" src={`data:;base64,${profilePhoto}`}
+                                         alt="Profile"/>
                                 ) : (
                                     <span className="profile-modal-avatar-fallback">{profileInitial}</span>
                                 )}
@@ -139,11 +149,13 @@ export const Navigation = ({ cartItemsCount = 0 }) => {
                             <p className="profile-modal-subtitle">Manage your profile settings.</p>
                         </div>
                         <div className="profile-modal-actions">
-                            <Link to="/EditProfile" className="blue-button profile-modal-edit-button" onClick={closeProfileModal}>Edit Profile</Link>
+                            <Link to="/EditProfile" className="blue-button profile-modal-edit-button"
+                                  onClick={closeProfileModal}>Edit Profile</Link>
                             {!isAdmin ? (
-                                <Link to="/PurchaseHistory" className="blue-button profile-modal-history-button" onClick={closeProfileModal}>Purchase History</Link>
+                                <Link to="/PurchaseHistory" className="blue-button profile-modal-history-button"
+                                      onClick={closeProfileModal}>Purchase History</Link>
                             ) : null}
-                            <Logout onLoggedOut={closeProfileModal} />
+                            <Logout onLoggedOut={closeProfileModal}/>
                         </div>
                     </div>
                 </div>
