@@ -67,14 +67,9 @@ export const useShoppingCart = () => {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems))
     }, [cartItems])
 
-    // Adds a product to cart or increments quantity if it already exists.
+    // Toggles a product in cart: add when absent, remove when already present.
     const addToCart = (product) => {
         if (!product || !product._id) {
-            return
-        }
-
-        const stockQty = normalizeStockQty(product.stockQty)
-        if (stockQty <= 0) {
             return
         }
 
@@ -82,15 +77,12 @@ export const useShoppingCart = () => {
             const existingItem = previousItems.find((item) => item._id === product._id)
 
             if (existingItem) {
-                return previousItems.map((item) =>
-                    item._id === product._id
-                        ? {
-                            ...item,
-                            stockQty,
-                            quantity: item.quantity < stockQty ? item.quantity + 1 : item.quantity
-                        }
-                        : item
-                )
+                return previousItems.filter((item) => item._id !== product._id)
+            }
+
+            const stockQty = normalizeStockQty(product.stockQty)
+            if (stockQty <= 0) {
+                return previousItems
             }
 
             return [

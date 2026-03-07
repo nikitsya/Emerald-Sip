@@ -37,10 +37,13 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDel
     const canAddToCart = typeof onAddToCart === "function"
     const canDeleteProduct = typeof onRequestDelete === "function"
     const stockQty = Number.isFinite(Number(product.stockQty)) ? Math.max(0, Math.floor(Number(product.stockQty))) : 0
-    const isAtStockLimit = stockQty <= 0 || cartQuantity >= stockQty
-    const addToCartLabel = stockQty <= 0 ? "Out of Stock" : (isAtStockLimit ? "Stock Limit Reached" : (isInCart ? "Added to Cart" : "Add to Cart"))
+    const isAtStockLimit = cartQuantity >= stockQty
+    const isCartActionBlocked = !isInCart && (stockQty <= 0 || isAtStockLimit)
+    const addToCartLabel = isInCart
+        ? "Remove from Cart"
+        : (stockQty <= 0 ? "Out of Stock" : (isAtStockLimit ? "Stock Limit Reached" : "Add to Cart"))
     const handleAddToCart = () => {
-        if (!canAddToCart || isAtStockLimit) return
+        if (!canAddToCart || isCartActionBlocked) return
         onAddToCart(product)
     }
     const handleDeleteClick = () => {
@@ -90,7 +93,7 @@ export const ProductDetailsModal = ({product, onClose, onAddToCart, onRequestDel
                                 type="button"
                                 className="icon-button add-to-cart-icon-button"
                                 onClick={handleAddToCart}
-                                disabled={isAtStockLimit}
+                                disabled={isCartActionBlocked}
                                 aria-label={addToCartLabel}
                                 title={addToCartLabel}
                             >

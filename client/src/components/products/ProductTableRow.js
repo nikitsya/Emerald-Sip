@@ -13,8 +13,11 @@ export const ProductTableRow = props => {
     const isAdmin = Number(localStorage.accessLevel) >= ACCESS_LEVEL_ADMIN
     const canAddToCart = !isAdmin && typeof onAddToCart === "function"
     const stockQty = Number.isFinite(Number(product.stockQty)) ? Math.max(0, Math.floor(Number(product.stockQty))) : 0
-    const isAtStockLimit = stockQty <= 0 || cartQuantity >= stockQty
-    const addToCartLabel = stockQty <= 0 ? "Out of Stock" : (isAtStockLimit ? "Stock Limit Reached" : (isInCart ? "Added to Cart" : "Add to Cart"))
+    const isAtStockLimit = cartQuantity >= stockQty
+    const isCartActionBlocked = !isInCart && (stockQty <= 0 || isAtStockLimit)
+    const addToCartLabel = isInCart
+        ? "Remove from Cart"
+        : (stockQty <= 0 ? "Out of Stock" : (isAtStockLimit ? "Stock Limit Reached" : "Add to Cart"))
     // First image is used as table thumbnail preview.
     const images = Array.isArray(product.images) ? product.images : []
     const firstImage = images.length > 0 ? images[0] : ""
@@ -25,7 +28,7 @@ export const ProductTableRow = props => {
     const stopRowClick = (e) => e.stopPropagation()
     const handleAddToCartClick = (e) => {
         e.stopPropagation()
-        if (isAtStockLimit) return
+        if (isCartActionBlocked) return
         if (onAddToCart) onAddToCart(product)
     }
     const handleDeleteClick = (e) => {
@@ -52,7 +55,7 @@ export const ProductTableRow = props => {
                             type="button"
                             className="icon-button add-to-cart-icon-button"
                             onClick={handleAddToCartClick}
-                            disabled={isAtStockLimit}
+                            disabled={isCartActionBlocked}
                             aria-label={addToCartLabel}
                             title={addToCartLabel}
                         >
