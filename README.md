@@ -76,20 +76,47 @@ Authors:
 <details>
   <summary>Click to open screenshots</summary>
 
-![Screenshot 1](./docs/screenshots/screen-01.png)
-![Screenshot 2](./docs/screenshots/screen-02.png)
-![Screenshot 3](./docs/screenshots/screen-03.png)
-![Screenshot 4](./docs/screenshots/screen-04.png)
-![Screenshot 5](./docs/screenshots/screen-05.png)
-![Screenshot 6](./docs/screenshots/screen-06.png)
-![Screenshot 7](./docs/screenshots/screen-07.png)
-![Screenshot 8](./docs/screenshots/screen-08.png)
-![Screenshot 9](./docs/screenshots/screen-09.png)
-![Screenshot 10](./docs/screenshots/screen-10.png)
-![Screenshot 11](./docs/screenshots/screen-11.png)
-![Screenshot 12](./docs/screenshots/screen-12.png)
-![Screenshot 13](./docs/screenshots/screen-13.png)
-![Screenshot 14](./docs/screenshots/screen-14.png)
+**1. Product Catalog (Guest View)**
+![Product Catalog (Guest View)](./docs/screenshots/screen-01.png)
+
+**2. Shopping Cart**
+![Shopping Cart](./docs/screenshots/screen-02.png)
+
+**3. Guest Checkout Validation**
+![Guest Checkout Validation](./docs/screenshots/screen-03.png)
+
+**4. Login Page**
+![Login Page](./docs/screenshots/screen-04.png)
+
+**5. Product Catalog (Admin Management View)**
+![Product Catalog (Admin Management View)](./docs/screenshots/screen-05.png)
+
+**6. Admin Adjust Stock**
+![Admin Adjust Stock](./docs/screenshots/screen-06.png)
+
+**7. Admin View Customers**
+![Admin View Customers](./docs/screenshots/screen-07.png)
+
+**8. Admin Customer Purchase History**
+![Admin Customer Purchase History](./docs/screenshots/screen-08.png)
+
+**9. Admin Profile Modal**
+![Admin Profile Modal](./docs/screenshots/screen-09.png)
+
+**10. Edit Profile Page**
+![Edit Profile Page](./docs/screenshots/screen-10.png)
+
+**11. Registration Page**
+![Registration Page](./docs/screenshots/screen-11.png)
+
+**12. Product Catalog (Logged-In Customer View)**
+![Product Catalog (Logged-In Customer View)](./docs/screenshots/screen-12.png)
+
+**13. Product Catalog with Active Filters**
+![Product Catalog with Active Filters](./docs/screenshots/screen-13.png)
+
+**14. Customer Purchase History**
+![Customer Purchase History](./docs/screenshots/screen-14.png)
 
 </details>
 
