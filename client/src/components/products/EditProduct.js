@@ -5,6 +5,18 @@ import {ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../../config/global_constants"
 import {buildProductPayload, mapProductToFormValues, useProductForm, validateProductForm} from "../../hooks/useProductForm"
 import {ProductFormFields} from "./ProductFormFields"
 
+// Prevents rendering raw HTML error pages inside form error UI.
+const extractSafeBackendMessage = (data) => {
+    const text = typeof data === "string" ? data.trim() : ""
+    if (!text) return ""
+
+    const normalized = text.toLowerCase()
+    const looksLikeHtml = normalized.includes("<!doctype") || normalized.includes("<html") || normalized.includes("<body")
+    if (looksLikeHtml) return ""
+
+    return text
+}
+
 // Maps backend/network failures to user-friendly messages for edit flow.
 const getEditProductErrorMessage = (error, fallbackMessage) => {
     if (!error?.response) {
@@ -12,7 +24,7 @@ const getEditProductErrorMessage = (error, fallbackMessage) => {
     }
 
     const {status, data} = error.response
-    const backendMessage = typeof data === "string" && data.trim() ? data.trim() : ""
+    const backendMessage = extractSafeBackendMessage(data)
 
     if (status === 400 || status === 409 || status === 422) {
         return backendMessage || fallbackMessage
@@ -21,7 +33,7 @@ const getEditProductErrorMessage = (error, fallbackMessage) => {
         return "You do not have permission to edit products."
     }
     if (status === 404) {
-        return "Product was not found."
+        return backendMessage || "Product was not found."
     }
 
     return backendMessage || fallbackMessage
