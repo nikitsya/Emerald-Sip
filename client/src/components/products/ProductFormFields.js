@@ -36,8 +36,17 @@ export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSub
         />
         {errors.price ? <div className="error-text">{errors.price}</div> : null}
 
-        <label>Images (comma separated)</label>
-            {imagePreviewList.length > 0 ? (
+        <label>Images (comma separated)</label>           
+        <input
+            type="text"
+            name="images"
+            value={formValues.images}
+            className={errors.images ? "field-error" : ""}
+            onChange={onFieldChange(`images`)}
+        />
+        {errors.images ? <div className="error-text">{errors.images}</div> : null}
+
+        {imagePreviewList.length > 0 ? (
                 <div className="product-image-preview-grid">
                     {imagePreviewList.map((src, index) => (
                         <img
@@ -49,15 +58,6 @@ export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSub
                     ))}
                 </div>
             ) : null}
-
-        <input
-            type="text"
-            name="images"
-            value={formValues.images}
-            className={errors.images ? "field-error" : ""}
-            onChange={onFieldChange(`images`)}
-        />
-        {errors.images ? <div className="error-text">{errors.images}</div> : null}
 
         <label>Description</label>
         <input type="text" name="description" value={formValues.description} onChange={onFieldChange(`description`)}/>
