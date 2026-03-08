@@ -3,14 +3,14 @@ import {Link} from "react-router-dom"
 import {Button} from "../ui/Button"
 
 // Shared product form fields used by both Add and Edit pages.
-export const ProductFormFields = ({
-                                      formValues,
-                                      onFieldChange,
-                                      submitLabel,
-                                      onSubmit,
-                                      errors = {},
-                                      serverError = ""
-                                  }) => (
+export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSubmit, errors = {}, serverError = ""}) => {
+    const imagePreviewList = String(formValues.images || "")
+        .split(",")
+        .map((value) => value.trim())
+        .filter((value) => value !== "")
+
+    return (
+
     <form>
         {/* API-level error shown once above field-level validation messages */}
         {serverError ? <div className="error-text">{serverError}</div> : null}
@@ -93,3 +93,4 @@ export const ProductFormFields = ({
         <Link className="red-button" to={"/DisplayAllProducts"}>Cancel</Link>
     </form>
 )
+}
