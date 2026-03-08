@@ -41,8 +41,8 @@ export const ProductDetailsModal = ({
 
     // Normalize image data and split into hero + thumbnail gallery.
     const images = Array.isArray(product.images) ? product.images : []
-    const primaryImage = images.length > 0 ? images[0] : ""
-    const additionalImages = images.slice(1)
+    const selectedImage = images.length > 0 ? images[selectedImageIndex] || images[0] : ""
+
     // Display fallback when optional fields are missing.
     const capacityValue = product.capacityMl === null || typeof product.capacityMl === "undefined" ? "-" : `${product.capacityMl} ml`
     // Admin-only actions are shown based on access level in localStorage.
@@ -71,8 +71,8 @@ export const ProductDetailsModal = ({
             <div className="modal-card" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true"
                  aria-label={product.name}>
                 <div className="modal-hero">
-                    {primaryImage
-                        ? (<img className="modal-hero-image" src={primaryImage} alt={product.name}/>)
+                    { selectedImage
+                        ? ( <img className="modal-hero-image" src={selectedImage} alt={product.name}/>)
                         : (<div className="modal-hero-empty">No image available</div>)
                     }
                 </div>
