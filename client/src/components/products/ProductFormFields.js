@@ -37,6 +37,19 @@ export const ProductFormFields = ({formValues, onFieldChange, submitLabel, onSub
         {errors.price ? <div className="error-text">{errors.price}</div> : null}
 
         <label>Images (comma separated)</label>
+            {imagePreviewList.length > 0 ? (
+                <div className="product-image-preview-grid">
+                    {imagePreviewList.map((src, index) => (
+                        <img
+                            key={`${src}-${index}`}
+                            className="product-image-preview-thumb"
+                            src={src}
+                            alt={`Product preview ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            ) : null}
+
         <input
             type="text"
             name="images"
