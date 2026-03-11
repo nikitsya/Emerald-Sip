@@ -127,7 +127,7 @@ Authors:
 
 ## Demo Video
 
-<video src="./docs/screencast.mp4" controls preload="metadata" width="100%">
+<video src="./docs/screencast.mp4" autoplay muted loop playsinline controls preload="metadata" width="100%">
   Your browser does not support embedded video.
 </video>
 
