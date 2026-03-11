@@ -1,4 +1,4 @@
-# Emerald Sip E-Commerce Web Application
+# Emerald Sip
 
 Full-stack e-commerce web application for reusable bottles and eco-friendly products.
 
