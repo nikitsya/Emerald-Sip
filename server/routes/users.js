@@ -9,9 +9,42 @@ const jwt = require('jsonwebtoken')
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, 'utf8')
 
 const multer = require('multer')
-const uploadedFilesFolderPath = path.resolve(__dirname, `..`, process.env.UPLOADED_FILES_FOLDER)
-const getUploadedFilePath = (filename) => path.join(uploadedFilesFolderPath, filename)
-const upload = multer({dest: uploadedFilesFolderPath})
+const uploadedFilesRootFolderPath = path.resolve(__dirname, `..`, process.env.UPLOADED_FILES_FOLDER)
+const uploadedUserPhotosFolderPath = path.join(uploadedFilesRootFolderPath, `users`)
+const acceptedProfilePhotoMimeTypes = new Set([`image/png`, `image/jpg`, `image/jpeg`, `image/webp`])
+fs.mkdirSync(uploadedUserPhotosFolderPath, {recursive: true})
+
+const buildSafePhotoExtension = (originalName) => {
+    const extension = String(path.extname(originalName || ``) || ``).toLowerCase()
+    if ([`.png`, `.jpg`, `.jpeg`, `.webp`].includes(extension)) {
+        return extension
+    }
+    return `.jpg`
+}
+
+const profilePhotoStorage = multer.diskStorage({
+    destination: (req, file, callback) => callback(null, uploadedUserPhotosFolderPath),
+    filename: (req, file, callback) => {
+        const safeExtension = buildSafePhotoExtension(file.originalname)
+        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${safeExtension}`
+        callback(null, uniqueName)
+    }
+})
+
+const upload = multer({storage: profilePhotoStorage, limits: {fileSize: 5 * 1024 * 1024}})
+
+// Resolves stored user photo filename to absolute file path; supports legacy root files.
+const getUploadedFilePath = (filename) => {
+    const safeFileName = path.basename(String(filename || ``).trim())
+    if (!safeFileName) return ``
+
+    const usersFolderCandidatePath = path.join(uploadedUserPhotosFolderPath, safeFileName)
+    if (fs.existsSync(usersFolderCandidatePath)) {
+        return usersFolderCandidatePath
+    }
+
+    return path.join(uploadedFilesRootFolderPath, safeFileName)
+}
 
 const emptyFolder = require('empty-folder')
 
@@ -21,11 +54,12 @@ const isPhoneValid = (phone) => /^\d{7,15}$/.test(String(phone || ``).trim())
 // Reads stored profile photo file and returns base64 payload, or null when unavailable.
 const readProfilePhotoAsBase64 = (photoFilename) =>
     new Promise((resolve) => {
-        if (!photoFilename) {
+        const absolutePhotoFilePath = getUploadedFilePath(photoFilename)
+        if (!absolutePhotoFilePath) {
             return resolve(null)
         }
 
-        fs.readFile(getUploadedFilePath(photoFilename), "base64", (readErr, fileData) => {
+        fs.readFile(absolutePhotoFilePath, "base64", (readErr, fileData) => {
             if (readErr || !fileData) {
                 return resolve(null)
             }
@@ -71,7 +105,8 @@ router.post(`/users/reset_user_collection`, (req, res, next) => {
                     accessLevel: parseInt(process.env.ACCESS_LEVEL_ADMIN)
                 })
                     .then(createData => {
-                        emptyFolder(uploadedFilesFolderPath, false, result => res.json(createData))
+                        // Reset only user avatars folder and keep product uploads intact.
+                        emptyFolder(uploadedUserPhotosFolderPath, false, () => res.json(createData))
                     })
                     .catch(() => next(createError(500, `Failed to create Admin user for testing purposes`)))
             })
@@ -81,9 +116,9 @@ router.post(`/users/reset_user_collection`, (req, res, next) => {
 
 // Registers a customer account if email is not already present.
 router.post(`/users/register/:name/:email/:password`, upload.single("profilePhoto"), (req, res, next) => {
-    if (req.file && req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/jpeg") {
-        return fs.unlink(getUploadedFilePath(req.file.filename), () => {
-            res.json({errorMessage: `Only .png, .jpg and .jpeg format accepted`})
+    if (req.file && !acceptedProfilePhotoMimeTypes.has(String(req.file.mimetype || ``).toLowerCase())) {
+        return fs.unlink(req.file.path, () => {
+            res.json({errorMessage: `Only .png, .jpg, .jpeg and .webp format accepted`})
         })
     }
 
@@ -249,10 +284,10 @@ router.put(`/users/profile`, upload.single("profilePhoto"), (req, res, next) => 
                 // Handle optional new profile image upload.
                 if (req.file) {
                     // Only allow supported image MIME types.
-                    if (req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/jpeg") {
+                    if (!acceptedProfilePhotoMimeTypes.has(String(req.file.mimetype || ``).toLowerCase())) {
                         // Remove invalid uploaded file and return validation error.
-                        return fs.unlink(getUploadedFilePath(req.file.filename), () => {
-                            next(createError(400, `Only .png, .jpg and .jpeg format accepted`))
+                        return fs.unlink(req.file.path, () => {
+                            next(createError(400, `Only .png, .jpg, .jpeg and .webp format accepted`))
                         })
                     }
 
