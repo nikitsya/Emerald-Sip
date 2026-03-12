@@ -77,12 +77,29 @@
 }
 
 .top-nav-left {
+    position: relative;
     display: flex;
     align-items: center;
     min-width: 0;
 }
 
+.top-nav-left::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    width: 300px;
+    height: 136px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(210, 234, 176, 0.32) 0%, rgba(210, 234, 176, 0.08) 46%, rgba(210, 234, 176, 0) 78%);
+    filter: blur(3px);
+    pointer-events: none;
+}
+
 .top-nav-logo-link {
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -104,7 +121,12 @@
     max-width: 260px;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 3px 7px rgba(14, 29, 13, 0.24));
+    filter:
+        drop-shadow(0 6px 14px rgba(8, 18, 8, 0.46))
+        drop-shadow(0 0 9px rgba(199, 228, 160, 0.28))
+        brightness(1.14)
+        contrast(1.12)
+        saturate(1.1);
 }
 
 .top-nav-right {
@@ -271,6 +293,11 @@
 }
 
 @media (max-width: 700px) {
+    .top-nav-left::before {
+        width: 240px;
+        height: 114px;
+    }
+
     .top-nav-logo {
         height: 74px;
         max-width: 210px;
