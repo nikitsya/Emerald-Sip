@@ -4,6 +4,7 @@ const createError = require(`http-errors`)
 const fs = require(`fs`)
 const jwt = require(`jsonwebtoken`)
 const salesModel = require(`../models/sales`)
+const productsModel = require(`../models/products`)
 const JWT_PRIVATE_KEY = fs.readFileSync(process.env.JWT_PRIVATE_KEY_FILENAME, `utf8`)
 
 // Normalizes basket payload and strips invalid entries before persistence.
@@ -36,8 +37,51 @@ const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email |
 const isPhoneValid = (phone) => /^\d{7,15}$/.test(String(phone || ``).trim())
 const escapeRegex = (value) => String(value || ``).replace(/[.*+?^${}()|[\]\\]/g, `\\$&`)
 
+const resolveSaleItemImage = (item, productImageLookup) => {
+    const storedImage = String(item?.image || ``).trim()
+    if (storedImage) return storedImage
+
+    const productId = String(item?._id || ``).trim()
+    return String(productImageLookup.get(productId) || ``).trim()
+}
+
+// Loads first product image for sale items that do not store image value in sales collection.
+const buildProductImageLookup = (sales) => {
+    const productIds = new Set()
+    const salesList = Array.isArray(sales) ? sales : []
+
+    salesList.forEach((sale) => {
+        const saleItems = Array.isArray(sale?.items) ? sale.items : []
+
+        saleItems.forEach((item) => {
+            if (String(item?.image || ``).trim()) return
+
+            const productId = String(item?._id || ``).trim()
+            if (mongoose.isValidObjectId(productId)) {
+                productIds.add(productId)
+            }
+        })
+    })
+
+    if (productIds.size === 0) return Promise.resolve(new Map())
+
+    return productsModel.find({_id: {$in: Array.from(productIds)}}, {images: 1}).lean()
+        .then((products) => {
+            const imageByProductId = new Map()
+            const productsList = Array.isArray(products) ? products : []
+
+            productsList.forEach((product) => {
+                const firstImage = Array.isArray(product?.images) ? String(product.images[0] || ``).trim() : ``
+                if (!firstImage) return
+                imageByProductId.set(String(product._id), firstImage)
+            })
+
+            return imageByProductId
+        })
+}
+
 // Formats sale payload for admin history UI and strips any unexpected fields.
-const formatSaleForAdmin = (sale) => ({
+const formatSaleForAdmin = (sale, productImageLookup = new Map()) => ({
     _id: sale._id,
     orderID: String(sale.orderID || ``),
     total: Number(sale.total) || 0,
@@ -52,7 +96,7 @@ const formatSaleForAdmin = (sale) => ({
         ? sale.items.map((item) => ({
             _id: String(item?._id || ``),
             name: String(item?.name || ``).trim(),
-            image: String(item?.image || ``).trim(),
+            image: resolveSaleItemImage(item, productImageLookup),
             price: Number(item?.price) || 0,
             quantity: Math.max(1, Number(item?.quantity) || 1),
             isReturned: Boolean(item?.isReturned),
@@ -62,7 +106,7 @@ const formatSaleForAdmin = (sale) => ({
 })
 
 // Formats sale payload for logged-in customer purchase history UI.
-const formatSaleForCustomer = (sale) => ({
+const formatSaleForCustomer = (sale, productImageLookup = new Map()) => ({
     _id: sale._id,
     orderID: String(sale.orderID || ``),
     total: Number(sale.total) || 0,
@@ -72,7 +116,7 @@ const formatSaleForCustomer = (sale) => ({
         ? sale.items.map((item) => ({
             _id: String(item?._id || ``),
             name: String(item?.name || ``).trim(),
-            image: String(item?.image || ``).trim(),
+            image: resolveSaleItemImage(item, productImageLookup),
             price: Number(item?.price) || 0,
             quantity: Math.max(1, Number(item?.quantity) || 1),
             isReturned: Boolean(item?.isReturned),
@@ -115,7 +159,13 @@ router.get(`/sales/my-purchase-history`, (req, res, next) => {
             isGuest: false
         })
             .sort({createdAt: -1, _id: -1})
-            .then((sales) => res.json((Array.isArray(sales) ? sales : []).map(formatSaleForCustomer)))
+            .then((sales) => {
+                const normalizedSales = Array.isArray(sales) ? sales : []
+                return buildProductImageLookup(normalizedSales)
+                    .then((productImageLookup) =>
+                        res.json(normalizedSales.map((sale) => formatSaleForCustomer(sale, productImageLookup)))
+                    )
+            })
             .catch((findErr) => next(findErr))
     })
 })
@@ -159,7 +209,12 @@ router.patch(`/sales/return-item/:saleId/:itemId`, validateReturnRouteParams, (r
                 sale.items[itemIndex].returnedAt = new Date()
 
                 sale.save()
-                    .then((updatedSale) => res.json(formatSaleForCustomer(updatedSale)))
+                    .then((updatedSale) =>
+                        buildProductImageLookup([updatedSale])
+                            .then((productImageLookup) =>
+                                res.json(formatSaleForCustomer(updatedSale, productImageLookup))
+                            )
+                    )
                     .catch((saveErr) => next(saveErr))
             })
             .catch((findErr) => next(findErr))
@@ -186,7 +241,13 @@ router.get(`/sales/customers/purchase-history`, (req, res, next) => {
 
         salesModel.find(query)
             .sort({createdAt: -1, _id: -1})
-            .then((sales) => res.json((Array.isArray(sales) ? sales : []).map(formatSaleForAdmin)))
+            .then((sales) => {
+                const normalizedSales = Array.isArray(sales) ? sales : []
+                return buildProductImageLookup(normalizedSales)
+                    .then((productImageLookup) =>
+                        res.json(normalizedSales.map((sale) => formatSaleForAdmin(sale, productImageLookup)))
+                    )
+            })
             .catch((findErr) => next(findErr))
     })
 })
