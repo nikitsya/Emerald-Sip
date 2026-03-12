@@ -12,47 +12,55 @@ button.blue-button {
     padding: 0 14px;
     margin-right: 8px;
     margin-top: 4px;
-    border: 0;
-    border-radius: 8px;
+    border: 1px solid transparent;
+    border-radius: 999px 16px 999px 16px;
     color: #ffffff;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
     white-space: nowrap;
-    transition: background-color 0.2s ease;
+    box-shadow: 0 8px 16px rgba(40, 66, 40, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .green-button {
-    background-color: #6F8F34;
+    background: linear-gradient(135deg, #5f8f41 0%, #3f6f34 100%);
 }
 
 .green-button:hover,
 .green-button:focus {
-    background-color: #4b6336;
+    background: linear-gradient(135deg, #6ca34a 0%, #497e3b 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px rgba(41, 78, 38, 0.28);
     color: #ffffff;
     text-decoration: none;
 }
 
 .red-button {
-    background-color: #9d5e3a;
+    background: linear-gradient(135deg, #a3724d 0%, #865436 100%);
 }
 
 .red-button:hover,
 .red-button:focus {
-    background-color: #7e4a2c;
+    background: linear-gradient(135deg, #b37d56 0%, #94603f 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px rgba(86, 58, 42, 0.25);
     color: #ffffff;
     text-decoration: none;
 }
 
 .blue-button {
-    background-color: #6f8062;
+    background: linear-gradient(135deg, #5b7f51 0%, #3f6540 100%);
 }
 
 .blue-button:hover,
 .blue-button:focus {
-    background-color: #5d6c52;
+    background: linear-gradient(135deg, #68915c 0%, #4c7450 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px rgba(38, 63, 39, 0.26);
     color: #ffffff;
     text-decoration: none;
 }
@@ -105,4 +113,3 @@ button.blue-button {
     object-fit: contain;
     display: block;
 }
-
