@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #283028;
+    background-color: #d6e2bc;
+    background-image: none;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.45;
+}
+
+.container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.form-container,
+.table-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fcfdf8;
+    border: 1px solid #d7decb;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(72, 86, 58, 0.12);
+}
+
+.form-container {
+    padding: 20px;
+}
+
+.table-container {
+    max-width: 1120px;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+}
+

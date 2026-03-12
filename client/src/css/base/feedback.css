@@ -1,0 +1,19 @@
+/* Error UI for forms */
+.field-error {
+    border-color: #b85c35 !important;
+    box-shadow: 0 0 0 3px rgba(184, 92, 53, 0.16) !important;
+}
+
+.error-text {
+    margin-top: -8px;
+    margin-bottom: 10px;
+    color: #8d3f22;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.product-row-clickable {
+    cursor: pointer;
+}
+
+/* Modal */
