@@ -130,10 +130,27 @@ export const ProductDetailsModal = ({
                                 />
                             </button>
                         ) : null}
-                        {/* Admin actions: edit/delete selected product */}
-                        {isAdmin ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
+                        {/* Admin actions: icon-based edit/delete controls */}
+                        {isAdmin ? (
+                            <Link
+                                className="icon-button"
+                                to={"/EditProduct/" + product._id}
+                                aria-label="Edit product"
+                                title="Edit product"
+                            >
+                                <img className="admin-action-icon" src="/images/buttons/admin/edit.png" alt="Edit"/>
+                            </Link>
+                        ) : null}
                         {isAdmin && canDeleteProduct ? (
-                            <button type="button" className="red-button" onClick={handleDeleteClick}>Delete</button>
+                            <button
+                                type="button"
+                                className="icon-button"
+                                onClick={handleDeleteClick}
+                                aria-label="Delete product"
+                                title="Delete product"
+                            >
+                                <img className="admin-action-icon" src="/images/buttons/admin/delete.png" alt="Delete"/>
+                            </button>
                         ) : null}
                     </div>
                 </div>
