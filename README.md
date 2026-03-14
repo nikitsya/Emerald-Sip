@@ -2,48 +2,123 @@
 
 Full-stack e-commerce web application for reusable bottles and eco-friendly products.
 
-- Frontend: React (CRA, React Router v5)
-- Backend: Node.js + Express
-- Database: MongoDB + Mongoose
+## What This Project Is
+
+Emerald Sip is a learning-oriented production-style web shop with a complete customer and admin workflow:
+
+- Customer catalog browsing, cart management, and checkout
+- Guest and authenticated purchase flows
+- JWT-based authentication and profile management
+- Admin product, stock, customer, and sales management
+
+## Core Stack
+
+- Frontend: React (CRA), React Router v5, Axios
+- Backend: Node.js, Express
+- Database: MongoDB, Mongoose
 - Payments: PayPal (sandbox)
 
-Authors:
+## System Architecture
 
-- Hanna Bokariuk
-- Nikita Smiichyk
+```mermaid
+flowchart LR
+    C[Customer Browser] --> UI[React Client]
+    A[Admin Browser] --> UI
+
+    UI -->|REST API| API[Express Server]
+    API --> DB[(MongoDB)]
+    API --> FS[(Uploads Folder)]
+
+    UI --> PSP[PayPal JS SDK]
+    PSP --> PP[PayPal Sandbox API]
+
+    subgraph Client
+      UI
+    end
+
+    subgraph Server
+      API
+    end
+```
+
+## Checkout Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant C as React Client
+    participant P as PayPal
+    participant S as Express API
+    participant DB as MongoDB
+
+    U->>C: Add products to cart
+    U->>C: Click checkout
+
+    alt Logged-in user
+        C->>S: POST /sales (JWT + order payload)
+    else Guest user
+        C->>S: POST /sales (guest payload)
+    end
+
+    C->>P: Start PayPal approval
+    P-->>C: Payment confirmed
+    C->>S: Finalize order
+    S->>DB: Save sale and reduce stock
+    DB-->>S: Persisted
+    S-->>C: Order success response
+    C-->>U: Show confirmation
+```
+
+## Access and Authorization Model
+
+```mermaid
+flowchart TD
+    L[Login/Register] --> T[Issue JWT]
+    T --> M[Auth Middleware]
+    M --> R{Route Access Level}
+
+    R -->|0| G[Guest]
+    R -->|1| CU[Customer]
+    R -->|2| AD[Admin]
+
+    G --> GP[Public catalog and guest checkout]
+    CU --> CP[Profile, history, authenticated checkout]
+    AD --> AP[Product/stock/customer/sales management]
+```
 
 ## Features
 
 ### Customer-facing
 
-- Product catalog with search, filtering, and sorting.
-- Product details modal with image gallery.
-- Cart with quantity controls and stock-aware behavior.
-- Cart icon toggle behavior (click again to remove an item from cart).
-- PayPal checkout for logged-in and guest users.
-- Registration and login with JWT-based authorization.
-- Profile editing with optional profile photo upload.
-- Purchase history with search/filter/sort.
-- Per-item return action in purchase history.
+- Product catalog with search, filtering, and sorting
+- Product details modal with image gallery
+- Cart with quantity controls and stock-aware behavior
+- Cart icon toggle behavior (click again removes an item)
+- PayPal checkout for guest and logged-in users
+- Registration and login with JWT authorization
+- Profile editing with optional profile photo upload
+- Purchase history with search, filtering, and sorting
+- Per-item return action in purchase history
 
 ### Admin-facing
 
-- Add, edit, and delete products.
-- Adjust product stock levels.
-- View customers.
-- View customer purchase history.
-- Route-level and role-based access protection.
+- Add, edit, and delete products
+- Adjust product stock levels
+- View customers
+- View customer purchase history
+- Route-level and role-based access protection
 
-## Tech Stack
+## Tech Details
 
-### Client
+### Client dependencies
 
 - `react` 16.9
 - `react-router-dom` 5.0
 - `axios`
 - `@paypal/react-paypal-js`
 
-### Server
+### Server dependencies
 
 - `express` 5
 - `mongoose` 8
@@ -72,7 +147,7 @@ Authors:
 │   ├── routes
 │   ├── seeds/default
 │   └── uploads
-├── ProgressTracker.md
+├── ProjectProgress.md
 └── README.md
 ```
 
@@ -135,9 +210,9 @@ Direct link: [Watch screencast](./docs/screencast.mp4)
 
 ## Prerequisites
 
-- Node.js 18+ (recommended)
+- Node.js 18+
 - npm
-- MongoDB running locally on default host/port (`mongodb://localhost`)
+- Local MongoDB on default host/port (`mongodb://localhost`)
 
 ## Environment Configuration (Server)
 
@@ -145,7 +220,7 @@ The backend loads environment variables from:
 
 - `server/config/.env`
 
-Current required keys:
+Required keys:
 
 ```env
 DB_NAME=SustainableHomeStore
@@ -185,42 +260,27 @@ cd client
 npm start
 ```
 
-5. Open:
-
-- `http://localhost:3000`
+5. Open `http://localhost:3000`
 
 ## Development Notes
 
-- Client API base URL is defined in:
-    - `client/src/config/global_constants.js` (`SERVER_HOST`)
-- PayPal sandbox client ID is currently stored in:
-    - `client/src/config/global_constants.js`
-- Profile images uploaded from the app are stored in:
-    - `server/uploads`
+- Client API base URL is defined in `client/src/config/global_constants.js` (`SERVER_HOST`)
+- PayPal sandbox client ID is currently stored in `client/src/config/global_constants.js`
+- Profile images uploaded from the app are stored in `server/uploads`
 
 ## Seed Data
 
-Default JSON datasets are available in:
+Default datasets for local initialization:
 
 - `server/seeds/default/products.json`
 - `server/seeds/default/users.json`
 - `server/seeds/default/sales.json`
 
-These files can be used for local database initialization/import workflows.
-
 ## API Overview
 
 Main route groups:
 
-- `/products`
-    - Public catalog read
-    - Admin create/update/delete
-- `/users`
-    - Register/login
-    - Profile read/update
-    - Admin customer management
-- `/sales`
-    - Guest and authenticated checkout
-    - Customer purchase history
-    - Item return route
-    - Admin purchase history
+- `/products`: public reads + admin create/update/delete
+- `/users`: register/login, profile actions, admin customer management
+- `/sales`: checkout, purchase history, returns, admin purchase history
+
